@@ -1,0 +1,35 @@
+# fly.toml app configuration file generated for inctagram-api on 2023-07-05T18:04:02+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "inctagram-api"
+primary_region = "waw"
+
+[processes]
+  main-app = "node dist/apps/main-app/src/main"
+  file-storage = "node dist/apps/file-storage/src/main"
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 5000
+  processes = ["main-app"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+  [[services.tcp_checks]]
+    interval = "15s"
+    timeout = "2s"
+    grace_period = "1s"
+    restart_limit = 0

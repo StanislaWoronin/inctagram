@@ -1,1 +1,1 @@
-# inctagram
+# inctagram-api
