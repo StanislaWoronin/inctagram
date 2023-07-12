@@ -92,7 +92,7 @@ export class UserQueryRepository {
       });
       return user;
     }
-  } // TODO звчем?
+  }
 
   async getUserByRecoveryCode(code: string): Promise<User | null> {
     const result = await this.prisma.passwordRecovery.findFirst({
