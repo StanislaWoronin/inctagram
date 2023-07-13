@@ -21,7 +21,7 @@ export class RegistrationConfirmationCommandHandler
     const user = await this.userQueryRepository.getUserByConfirmationCode(
       confirmationCode,
     );
-    if (!user) throw new BadRequestException(`Incorrect confirmationCode.`);
+    if (!user) throw new BadRequestException(`confirmationCode:Incorrect confirmationCode.`);
     if (user.isConfirmed) return RegistrationConfirmationResponse.Confirm
     if (Number(confirmationCode) < Date.now()) return user.email
 

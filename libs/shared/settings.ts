@@ -20,8 +20,8 @@ export const settings = {
   timeLife: {
     CONFIRMATION_CODE: 24 * 60 * 60 * 1000, // milliseconds
     PASSWORD_RECOVERY_CODE: 24 * 60 * 60 * 1000, // milliseconds
-    TOKEN_TIME: 20 * 1000, // milliseconds
-    ACCESS_TOKEN: '100000000 seconds',
-    REFRESH_TOKEN: '200000000000 seconds',
+    TOKEN_TIME: 15 * 21 * 60 * 60 * 1000, // milliseconds
+    ACCESS_TOKEN: '15 minutes',
+    REFRESH_TOKEN: '15 day',
   },
 };
