@@ -1,4 +1,4 @@
-import {PhotoType} from "../../../libs/shared/enums/photo-type.enum";
+import { PhotoType } from '../../../libs/shared/enums/photo-type.enum';
 
 export const fileStorageConstants = {
   avatar: {

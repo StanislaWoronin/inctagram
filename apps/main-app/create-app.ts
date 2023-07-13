@@ -1,5 +1,5 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { HttpExceptionFilter } from '../../../libs/exception-filters/http.exception.filter';
+import { HttpExceptionFilter } from '../../libs/exception-filters/http.exception.filter';
 import { useContainer } from 'class-validator';
 import { AppModule } from './app.module';
 import { validationPipeSettings } from './main';

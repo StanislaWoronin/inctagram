@@ -11,7 +11,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { CurrentUser } from '../../../libs/decorators/current-user.decorator';
 import { UserFacade } from './application-services';
 import { Microservices } from '../../../libs/shared/enums/microservices-name.enum';
 import { ClientProxy } from '@nestjs/microservices';
@@ -25,7 +25,7 @@ import {
   ApiUpdateProfile,
   ApiUpdateUser,
 } from '../../../libs/documentation/swagger/user.documentation';
-import { AuthBearerGuard } from '../auth/guards/auth-bearer.guard';
+import { AuthBearerGuard } from '../../../libs/guards/auth-bearer.guard';
 import { ViewUserWithInfo } from './view-model/user-with-info.view-model';
 import { fileStorageConstants } from '../../file-storage/image-validator/file-storage.constants';
 import { ImageValidator } from '../../file-storage/image-validator/image.validator';

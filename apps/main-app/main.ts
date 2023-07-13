@@ -6,9 +6,9 @@ import { SwaggerModule } from '@nestjs/swagger';
 import {
   swaggerConfig,
   swaggerOptions,
-} from '../../../libs/documentation/swagger/swagger.config';
-import { AuthModule } from '../auth/auth.module';
-import { UserModule } from '../users/user.module';
+} from '../../libs/documentation/swagger/swagger.config';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './users/user.module';
 import { createApp } from './create-app';
 
 export const validationPipeSettings = {

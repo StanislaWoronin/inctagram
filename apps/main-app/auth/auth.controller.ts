@@ -12,7 +12,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import {UserFacade} from '../users/application-services';
+import { UserFacade } from '../users/application-services';
 import {
   ApiLogin,
   ApiLogout,
@@ -24,29 +24,29 @@ import {
   ApiRegistrationConfirmation,
   ApiRegistrationEmailResending,
 } from '../../../libs/documentation/swagger/auth.documentation';
-import {RefreshTokenValidationGuard} from './guards/refresh-token-validation.guard';
-import {settings} from '../../../libs/shared/settings';
-import {Response} from 'express';
-import {RegistrationDto} from './dto/registration.dto';
-import {CurrentUser} from './decorators/current-user.decorator';
-import {CurrentDeviceId} from './decorators/device-id.decorator';
-import {RegistrationConfirmationDto} from './dto/registration-confirmation.dto';
-import {LoginDto} from './dto/login.dto';
-import {EmailDto} from './dto/email.dto';
-import {NewPasswordDto} from './dto/new-password.dto';
-import {ViewUser} from '../users/view-model/user.view-model';
-import {TokenResponseViewModel} from './view-model/token-response.view-model';
-import {TCreateUserResponse} from '../users/application-services/commands/create-user.command-handler';
-import {authEndpoints} from '../../../libs/shared/endpoints/auth.endpoints';
-import {ConfigService} from "@nestjs/config";
-import {RegistrationConfirmationResponse} from "./view-model/registration-confirmation.response";
-import {ValidPhotoFormat} from "../../file-storage/image-validator/file-storage.constants";
+import { RefreshTokenValidationGuard } from '../../../libs/guards/refresh-token-validation.guard';
+import { settings } from '../../../libs/shared/settings';
+import { Response } from 'express';
+import { RegistrationDto } from './dto/registration.dto';
+import { CurrentUser } from '../../../libs/decorators/current-user.decorator';
+import { CurrentDeviceId } from '../../../libs/decorators/device-id.decorator';
+import { RegistrationConfirmationDto } from './dto/registration-confirmation.dto';
+import { LoginDto } from './dto/login.dto';
+import { EmailDto } from './dto/email.dto';
+import { NewPasswordDto } from './dto/new-password.dto';
+import { ViewUser } from '../users/view-model/user.view-model';
+import { TokenResponseViewModel } from './view-model/token-response.view-model';
+import { TCreateUserResponse } from '../users/application-services/commands/create-user.command-handler';
+import { authEndpoints } from '../../../libs/shared/endpoints/auth.endpoints';
+import { ConfigService } from '@nestjs/config';
+import { RegistrationConfirmationResponse } from './view-model/registration-confirmation.response';
+import { ValidPhotoFormat } from '../../file-storage/image-validator/file-storage.constants';
 
 @Controller(authEndpoints.default())
 export class AuthController {
   constructor(
     private readonly userFacade: UserFacade,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
   ) {}
 
   @Post(authEndpoints.confirmationEmailResending())
@@ -155,17 +155,18 @@ export class AuthController {
     @Query() dto: RegistrationConfirmationDto,
     @Res() response: Response,
   ): Promise<boolean> {
-    const isSuccess = await this.userFacade.commands.registrationConfirmation(dto);
-    const clientUrl = this.configService.get('CLIENT_URI')
+    const isSuccess = await this.userFacade.commands.registrationConfirmation(
+      dto,
+    );
+    const clientUrl = this.configService.get('CLIENT_URI');
+    const { Success, Confirm } = RegistrationConfirmationResponse;
 
-    if (isSuccess === RegistrationConfirmationResponse.Success) {
-      response.redirect(`${clientUrl}/ru/congratulation?status=${isSuccess}`)
-    } else if (isSuccess === RegistrationConfirmationResponse.Confirm) {
-      response.redirect(`${clientUrl}/ru/congratulation?status=${isSuccess}`)
+    if (isSuccess === Success || isSuccess === Confirm) {
+      response.redirect(`${clientUrl}/ru/congratulation?status=${isSuccess}`);
     } else {
-      response.redirect(`${clientUrl}/ru/resendLink?email=${isSuccess}`)
+      response.redirect(`${clientUrl}/ru/resendLink?email=${isSuccess}`);
     }
 
-    return
+    return;
   }
 }

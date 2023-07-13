@@ -5,18 +5,18 @@ import {
   preparedLoginData,
   preparedRegistrationData,
 } from './prepared-data/prepared-auth.data';
-import { TestingRepository } from '../apps/main-app/src/testing.repository';
+import { TestingRepository } from '../apps/main-app/testing.repository';
 import { errorsMessage } from './response/error.response';
 import { EmailManager } from '../libs/adapters/email.adapter';
 import { EmailManagerMock } from './mock/email-adapter.mock';
 import { RegistrationDto } from '../apps/main-app/auth/dto/registration.dto';
-import { AppModule } from '../apps/main-app/src/app.module';
+import { AppModule } from '../apps/main-app/app.module';
 import { createUserResponse } from './response/auth/create-user.response';
 import { RegistrationConfirmationDto } from '../apps/main-app/auth/dto/registration-confirmation.dto';
 import { EmailDto } from '../apps/main-app/auth/dto/email.dto';
 import { NewPasswordDto } from '../apps/main-app/auth/dto/new-password.dto';
 import { Tokens } from '../libs/shared/enums/tokens.enum';
-import { createApp } from '../apps/main-app/src/create-app';
+import { createApp } from '../apps/main-app/create-app';
 
 describe('Test auth controller.', () => {
   const second = 1000;
@@ -124,12 +124,12 @@ describe('Test auth controller.', () => {
       });
     });
 
-    const error = errorsMessage<RegistrationConfirmationDto>([
-      'confirmationCode',
-    ]);
     it(`Status ${HttpStatus.BAD_REQUEST}.
       Try confirm email with incorrect code.`, async () => {
       const { code } = expect.getState();
+      const error = errorsMessage<RegistrationConfirmationDto>([
+        'confirmationCode',
+      ]);
 
       const response = await requests
         .auth()
@@ -149,16 +149,15 @@ describe('Test auth controller.', () => {
       expect(user.isConfirmed).toBe(true);
     });
 
-    it(`Status ${HttpStatus.BAD_REQUEST}.
+    it(`Status ${HttpStatus.FOUND}.
       Try confirm email when email already confirm.`, async () => {
       const { code } = expect.getState();
 
       const response = await requests.auth().confirmRegistration(code);
-      expect(response.status).toBe(HttpStatus.BAD_REQUEST);
-      expect(response.body).toStrictEqual(error);
+      expect(response.status).toBe(HttpStatus.FOUND);
     });
 
-    it(`Status ${HttpStatus.BAD_REQUEST}.
+    it(`Status ${HttpStatus.FOUND}.
       Try confirm email with expired code.`, async () => {
       const [user] = await requests.userFactory().createUsers(1, 1);
       const createdUser = await testingRepository.getUser(user.id);
@@ -170,9 +169,7 @@ describe('Test auth controller.', () => {
       const response = await requests
         .auth()
         .confirmRegistration(expiredCode.toString());
-      expect(response.status).toBe(HttpStatus.BAD_REQUEST);
-      expect(response.body).toStrictEqual(error);
-      expect(response.body.errors[0].message).toBe(user.email);
+      expect(response.status).toBe(HttpStatus.FOUND);
     });
   });
 

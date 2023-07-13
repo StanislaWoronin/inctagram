@@ -65,7 +65,9 @@ export class UserQueryRepository {
     });
   }
 
-  async getUserByConfirmationCode(code: string): Promise<ViewUser & {isConfirmed: boolean} | null> {
+  async getUserByConfirmationCode(
+    code: string,
+  ): Promise<(ViewUser & { isConfirmed: boolean }) | null> {
     const result = await this.prisma.emailConfirmation.findFirst({
       where: {
         confirmationCode: code,
