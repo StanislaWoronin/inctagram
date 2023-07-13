@@ -11,7 +11,7 @@ import {
 } from '../../image-validator/file-storage.constants';
 import { ConfigService } from '@nestjs/config';
 import { log } from 'util';
-import {Prisma} from "@prisma/client";
+import { Prisma } from '@prisma/client';
 
 export class UpdateMainImageCommand {
   constructor(public readonly dto: Partial<UpdateMainImageDto>) {}
@@ -45,11 +45,11 @@ export class UpdateMainImageCommandHandler
 
     const photos = await this.fileStorageQueryRepository.getPhotosByUserId(
       dto.userId,
-      PhotoType.Avatar
+      PhotoType.Avatar,
     );
     if (!photos) {
       const data = {
-        user: {connect: {id: dto.userId}},
+        user: { connect: { id: dto.userId } },
         photoType: PhotoType.Avatar,
         photoLink: result.photoLink,
       };

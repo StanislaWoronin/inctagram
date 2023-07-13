@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserQueryRepository } from '../../users/db.providers/user-query.repository';
+import { UserQueryRepository } from '../../apps/main-app/users/db.providers/user-query.repository';
 
 @Injectable()
 export class RefreshTokenValidationGuard implements CanActivate {

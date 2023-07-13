@@ -1,5 +1,5 @@
 import { User } from '@prisma/client';
-import {PhotoType} from "../../libs/shared/enums/photo-type.enum";
+import { PhotoType } from '../../libs/shared/enums/photo-type.enum';
 
 type TFullUser = Omit<User, 'birthday'> & { birthday: string };
 
@@ -28,7 +28,7 @@ export class FullUser implements TFullUser {
     passwordRecoveryCode: string;
   };
   Photos: {
-    photoType: string,
-    photoLink: string
-  }[]
+    photoType: string;
+    photoLink: string;
+  }[];
 }

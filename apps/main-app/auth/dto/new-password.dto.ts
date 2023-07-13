@@ -1,10 +1,10 @@
 import { IsString, Length } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { userConstants } from '../../users/user.constants';
-import { IsRecoveryCodeExist } from '../decorators/recovery-code.decorator';
+import { IsRecoveryCodeExist } from '../../../../libs/decorators/recovery-code.decorator';
 import { TUser } from '../../users/entities/new-user.entity';
 import { PasswordRecovery } from '../../users/entities/password-recovery.entity';
-import { IsDifferentPassword } from '../decorators/different-password.decorator';
+import { IsDifferentPassword } from '../../../../libs/decorators/different-password.decorator';
 
 type TNewPasswordDto = Pick<TUser, 'passwordConfirmation'> &
   Pick<PasswordRecovery, 'passwordRecoveryCode'> & { newPassword: string };

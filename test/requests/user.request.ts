@@ -1,13 +1,13 @@
 import request from 'supertest';
-import {TestResponseType} from '../types/test-response.type';
-import {ErrorResponse} from '../../libs/shared/errors.response';
-import {join} from 'path';
-import {Images, images} from '../images/images';
-import {ViewUserWithInfo} from '../../apps/main-app/users/view-model/user-with-info.view-model';
-import {fileStorageConstants} from '../../apps/file-storage/image-validator/file-storage.constants';
-import {userEndpoints} from '../../libs/shared/endpoints/user.endpoints';
-import {TUpdateUserProfileTestDto} from '../types/update-user-profile.test-dto';
-import sharp from "sharp";
+import { TestResponseType } from '../types/test-response.type';
+import { ErrorResponse } from '../../libs/shared/errors.response';
+import { join } from 'path';
+import { Images, images } from '../images/images';
+import { ViewUserWithInfo } from '../../apps/main-app/users/view-model/user-with-info.view-model';
+import { fileStorageConstants } from '../../apps/file-storage/image-validator/file-storage.constants';
+import { userEndpoints } from '../../libs/shared/endpoints/user.endpoints';
+import { TUpdateUserProfileTestDto } from '../types/update-user-profile.test-dto';
+import sharp from 'sharp';
 
 export class UserRequest {
   constructor(private readonly server: any) {}
@@ -46,7 +46,7 @@ export class UserRequest {
       return { body: response.body, status: response.status };
     }
 
-    await sharp()
+    await sharp();
     const imagePath = join(
       __dirname,
       '..',

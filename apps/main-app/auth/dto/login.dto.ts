@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsString, Length } from 'class-validator';
 import { userConstants } from '../../users/user.constants';
-import { IsEmailExist } from '../decorators/email.decorator';
+import { IsEmailExist } from '../../../../libs/decorators/email.decorator';
 import { TUser } from '../../users/entities/new-user.entity';
 
 type TLoginDto = Pick<TUser, 'email' | 'password'>;

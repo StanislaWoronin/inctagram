@@ -21,7 +21,9 @@ export class FileStorageFacade {
   };
 
   // Commands
-  private async updateMainImage(dto: Partial<UpdateMainImageDto>): Promise<boolean> {
+  private async updateMainImage(
+    dto: Partial<UpdateMainImageDto>,
+  ): Promise<boolean> {
     const command = new UpdateMainImageCommand(dto);
     return await this.commandBus.execute(command);
   }

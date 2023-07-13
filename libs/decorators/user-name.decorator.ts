@@ -6,7 +6,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { Injectable } from '@nestjs/common';
-import { UserFacade } from '../../users/application-services';
+import { UserFacade } from '../../apps/main-app/users/application-services';
 
 @ValidatorConstraint({ name: 'IsUserNameExist', async: true })
 @Injectable()
