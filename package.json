@@ -45,7 +45,6 @@
     "class-validator": "^0.14.0",
     "cookie-parser": "^1.4.6",
     "date-fns": "^2.30.0",
-    "imap": "^0.8.19",
     "nodemailer": "^6.9.3",
     "prisma": "^4.16.1",
     "reflect-metadata": "^0.1.13",

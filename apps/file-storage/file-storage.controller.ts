@@ -1,8 +1,8 @@
 import { Controller } from '@nestjs/common';
-import { FileStorageFacade } from '../application-services';
+import { FileStorageFacade } from './application-services';
 import { MessagePattern } from '@nestjs/microservices';
-import { Commands } from '../../../libs/shared/enums/pattern-commands-name.enum';
-import { UpdateMainImageDto } from '../dto/update-main-image.dto';
+import { Commands } from '../../libs/shared/enums/pattern-commands-name.enum';
+import { UpdateMainImageDto } from './dto/update-main-image.dto';
 
 @Controller()
 export class FileStorageController {

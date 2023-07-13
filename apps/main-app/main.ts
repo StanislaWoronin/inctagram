@@ -34,7 +34,7 @@ async function bootstrap() {
   const app = createApp(rawApp);
 
   const configService = app.get(ConfigService);
-  const port = configService.get<number>('API_GATEWAY');
+  const port = configService.get<number>('MAIN_APP');
   const serverUrl = `https://inctagram-api.fly.dev`;
 
   const usersDocument = SwaggerModule.createDocument(app, swaggerConfig(), {
