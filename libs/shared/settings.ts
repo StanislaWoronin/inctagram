@@ -1,6 +1,6 @@
 import { Transport } from '@nestjs/microservices';
 import * as dotenv from 'dotenv';
-import {CloudName} from "./enums/cloud-name.enum";
+import { CloudName } from './enums/cloud-name.enum';
 dotenv.config();
 
 export const settings = {
@@ -17,15 +17,15 @@ export const settings = {
       BASE_URL: process.env.AWS_BASE_URL,
       BUCKET_NAME: process.env.AWS_BUCKET_NAME,
       ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
-      SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY
+      SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
     },
     YandexCloud: {
       REGION: process.env.YC_REGION,
       BASE_URL: process.env.YC_BASE_URL,
       BUCKET_NAME: process.env.YC_BUCKET_NAME,
       ACCESS_KEY_ID: process.env.YC_ACCESS_KEY_ID,
-      SECRET_ACCESS_KEY: process.env.YC_SECRET_ACCESS_KEY
-    }
+      SECRET_ACCESS_KEY: process.env.YC_SECRET_ACCESS_KEY,
+    },
   },
   // transport settings
   transportName: Transport.RMQ,

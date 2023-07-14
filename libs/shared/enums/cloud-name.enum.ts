@@ -1,4 +1,4 @@
 export enum CloudName {
-    Aws = 'AWS',
-    YandexCloud = 'YC'
+  Aws = 'AWS',
+  YandexCloud = 'YC',
 }

@@ -8,14 +8,14 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
-import {cloudSwitcher} from "./cloud.switcher";
+import { cloudSwitcher } from './cloud.switcher';
 
 @Injectable()
 export class S3StorageAdapter {
   s3Client: S3Client;
   bucketName: string;
   constructor(private configService: ConfigService) {
-    const cloudOptions = cloudSwitcher()
+    const cloudOptions = cloudSwitcher();
     this.s3Client = new S3Client({
       region: cloudOptions.REGION,
       credentials: {
