@@ -21,8 +21,7 @@ export class RegistrationDto implements TRegistrationDto {
   @IsString()
   @IsEmail()
   @Transform(({ value }) => value?.trim())
-  // @IsEmailExistForRegistration() You need to return the dto to the client
-  // to confirm registration by existing mail
+  @IsEmailExistForRegistration()
   email: string;
 
   @ApiProperty({

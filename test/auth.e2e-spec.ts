@@ -99,6 +99,16 @@ describe('Test auth controller.', () => {
       );
     });
 
+    it(`Status ${HttpStatus.BAD_REQUEST}.
+      Try registrate if name and login exist.`, async () => {
+      const errors = errorsMessage<RegistrationDto>(['email', 'userName']);
+      const response = await requests
+        .auth()
+        .registrationUser(preparedRegistrationData.valid);
+      expect(response.status).toBe(HttpStatus.BAD_REQUEST);
+      expect(response.body).toStrictEqual(errors);
+    });
+
     // it(`Status ${HttpStatus.SEE_OTHER}.
     //   Should return dto if registered user with an unconfirmed email address is trying to re-register.`, async () => {
     //   const response = await requests

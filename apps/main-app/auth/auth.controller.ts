@@ -138,13 +138,7 @@ export class AuthController {
     @Body() dto: RegistrationDto,
     @Res({ passthrough: true }) response: Response,
   ): Promise<TCreateUserResponse | null> {
-    const result = await this.userFacade.commands.registrationUser(dto);
-    // if (result instanceof RegistrationDto) {
-    //   response.status(HttpStatus.SEE_OTHER).send(result);
-    // } else {
-    response.status(HttpStatus.CREATED).send(result);
-    // } // логика для "если профиль с емайлом зарегистрирован, но не подтвержден" появляется при введении регистрации по гиту и тд
-    return;
+    return await this.userFacade.commands.registrationUser(dto);
   }
 
   @Get(authEndpoints.registrationConfirmation())
