@@ -7,8 +7,8 @@ app = "inctagram-api"
 primary_region = "waw"
 
 [processes]
-  main-app = "node dist/apps/main-app/src/main"
-  file-storage = "node dist/apps/file-storage/src/main"
+  main-app = "node dist/apps/main-app/main"
+  file-storage = "node dist/apps/file-storage/main"
 
 [[services]]
   protocol = "tcp"
