@@ -1,17 +1,17 @@
-import {HttpStatus, INestApplication} from '@nestjs/common';
-import {Requests} from './requests/requests';
-import {TestingRepository} from '../apps/main-app/src/testing.repository';
-import {Test, TestingModule} from '@nestjs/testing';
-import {AppModule} from '../apps/main-app/src/app.module';
-import {EmailManager} from '../libs/adapters/email.adapter';
-import {EmailManagerMock} from './mock/email-adapter.mock';
-import {createApp} from '../apps/main-app/src/create-app';
-import {preparedUserData} from './prepared-data/prepared-user.data';
-import {errorsMessage} from './response/error.response';
-import {UpdateUserProfileDto} from '../apps/main-app/users/dto/update-user.dto';
-import {Tokens} from '../libs/shared/enums/tokens.enum';
-import {getUserProfileResponse} from './response/user/get-user-profile.response';
-import {Images} from "./images/images";
+import { HttpStatus, INestApplication } from '@nestjs/common';
+import { Requests } from './requests/requests';
+import { TestingRepository } from '../apps/main-app/testing.repository';
+import { Test, TestingModule } from '@nestjs/testing';
+import { AppModule } from '../apps/main-app/app.module';
+import { EmailManager } from '../libs/adapters/email.adapter';
+import { EmailManagerMock } from './mock/email-adapter.mock';
+import { createApp } from '../apps/main-app/create-app';
+import { preparedUserData } from './prepared-data/prepared-user.data';
+import { errorsMessage } from './response/error.response';
+import { UpdateUserProfileDto } from '../apps/main-app/users/dto/update-user.dto';
+import { Tokens } from '../libs/shared/enums/tokens.enum';
+import { getUserProfileResponse } from './response/user/get-user-profile.response';
+import { Images } from './images/images';
 
 describe('Test auth controller.', () => {
   const second = 1000;
@@ -235,53 +235,66 @@ describe('Test auth controller.', () => {
 
     it(`Status ${HttpStatus.UNAUTHORIZED}.
       Try upload avatar with missed access token.`, async () => {
-      const response = await requests.user().uploadUserAvatar(Images.Fist)
-      expect(response.status).toBe(HttpStatus.UNAUTHORIZED)
-    })
+      const response = await requests.user().uploadUserAvatar(Images.Fist);
+      expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
+    });
 
     it(`Status ${HttpStatus.UNAUTHORIZED}.
       Try upload avatar with incorrect access token.`, async () => {
-      const {accessToken} = expect.getState()
-      const incorrectToken = accessToken.replace('.', '')
+      const { accessToken } = expect.getState();
+      const incorrectToken = accessToken.replace('.', '');
 
-      const response = await requests.user().uploadUserAvatar(Images.Fist, incorrectToken)
-      expect(response.status).toBe(HttpStatus.UNAUTHORIZED)
-    })
+      const response = await requests
+        .user()
+        .uploadUserAvatar(Images.Fist, incorrectToken);
+      expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
+    });
 
     it(`Status ${HttpStatus.UNAUTHORIZED}.
       Try upload avatar with expired access token.`, async () => {
-      const {accessToken} = expect.getState()
-      const expiredToken = await testingRepository.makeTokenExpired(accessToken, Tokens.AccessToken)
+      const { accessToken } = expect.getState();
+      const expiredToken = await testingRepository.makeTokenExpired(
+        accessToken,
+        Tokens.AccessToken,
+      );
 
-      const response = await requests.user().uploadUserAvatar(Images.Fist, expiredToken)
-      expect(response.status).toBe(HttpStatus.UNAUTHORIZED)
-    })
+      const response = await requests
+        .user()
+        .uploadUserAvatar(Images.Fist, expiredToken);
+      expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
+    });
 
-    const errors = errorsMessage(['format'])
+    const errors = errorsMessage(['format']);
     it(`Status ${HttpStatus.BAD_REQUEST}.
       Try upload  avatar which more then 1mb.`, async () => {
-      const {accessToken} = expect.getState()
+      const { accessToken } = expect.getState();
 
-      const response = await requests.user().uploadUserAvatar(Images.SoBig, accessToken)
-      expect(response.status).toBe(HttpStatus.BAD_REQUEST)
-      expect(response.body).toStrictEqual(errors)
-    })
+      const response = await requests
+        .user()
+        .uploadUserAvatar(Images.SoBig, accessToken);
+      expect(response.status).toBe(HttpStatus.BAD_REQUEST);
+      expect(response.body).toStrictEqual(errors);
+    });
 
     it(`Status ${HttpStatus.BAD_REQUEST}.
       Try upload wrong format avatar.`, async () => {
-      const {accessToken} = expect.getState()
+      const { accessToken } = expect.getState();
 
-      const response = await requests.user().uploadUserAvatar(Images.WrongFormat, accessToken)
-      expect(response.status).toBe(HttpStatus.BAD_REQUEST)
-      expect(response.body).toStrictEqual(errors)
-    })
+      const response = await requests
+        .user()
+        .uploadUserAvatar(Images.WrongFormat, accessToken);
+      expect(response.status).toBe(HttpStatus.BAD_REQUEST);
+      expect(response.body).toStrictEqual(errors);
+    });
 
     it(`Status ${HttpStatus.NO_CONTENT}.
       Try upload wrong format avatar.`, async () => {
-      const {accessToken} = expect.getState()
+      const { accessToken } = expect.getState();
 
-      const response = await requests.user().uploadUserAvatar(Images.Fist, accessToken)
-      expect(response.status).toBe(HttpStatus.NO_CONTENT)
-    })
-  })
+      const response = await requests
+        .user()
+        .uploadUserAvatar(Images.Fist, accessToken);
+      expect(response.status).toBe(HttpStatus.NO_CONTENT);
+    });
+  });
 });

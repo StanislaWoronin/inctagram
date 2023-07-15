@@ -6,7 +6,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserFacade } from '../../users/application-services';
+import { UserFacade } from '../../apps/main-app/users/application-services';
 
 @ValidatorConstraint({ name: 'IsEmailExist', async: true })
 @Injectable()
@@ -47,11 +47,7 @@ export class IsEmailExistForRegistrationConstraint
     const user = await this.userFacade.queries.getUserByIdOrUserNameOrEmail(
       value,
     );
-    if (user) {
-      if (!user.isConfirmed) {
-        return true;
-      }
-    }
+
     return !user;
   }
   defaultMessage(args: ValidationArguments) {

@@ -1,4 +1,4 @@
-import { applyDecorators, HttpStatus } from '@nestjs/common';
+import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -8,7 +8,6 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiQuery,
-  ApiResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -20,7 +19,6 @@ import { LoginDto } from '../../../apps/main-app/auth/dto/login.dto';
 import { EmailDto } from '../../../apps/main-app/auth/dto/email.dto';
 import { RegistrationConfirmationDto } from '../../../apps/main-app/auth/dto/registration-confirmation.dto';
 import { NewPasswordDto } from '../../../apps/main-app/auth/dto/new-password.dto';
-import { PasswordRecoveryPageDto } from '../../../apps/main-app/auth/dto/password-recovery-pade.dto';
 
 export function ApiRegistration() {
   return applyDecorators(
@@ -133,7 +131,11 @@ export function ApiRegistrationConfirmation() {
   return applyDecorators(
     ApiTags('Auth'),
     ApiOperation({
-      summary: 'Confirmation of registration via confirmation code',
+      summary:
+        '' +
+        'Confirmation of registration via confirmation code. ' +
+        'If the email confirmation is successful or the email has already been redirected to the "congratulations" page.' +
+        'If the verification code has expired, it will be redirected to the "resubmit link" page.',
     }),
     ApiQuery({
       type: RegistrationConfirmationDto,
@@ -143,7 +145,7 @@ export function ApiRegistrationConfirmation() {
       description: 'Email was verified. Account was activated',
     }),
     ApiBadRequestResponse({
-      description: 'If confirmation code incorrect or expired.',
+      description: 'If confirmation code incorrect.',
       type: ErrorResponse,
     }),
     // ApiTooManyRequestsResponse({

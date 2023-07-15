@@ -8,23 +8,24 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
+import { cloudSwitcher } from './cloud.switcher';
 
 @Injectable()
 export class S3StorageAdapter {
+  s3Client: S3Client;
+  bucketName: string;
   constructor(private configService: ConfigService) {
+    const cloudOptions = cloudSwitcher();
     this.s3Client = new S3Client({
-      region: this.configService.get('REGION'),
+      region: cloudOptions.REGION,
       credentials: {
-        accessKeyId: this.configService.get<string>('aws_access_key_id'),
-        secretAccessKey: this.configService.get<string>(
-          'AWS_SECRET_ACCESS_KEY',
-        ),
+        accessKeyId: cloudOptions.ACCESS_KEY_ID,
+        secretAccessKey: cloudOptions.SECRET_ACCESS_KEY,
       },
-      endpoint: this.configService.get<string>('AWS_ENDPOINT'),
+      endpoint: cloudOptions.BASE_URL,
     });
+    this.bucketName = cloudOptions.BUCKET_NAME;
   }
-  private s3Client: S3Client;
-  private bucketName = this.configService.get<string>('BUCKET_NAME');
 
   public async saveFile(
     userId: string,
@@ -32,7 +33,7 @@ export class S3StorageAdapter {
     buffer: Buffer,
   ): Promise<{ photoLink: string }> {
     const bucketParams = {
-      Bucket: this.bucketName, // usersbucket
+      Bucket: this.bucketName,
       Key: `${userId}/${typeImageDir}/${uuidv4()}`,
       Body: buffer,
       ContentType: 'image/png',

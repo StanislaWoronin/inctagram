@@ -6,9 +6,9 @@ import { SwaggerModule } from '@nestjs/swagger';
 import {
   swaggerConfig,
   swaggerOptions,
-} from '../../../libs/documentation/swagger/swagger.config';
-import { AuthModule } from '../auth/auth.module';
-import { UserModule } from '../users/user.module';
+} from '../../libs/documentation/swagger/swagger.config';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './users/user.module';
 import { createApp } from './create-app';
 
 export const validationPipeSettings = {
@@ -34,7 +34,7 @@ async function bootstrap() {
   const app = createApp(rawApp);
 
   const configService = app.get(ConfigService);
-  const port = configService.get<number>('API_GATEWAY');
+  const port = configService.get<number>('MAIN_APP');
   const serverUrl = `https://inctagram-api.fly.dev`;
 
   const usersDocument = SwaggerModule.createDocument(app, swaggerConfig(), {

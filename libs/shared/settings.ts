@@ -1,18 +1,39 @@
 import { Transport } from '@nestjs/microservices';
 import * as dotenv from 'dotenv';
+import { CloudName } from './enums/cloud-name.enum';
 dotenv.config();
 
 export const settings = {
   environment: process.env.NODE_ENV,
+  port: {
+    MAIN_APP: Number(process.env.MAIN_APP),
+    FILE_STORAGE: Number(process.env.FILE_STORAGE),
+  },
+  // cloud settings
+  cloud: {
+    cloudName: CloudName.YandexCloud,
+    AWS: {
+      REGION: process.env.AWS_REGION,
+      BASE_URL: process.env.AWS_BASE_URL,
+      BUCKET_NAME: process.env.AWS_BUCKET_NAME,
+      ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+      SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+    },
+    YandexCloud: {
+      REGION: process.env.YC_REGION,
+      BASE_URL: process.env.YC_BASE_URL,
+      BUCKET_NAME: process.env.YC_BUCKET_NAME,
+      ACCESS_KEY_ID: process.env.YC_ACCESS_KEY_ID,
+      SECRET_ACCESS_KEY: process.env.YC_SECRET_ACCESS_KEY,
+    },
+  },
+  // transport settings
   transportName: Transport.RMQ,
   rmqUrl: process.env.RMQ_URL,
   host: {
     localHost: '0.0.0.0',
   },
-  port: {
-    API_GATEWAY: Number(process.env.API_GATEWAY),
-    FIle_STORAGE_MS: Number(process.env.FILE_STORAGE_MS),
-  },
+  // tokens settings
   secret: {
     ACCESS_TOKEN: process.env.JWT_ACCESS_TOKEN_SECRET,
     REFRESH_TOKEN: process.env.JWT_REFRESH_TOKEN_SECRET,

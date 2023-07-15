@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsConfirmationCodeExist } from '../decorators/confirmation-code.decorator';
+import { IsConfirmationCodeExist } from '../../../../libs/decorators/confirmation-code.decorator';
 import { EmailConfirmation } from '@prisma/client';
-import {IsNumber} from "class-validator";
+import { IsNumber } from 'class-validator';
 
 type TRegistrationConfirmationDto = Pick<EmailConfirmation, 'confirmationCode'>;
 

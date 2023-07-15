@@ -27,13 +27,6 @@ export class CreateUserCommandHandler
   async execute({
     dto,
   }: CreateUserCommand): Promise<TCreateUserResponse | null> {
-    const user = await this.userQueryRepository.getUserByField(dto.email);
-    if (user) {
-      if (!user.isConfirmed) {
-        return dto;
-      }
-      throw new BadRequestException('email:Email already exist.');
-    }
     const newUser = await NewUser.create(dto);
     const emailConfirmation = await EmailConfirmation.create();
     const createdUser = await this.userRepository.createUser(

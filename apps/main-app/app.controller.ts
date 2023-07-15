@@ -10,9 +10,9 @@ import { ApiExcludeEndpoint } from '@nestjs/swagger';
 import {
   ApiDropDatabase,
   GetUserFromDatabaseTest,
-} from '../../../libs/documentation/swagger/auth.documentation';
+} from '../../libs/documentation/swagger/auth.documentation';
 import { TestingRepository } from './testing.repository';
-import { testingEndpoints } from '../../../libs/shared/endpoints/testing.endpoints';
+import { testingEndpoints } from '../../libs/shared/endpoints/testing.endpoints';
 
 @Controller()
 export class AppController {

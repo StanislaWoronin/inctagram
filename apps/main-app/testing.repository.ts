@@ -1,9 +1,9 @@
-import {Injectable} from '@nestjs/common';
-import {PrismaService} from '../../../libs/providers/prisma/prisma.service';
-import {JwtService} from '@nestjs/jwt';
-import {Tokens} from '../../../libs/shared/enums/tokens.enum';
-import {settings} from '../../../libs/shared/settings';
-import {FullUser} from '../../../test/types/full-user.type';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../../libs/providers/prisma/prisma.service';
+import { JwtService } from '@nestjs/jwt';
+import { Tokens } from '../../libs/shared/enums/tokens.enum';
+import { settings } from '../../libs/shared/settings';
+import { FullUser } from '../../test/types/full-user.type';
 
 @Injectable()
 export class TestingRepository {
@@ -26,7 +26,7 @@ export class TestingRepository {
         Device: true,
         EmailConfirmation: true,
         PasswordRecovery: true,
-        Photos: true
+        Photos: true,
       },
     });
     let birthday = null;

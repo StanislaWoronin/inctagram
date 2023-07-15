@@ -6,7 +6,8 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { UserFacade } from '../../users/application-services';
+import { UserFacade } from '../../apps/main-app/users/application-services';
+import { response } from 'express';
 
 @ValidatorConstraint({ name: 'IsConfirmationCodeExist', async: true })
 @Injectable()
