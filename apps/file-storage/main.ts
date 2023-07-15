@@ -30,7 +30,7 @@ export const validationPipeSettings = {
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    FileStorageModule,
+    // FileStorageModule,
     getProviderOptions(Microservices.FileStorage),
   );
   app.useGlobalPipes(new ValidationPipe(validationPipeSettings));

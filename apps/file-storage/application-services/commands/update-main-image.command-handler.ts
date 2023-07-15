@@ -25,14 +25,15 @@ export class UpdateMainImageCommandHandler
     private filesStorageAdapter: S3StorageAdapter,
     private fileStorageRepository: FileStorageRepository,
     private fileStorageQueryRepository: FileStorageQueryRepository,
-    private configService: ConfigService,
   ) {}
 
   async execute({ dto }: UpdateMainImageCommand): Promise<boolean> {
-    const bucket = this.configService.get('BUCKET_NAME');
+    console.log('handler');
+    const bucket = this.filesStorageAdapter.bucketName;
+    console.log({ bucket });
     await this.filesStorageAdapter.deleteFolder(
       bucket,
-      `${dto.userId}/${fileStorageConstants.avatar.name}`,
+      `users/${dto.userId}/${fileStorageConstants.avatar.name}`,
     );
     const buffer = Buffer.from(dto.buffer);
     const correctFormatBuffer = await sharp(buffer).toFormat('png').toBuffer();

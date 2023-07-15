@@ -35,7 +35,7 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const port = configService.get<number>('MAIN_APP');
-  const serverUrl = `https://inctagram-api.fly.dev`;
+  const serverUrl = configService.get<string>('SERVER_URL');
 
   const usersDocument = SwaggerModule.createDocument(app, swaggerConfig(), {
     operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
@@ -44,7 +44,9 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, usersDocument, swaggerOptions(serverUrl));
 
   await app.listen(port, () => {
-    Logger.verbose(`Application listen on ${serverUrl}`, 'Main-app.Main');
+    Logger.verbose(`Application listen on port: ${port}`, 'Main-app.Main');
+    Logger.verbose(`App dev link http://localhost:${port}`, 'Main-app.Main');
+    Logger.verbose(`App link ${serverUrl}`, 'Main-app.Main');
     Logger.verbose(
       `Swagger documentation on ${serverUrl}/swagger`,
       'Main-app.Main',

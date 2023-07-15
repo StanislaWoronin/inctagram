@@ -5,7 +5,6 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
 import { cloudSwitcher } from './cloud.switcher';
@@ -14,8 +13,9 @@ import { cloudSwitcher } from './cloud.switcher';
 export class S3StorageAdapter {
   s3Client: S3Client;
   bucketName: string;
-  constructor(private configService: ConfigService) {
+  constructor() {
     const cloudOptions = cloudSwitcher();
+    console.log(cloudOptions);
     this.s3Client = new S3Client({
       region: cloudOptions.REGION,
       credentials: {

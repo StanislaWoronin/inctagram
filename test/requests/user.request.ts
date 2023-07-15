@@ -38,21 +38,20 @@ export class UserRequest {
     imageName: Images,
     accessToken?: string,
   ): Promise<TestResponseType<ErrorResponse>> {
-    if (!accessToken) {
-      const response = await request(this.server)
-        .post(userEndpoints.uploadUserAvatar(true))
-        .auth(accessToken, { type: 'bearer' });
+    // if (!accessToken) {
+    //   const response = await request(this.server)
+    //     .post(userEndpoints.uploadUserAvatar(true))
+    //     .auth(accessToken, { type: 'bearer' });
+    //
+    //   return { body: response.body, status: response.status };
+    // }
 
-      return { body: response.body, status: response.status };
-    }
-
-    await sharp();
     const imagePath = join(
       __dirname,
       '..',
       'images',
       'avatar',
-      images[imageName],
+      images.avatar[imageName],
     );
 
     const response = await request(this.server)
