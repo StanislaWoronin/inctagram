@@ -28,40 +28,37 @@ export class UpdateMainImageCommandHandler
   ) {}
 
   async execute({ dto }: UpdateMainImageCommand): Promise<boolean> {
-    console.log('handler');
-    const bucket = this.filesStorageAdapter.bucketName;
-    console.log({ bucket });
-    await this.filesStorageAdapter.deleteFolder(
-      bucket,
-      `users/${dto.userId}/${fileStorageConstants.avatar.name}`,
+    const photo = await this.fileStorageQueryRepository.getPhotosByUserId(
+      dto.userId,
+      PhotoType.Avatar,
     );
+    console.log({ photo });
+
     const buffer = Buffer.from(dto.buffer);
     const correctFormatBuffer = await sharp(buffer).toFormat('png').toBuffer();
 
-    const result = await this.filesStorageAdapter.saveFile(
+    const { photoLink } = await this.filesStorageAdapter.saveFile(
       dto.userId,
       fileStorageConstants.avatar.name,
       correctFormatBuffer,
     );
 
-    const photos = await this.fileStorageQueryRepository.getPhotosByUserId(
-      dto.userId,
-      PhotoType.Avatar,
-    );
-    if (!photos) {
-      const data = {
-        user: { connect: { id: dto.userId } },
-        photoType: PhotoType.Avatar,
-        photoLink: result.photoLink,
-      };
-      return await this.fileStorageRepository.createMainImage(data);
+    if (photo) {
+      const deleteInCloud = this.filesStorageAdapter.deleteImage(
+        photo.photoLink,
+      );
+      const deleteInBd = this.fileStorageRepository.updateImage(
+        photo.id,
+        photoLink,
+      );
+      await Promise.all([deleteInCloud, deleteInBd]);
+      return true;
     }
 
-    const dataForUpdate = { photoLink: result.photoLink };
-    return await this.fileStorageRepository.updateMainImage(
-      dto.userId,
-      PhotoType.Avatar,
-      dataForUpdate,
-    );
+    return await this.fileStorageRepository.createImage({
+      userId: dto.userId,
+      photoType: PhotoType.Avatar,
+      photoLink,
+    });
   }
 }

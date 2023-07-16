@@ -291,7 +291,7 @@ describe('Test auth controller.', () => {
     it(`Status ${HttpStatus.NO_CONTENT}.
       Should upload new avatar.`, async () => {
       const { accessToken } = expect.getState();
-
+      console.log(accessToken);
       const response = await requests
         .user()
         .uploadUserAvatar(Images.Fist, accessToken);

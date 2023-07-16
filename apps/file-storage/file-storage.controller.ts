@@ -13,7 +13,6 @@ export class FileStorageController {
     userId,
     file,
   }: Partial<UpdateMainImageDto>): Promise<boolean> {
-    console.log('file storage controller');
     const result = await this.fileStorageFacade.commands.updateMainImage({
       userId: userId,
       buffer: file.buffer,

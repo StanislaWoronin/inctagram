@@ -26,7 +26,7 @@
     "prisma:studio": "yarn prisma studio --schema=libs/providers/prisma/schema.prisma"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.363.0",
+    "@aws-sdk/client-s3": "^3.370.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^9.0.0",

@@ -19,6 +19,7 @@ export class ExceptionFilter implements RpcExceptionFilter<RpcException> {
       return;
     }
 
+    console.log(exception);
     if (exception.name === 'BadRequestException') {
       const [field, message] = exception.message.split(':');
       // @ts-ignore

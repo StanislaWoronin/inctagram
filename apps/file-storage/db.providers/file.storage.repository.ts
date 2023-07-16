@@ -7,21 +7,16 @@ import { PhotoType } from '../../../libs/shared/enums/photo-type.enum';
 export class FileStorageRepository {
   constructor(private prisma: PrismaService) {}
 
-  async createMainImage(data: Prisma.PhotosCreateInput): Promise<boolean> {
+  async createImage(data): Promise<boolean> {
     const result = await this.prisma.photos.create({ data });
     return typeof result !== null;
   }
 
-  async updateMainImage(
-    userId: string,
-    photoType: PhotoType,
-    data: Prisma.PhotosUpdateInput,
-  ): Promise<boolean> {
-    const result = await this.prisma.photos.updateMany({
-      data,
-      where: {
-        userId,
-        photoType,
+  async updateImage(id: string, photoLink: string): Promise<boolean> {
+    const result = await this.prisma.photos.update({
+      where: { id: id },
+      data: {
+        photoLink: photoLink,
       },
     });
 

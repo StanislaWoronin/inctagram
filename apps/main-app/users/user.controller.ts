@@ -35,7 +35,8 @@ import { userEndpoints } from '../../../libs/shared/endpoints/user.endpoints';
 export class UserController {
   constructor(
     private readonly userFacade: UserFacade,
-    @Inject(Microservices.FileStorage) private authProxyClient: ClientProxy,
+    @Inject(Microservices.FileStorage)
+    private fileStorageProxyClient: ClientProxy,
   ) {}
 
   @Get(userEndpoints.getUser())
@@ -46,7 +47,9 @@ export class UserController {
     const user = await this.userFacade.queries.getViewUserWithInfo(userId);
     const pattern = { cmd: Commands.GetMainImage };
     user.linkToMainImage = await lastValueFrom(
-      this.authProxyClient.send(pattern, userId).pipe(map((result) => result)),
+      this.fileStorageProxyClient
+        .send(pattern, userId)
+        .pipe(map((result) => result)),
     );
     return user;
   }
@@ -72,14 +75,14 @@ export class UserController {
     @UploadedFile(new ImageValidator())
     mainImage: Express.Multer.File,
   ): Promise<boolean> {
-    const pattern = { cmd: Commands.UpdateMainImage };
+    const pattern = { cmd: Commands.UpdateMainImage }; // TODO test
     const updateMainImageDto: Partial<UpdateMainImageDto> = {
       userId: userId,
       file: mainImage,
     };
 
     return await lastValueFrom(
-      this.authProxyClient
+      this.fileStorageProxyClient
         .send(pattern, updateMainImageDto)
         .pipe(map((result) => result)),
     );
