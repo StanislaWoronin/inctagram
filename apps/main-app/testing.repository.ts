@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Tokens } from '../../libs/shared/enums/tokens.enum';
 import { settings } from '../../libs/shared/settings';
 import { FullUser } from '../../test/types/full-user.type';
+import { decodeBirthday, encodeBirthday } from '../../libs/shared/helpers';
 
 @Injectable()
 export class TestingRepository {
@@ -26,15 +27,12 @@ export class TestingRepository {
         Device: true,
         EmailConfirmation: true,
         PasswordRecovery: true,
-        Photos: true,
+        Avatar: true,
       },
     });
     let birthday = null;
     if (user.birthday) {
-      const [mm, dd, yyyy] = new Date(user.birthday)
-        .toLocaleDateString()
-        .split('.');
-      birthday = `${dd}.${mm}.${yyyy}`;
+      birthday = decodeBirthday(user.birthday);
     }
 
     return {

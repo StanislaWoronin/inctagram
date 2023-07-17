@@ -35,7 +35,7 @@ export class ViewUserWithInfo extends ViewUser {
     let birthday = null;
     if (user.birthday) birthday = decodeBirthday(user.birthday);
 
-    const avatar = user.Photos[0]?.photoLink;
+    const avatar = user.Avatar.photoLink;
     let avatarLink = fileStorageConstants.avatar.defaultLink;
     if (avatar) {
       avatarLink = avatar;

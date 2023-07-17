@@ -22,9 +22,9 @@ model User {
   Device            Device[]
   EmailConfirmation EmailConfirmation?
   PasswordRecovery  PasswordRecovery?
+  Avatar            Avatar?
   Photos            Photos[]
   Posts             Posts[]
-  Avatar            Avatar[]
 }
 
 model EmailConfirmation {

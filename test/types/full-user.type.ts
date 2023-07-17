@@ -11,7 +11,7 @@ export class FullUser implements TFullUser {
   createdAt: string;
   firstName: string;
   lastName: string;
-  birthday: Date | string;
+  birthday: Date;
   city: string;
   aboutMe;
   isConfirmed: boolean;
@@ -27,8 +27,7 @@ export class FullUser implements TFullUser {
   PasswordRecovery: {
     passwordRecoveryCode: string;
   };
-  Photos: {
-    photoType?: string;
+  Avatar: {
     photoLink: string;
-  }[];
+  };
 }
