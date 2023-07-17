@@ -4,7 +4,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Inject,
   Post,
   Put,
   UploadedFile,
@@ -13,17 +12,13 @@ import {
 } from '@nestjs/common';
 import { CurrentUser } from '../../../libs/decorators/current-user.decorator';
 import { UserFacade } from './application-services';
-import { Microservices } from '../../../libs/shared/enums/microservices-name.enum';
-import { ClientProxy } from '@nestjs/microservices';
-import { Commands } from '../../../libs/shared/enums/pattern-commands-name.enum';
-import { lastValueFrom, map } from 'rxjs';
 import { UpdateUserProfileDto } from './dto/update-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UpdateMainImageDto } from '../../file-storage/dto/update-main-image.dto';
 import {
+  ApiCreatePost,
   ApiGetUser,
   ApiUpdateProfile,
-  ApiUpdateUser,
+  ApiUploadAvatar,
 } from '../../../libs/documentation/swagger/user.documentation';
 import { AuthBearerGuard } from '../../../libs/guards/auth-bearer.guard';
 import { ViewUserWithInfo } from './view-model/user-with-info.view-model';
@@ -33,22 +28,19 @@ import { userEndpoints } from '../../../libs/shared/endpoints/user.endpoints';
 
 @Controller(userEndpoints.default())
 export class UserController {
-  constructor(
-    private readonly userFacade: UserFacade,
-    @Inject(Microservices.FileStorage) private authProxyClient: ClientProxy,
-  ) {}
+  constructor(private readonly userFacade: UserFacade) {}
 
-  @Get(userEndpoints.getUser())
+  @Post(userEndpoints.createPost())
+  @UseGuards(AuthBearerGuard)
+  @ApiCreatePost()
+  @Get(userEndpoints.getUserProfile())
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthBearerGuard)
   @ApiGetUser()
-  async getUser(@CurrentUser() userId: string): Promise<ViewUserWithInfo> {
-    const user = await this.userFacade.queries.getViewUserWithInfo(userId);
-    const pattern = { cmd: Commands.GetMainImage };
-    user.linkToMainImage = await lastValueFrom(
-      this.authProxyClient.send(pattern, userId).pipe(map((result) => result)),
-    );
-    return user;
+  async getUserProfile(
+    @CurrentUser() userId: string,
+  ): Promise<ViewUserWithInfo> {
+    return await this.userFacade.queries.getUserProfile(userId);
   }
 
   @Put(userEndpoints.updateUserProfile())
@@ -65,23 +57,16 @@ export class UserController {
   @Post(userEndpoints.uploadUserAvatar())
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthBearerGuard)
-  @ApiUpdateUser()
+  @ApiUploadAvatar()
   @UseInterceptors(FileInterceptor(fileStorageConstants.avatar.name))
   async uploadUserAvatar(
     @CurrentUser() userId: string,
     @UploadedFile(new ImageValidator())
-    mainImage: Express.Multer.File,
+    avatar: Express.Multer.File,
   ): Promise<boolean> {
-    const pattern = { cmd: Commands.UpdateMainImage };
-    const updateMainImageDto: Partial<UpdateMainImageDto> = {
-      userId: userId,
-      file: mainImage,
-    };
-
-    return await lastValueFrom(
-      this.authProxyClient
-        .send(pattern, updateMainImageDto)
-        .pipe(map((result) => result)),
-    );
+    return await this.userFacade.commands.uploadUserAvatar({
+      userId,
+      file: avatar,
+    });
   }
 }

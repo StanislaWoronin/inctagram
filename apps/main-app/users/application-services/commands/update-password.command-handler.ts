@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../db.providers/user.repository';
-import { UserQueryRepository } from '../../db.providers/user-query.repository';
+import { UserRepository } from '../../db.providers/user/user.repository';
+import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
 import bcrypt from 'bcrypt';
 import { BadRequestException } from '@nestjs/common';
 import { NewPasswordDto } from '../../../auth/dto/new-password.dto';

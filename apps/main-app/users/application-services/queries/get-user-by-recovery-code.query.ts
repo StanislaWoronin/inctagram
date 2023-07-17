@@ -1,5 +1,5 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { UserQueryRepository } from '../../db.providers/user-query.repository';
+import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
 
 export class GetUserByRecoveryCodeCommand {
   constructor(public readonly code: string) {}

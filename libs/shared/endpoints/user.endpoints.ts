@@ -3,7 +3,13 @@ export const userEndpoints = {
     return 'user';
   },
 
-  getUser(test = false): string {
+  createPost(test = false): string {
+    const endpoint = 'post';
+    if (test) return `/${this.default()}/${endpoint}`;
+    return endpoint;
+  },
+
+  getUserProfile(test = false): string {
     const endpoint = ``;
     if (test) return `/${this.default()}`;
     return endpoint;

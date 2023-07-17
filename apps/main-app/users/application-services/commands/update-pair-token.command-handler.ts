@@ -1,8 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { UserRepository } from '../../db.providers/user.repository';
-import { UserQueryRepository } from '../../db.providers/user-query.repository';
+import { UserRepository } from '../../db.providers/user/user.repository';
+import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
 import { TokensFactory } from '../../../../../libs/shared/tokens.factory';
 import { PairTokenDto } from '../../../auth/dto/pair-token.dto';
 import { SessionIdDto, WithClientMeta } from '../../../auth/dto/session-id.dto';

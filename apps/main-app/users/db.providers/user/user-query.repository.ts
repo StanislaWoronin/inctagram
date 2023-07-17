@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../../libs/providers/prisma/prisma.service';
-import { ViewUser } from '../view-model/user.view-model';
-import { Device, User } from '@prisma/client';
+import { PrismaService } from '../../../../../libs/providers/prisma/prisma.service';
+import { ViewUser } from '../../view-model/user.view-model';
+import { Device, Photos, User } from '@prisma/client';
+import { ViewUserWithInfo } from '../../view-model/user-with-info.view-model';
+import { tr } from '@faker-js/faker';
+import { log } from 'util';
+import { FullUser } from '../../../../../test/types/full-user.type';
 
 @Injectable()
 export class UserQueryRepository {
@@ -115,8 +119,8 @@ export class UserQueryRepository {
     }
   }
 
-  async getViewUserWithInfo(userId: string) {
-    return this.prisma.user.findFirst({
+  async getViewUserWithInfo(userId: string): Promise<ViewUserWithInfo> {
+    const user = await this.prisma.user.findFirst({
       select: {
         id: true,
         userName: true,
@@ -127,10 +131,17 @@ export class UserQueryRepository {
         birthday: true,
         city: true,
         aboutMe: true,
+        Avatar: {
+          select: {
+            photoLink: true,
+          },
+        },
       },
       where: {
         id: userId,
       },
     });
+
+    return ViewUserWithInfo.toView(user);
   }
 }

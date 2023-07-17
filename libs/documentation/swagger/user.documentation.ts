@@ -3,6 +3,8 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
+  ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
@@ -13,6 +15,28 @@ import {
 import { UpdateUserProfileDto } from '../../../apps/main-app/users/dto/update-user.dto';
 import { ErrorResponse } from '../../shared/errors.response';
 import { ViewUserWithInfo } from '../../../apps/main-app/users/view-model/user-with-info.view-model';
+import { CreatedPostView } from '../../../apps/main-app/users/view-model/created-post.view-model';
+
+export function ApiCreatePost() {
+  return applyDecorators(
+    ApiTags('User'),
+    ApiOperation({ summary: 'Create new post by current user.' }),
+    ApiBearerAuth(),
+    ApiCreatedResponse({
+      description: 'Return created post.',
+      type: CreatedPostView,
+    }),
+    ApiBadRequestResponse({
+      description: 'If the inputModel has incorrect values',
+      type: ErrorResponse,
+    }),
+    ApiOperation({ summary: 'Upload image' }), // TODO test
+    ApiConsumes('multipart/form-data'), // TODO test
+    ApiUnauthorizedResponse({
+      description: 'If the JWT access token is missing, expired or incorrect',
+    }),
+  );
+}
 
 export function ApiGetUser() {
   return applyDecorators(
@@ -20,7 +44,7 @@ export function ApiGetUser() {
     ApiOperation({ summary: 'Return user profile' }),
     ApiBearerAuth(),
     ApiOkResponse({
-      description: 'Returns user.',
+      description: 'Return user.',
       type: ViewUserWithInfo,
     }),
     ApiUnauthorizedResponse({
@@ -54,12 +78,11 @@ export function ApiUpdateProfile() {
   );
 }
 
-export function ApiUpdateUser() {
+export function ApiUploadAvatar() {
   return applyDecorators(
     ApiTags('User'),
     ApiOperation({
-      summary:
-        'Update data about user,upload main image for user (.png or .jpg (.jpeg) file (max size is 1mb)',
+      summary: 'Upload user avatar .png or .jpg (.jpeg) file (max size is 1mb)',
     }),
     ApiBearerAuth(),
     ApiNoContentResponse({

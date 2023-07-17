@@ -28,7 +28,7 @@ export const settings = {
     },
   },
   // transport settings
-  transportName: Transport.RMQ,
+  transportName: Transport.TCP,
   rmqUrl: process.env.RMQ_URL,
   host: {
     localHost: '0.0.0.0',
@@ -42,7 +42,7 @@ export const settings = {
     CONFIRMATION_CODE: 24 * 60 * 60 * 1000, // milliseconds
     PASSWORD_RECOVERY_CODE: 24 * 60 * 60 * 1000, // milliseconds
     TOKEN_TIME: 15 * 21 * 60 * 60 * 1000, // milliseconds
-    ACCESS_TOKEN: '15 minutes',
+    ACCESS_TOKEN: '1500 minutes',
     REFRESH_TOKEN: '15 day',
   },
 };

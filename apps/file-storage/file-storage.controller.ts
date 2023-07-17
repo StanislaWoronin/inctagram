@@ -12,16 +12,10 @@ export class FileStorageController {
   async updateMainImage({
     userId,
     file,
-  }: Partial<UpdateMainImageDto>): Promise<boolean> {
-    const result = await this.fileStorageFacade.commands.updateMainImage({
+  }: Partial<UpdateMainImageDto>): Promise<string> {
+    return await this.fileStorageFacade.commands.saveNewImage({
       userId: userId,
       buffer: file.buffer,
     });
-    return !!result;
-  }
-
-  @MessagePattern({ cmd: Commands.GetMainImage })
-  async getMainImage(userId: string): Promise<string> {
-    return await this.fileStorageFacade.queries.getMainImage(userId);
   }
 }

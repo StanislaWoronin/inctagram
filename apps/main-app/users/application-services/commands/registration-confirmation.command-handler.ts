@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserQueryRepository } from '../../db.providers/user-query.repository';
-import { UserRepository } from '../../db.providers/user.repository';
+import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
+import { UserRepository } from '../../db.providers/user/user.repository';
 import { BadRequestException } from '@nestjs/common';
 import { RegistrationConfirmationResponse } from '../../../auth/view-model/registration-confirmation.response';
 

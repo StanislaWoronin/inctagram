@@ -17,24 +17,26 @@ model User {
   lastName          String?
   birthday          DateTime?          @db.Date
   city              String?
-  aboutMe           String?
+  aboutMe           String?            @db.VarChar(200)
   isConfirmed       Boolean            @default(false)
   Device            Device[]
   EmailConfirmation EmailConfirmation?
   PasswordRecovery  PasswordRecovery?
+  Avatar            Avatar?
   Photos            Photos[]
+  Posts             Posts[]
 }
 
 model EmailConfirmation {
   userId           String @id
-  confirmationCode String
   user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  confirmationCode String
 }
 
 model PasswordRecovery {
   userId               String @id
-  passwordRecoveryCode String
   user                 User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  passwordRecoveryCode String
 }
 
 model Device {
@@ -46,10 +48,26 @@ model Device {
   user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model Photos {
-  id        String @id @default(uuid())
-  userId    String
-  photoType String
-  photoLink String
+model Avatar {
+  userId    String @id
   user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photoLink String
 }
+
+model Posts {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  description String   @db.VarChar(500)
+  Photos      Photos[]
+}
+
+model Photos {
+  id        String  @id @default(uuid())
+  photoLink String
+  postId    String
+  post      Posts   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  User      User?   @relation(fields: [userId], references: [id])
+  userId    String?
+}
+

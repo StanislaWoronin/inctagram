@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import {
+  DeleteObjectCommand,
   DeleteObjectsCommand,
   ListObjectsCommand,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
 import { cloudSwitcher } from './cloud.switcher';
@@ -14,8 +14,9 @@ import { cloudSwitcher } from './cloud.switcher';
 export class S3StorageAdapter {
   s3Client: S3Client;
   bucketName: string;
-  constructor(private configService: ConfigService) {
+  constructor() {
     const cloudOptions = cloudSwitcher();
+    console.log(cloudOptions);
     this.s3Client = new S3Client({
       region: cloudOptions.REGION,
       credentials: {
@@ -38,14 +39,14 @@ export class S3StorageAdapter {
       Body: buffer,
       ContentType: 'image/png',
     };
-    const command = new PutObjectCommand(bucketParams);
     try {
+      const command = new PutObjectCommand(bucketParams);
       await this.s3Client.send(command);
     } catch (e) {
       throw new Error(e);
     }
     return {
-      photoLink: `https://userimagesbucketinc.s3.eu-central-1.amazonaws.com/${bucketParams.Key}`,
+      photoLink: bucketParams.Key,
     };
   }
 
@@ -83,5 +84,24 @@ export class S3StorageAdapter {
       console.error('An error occurred while deleting the folder:', error);
       throw new RpcException(error);
     }
+  }
+
+  async deleteImage(url: string) {
+    const bucketParams = {
+      Bucket: this.bucketName,
+      Key: url,
+    };
+
+    try {
+      const data = await this.s3Client.send(
+        new DeleteObjectCommand(bucketParams),
+      );
+      return data;
+    } catch (exception) {
+      console.error('Delete error:', exception);
+      throw exception;
+    }
+
+    return;
   }
 }

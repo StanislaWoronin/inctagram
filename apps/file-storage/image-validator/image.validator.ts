@@ -5,6 +5,7 @@ import {
 import { BadRequestException } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import sharp from 'sharp';
+import { getUserProfileResponse } from '../../../test/response/user/get-user-profile.response';
 
 export class ImageValidator {
   async transform(image: Express.Multer.File) {
@@ -18,20 +19,16 @@ export const isValidImage = async (
   imageSize: number,
   image: Express.Multer.File,
 ): Promise<boolean> => {
+  let metadata;
   try {
-    const { format } = await sharp(image.buffer).metadata();
-    // @ts-ignore
-    if (!Object.values(ValidPhotoFormat).includes(format))
-      new BadRequestException('format:Not supported format.');
+    metadata = await sharp(image.buffer).metadata();
   } catch (e) {
-    new BadRequestException('format:Not supported format.');
+    throw new BadRequestException('format:Not supported format.');
   }
 
-  const { size } = await sharp(image.buffer).metadata();
-  if (size > imageSize)
-    throw new RpcException(
-      new BadRequestException('size:Image size exceeds the allowed limit.'),
-    );
+  if (metadata.size > imageSize) {
+    throw new BadRequestException('size:Image size exceeds the allowed limit.');
+  }
 
   return true;
 };
