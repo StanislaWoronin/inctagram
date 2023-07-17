@@ -3,9 +3,6 @@ import { PrismaService } from '../../../../../libs/providers/prisma/prisma.servi
 import { ViewUser } from '../../view-model/user.view-model';
 import { Device, Photos, User } from '@prisma/client';
 import { ViewUserWithInfo } from '../../view-model/user-with-info.view-model';
-import { tr } from '@faker-js/faker';
-import { log } from 'util';
-import { FullUser } from '../../../../../test/types/full-user.type';
 
 @Injectable()
 export class UserQueryRepository {

@@ -19,7 +19,6 @@ import { Tokens } from '../libs/shared/enums/tokens.enum';
 import { createApp } from '../apps/main-app/create-app';
 
 describe('Test auth controller.', () => {
-  console.log();
   const second = 1000;
   jest.setTimeout(10 * second);
 
