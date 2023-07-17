@@ -1,15 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { FileStorageModule } from './file-storage.module';
-import {
-  MicroserviceOptions,
-  RpcException,
-  Transport,
-} from '@nestjs/microservices';
+import { MicroserviceOptions, RpcException } from '@nestjs/microservices';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { useContainer } from 'class-validator';
 import { Microservices } from '../../libs/shared/enums/microservices-name.enum';
 import { getProviderOptions } from '../../libs/providers/rabbit-mq/providers.option';
-import { settings } from '../../libs/shared/settings';
 
 export const validationPipeSettings = {
   transform: true,
@@ -36,16 +31,6 @@ export const validationPipeSettings = {
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     FileStorageModule,
-    // {
-    //   transport: Transport.RMQ,
-    //   options: {
-    //     urls: [settings.rmqUrl],
-    //     queue: Microservices.FileStorage,
-    //     queueOptions: {
-    //       durable: true,
-    //     },
-    //   },
-    // },
     getProviderOptions(Microservices.FileStorage),
   );
   app.useGlobalPipes(new ValidationPipe(validationPipeSettings));

@@ -15,9 +15,10 @@ import { UserFacade } from './application-services';
 import { UpdateUserProfileDto } from './dto/update-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
+  ApiCreatePost,
   ApiGetUser,
   ApiUpdateProfile,
-  ApiUpdateUser,
+  ApiUploadAvatar,
 } from '../../../libs/documentation/swagger/user.documentation';
 import { AuthBearerGuard } from '../../../libs/guards/auth-bearer.guard';
 import { ViewUserWithInfo } from './view-model/user-with-info.view-model';
@@ -29,6 +30,9 @@ import { userEndpoints } from '../../../libs/shared/endpoints/user.endpoints';
 export class UserController {
   constructor(private readonly userFacade: UserFacade) {}
 
+  @Post(userEndpoints.createPost())
+  @UseGuards(AuthBearerGuard)
+  @ApiCreatePost()
   @Get(userEndpoints.getUserProfile())
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthBearerGuard)
@@ -53,7 +57,7 @@ export class UserController {
   @Post(userEndpoints.uploadUserAvatar())
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthBearerGuard)
-  @ApiUpdateUser()
+  @ApiUploadAvatar()
   @UseInterceptors(FileInterceptor(fileStorageConstants.avatar.name))
   async uploadUserAvatar(
     @CurrentUser() userId: string,
