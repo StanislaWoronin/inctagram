@@ -59,7 +59,7 @@ export function ApiUpdateUser() {
     ApiTags('User'),
     ApiOperation({
       summary:
-        'Update data about user,upload main image for user (.png or .jpg (.jpeg) file (max size is 1mb)',
+        'Update data about user,upload main image for user .png or .jpg (.jpeg) file (max size is 1mb)',
     }),
     ApiBearerAuth(),
     ApiNoContentResponse({

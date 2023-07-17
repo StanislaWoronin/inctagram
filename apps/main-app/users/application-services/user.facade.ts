@@ -11,9 +11,9 @@ import {
 import { UpdatePairTokenCommand } from './commands/update-pair-token.command-handler';
 import { UpdatePasswordCommand } from './commands/update-password.command-handler';
 import { LogoutCommand } from './commands/logout-command-handler';
-import { GetUserByIdOrUserNameOrEmailCommand } from './queries/get-user-by-id-userName-or-email-query';
-import { GetUserByConfirmationCodeCommand } from './queries/get-user-by-confirmation-code-query';
-import { GetUserByRecoveryCodeCommand } from './queries/get-user-by-recovery-code-query';
+import { GetUserByIdOrUserNameOrEmailCommand } from './queries/get-user-by-id-userName-or-email.query';
+import { GetUserByConfirmationCodeCommand } from './queries/get-user-by-confirmation-code.query';
+import { GetUserByRecoveryCodeCommand } from './queries/get-user-by-recovery-code.query';
 import { DeleteUserByIdCommand } from './commands/delete-user-by-id.command-handler';
 import { SessionIdDto, WithClientMeta } from '../../auth/dto/session-id.dto';
 import { LoginDto } from '../../auth/dto/login.dto';
@@ -24,11 +24,13 @@ import { RegistrationConfirmationDto } from '../../auth/dto/registration-confirm
 import { User } from '@prisma/client';
 import { PairTokenDto } from '../../auth/dto/pair-token.dto';
 import { ViewUser } from '../view-model/user.view-model';
-import { GetViewUserWithInfoCommand } from './queries/get-view-user-with-info-query';
+import { GetViewUserWithInfoCommand } from './queries/get-view-user-with-info.query';
 import { UpdateUserProfileDto } from '../dto/update-user.dto';
 import { UpdateUserProfileCommand } from './commands/update-user-profile-command.handler';
 import { MergeProfileCommand } from './commands/merge-profile.command-handler';
 import { ViewUserWithInfo } from '../view-model/user-with-info.view-model';
+import { UploadUserAvatarCommand } from './commands/upload-user-avatar.command-handler';
+import { UpdateMainImageDto } from '../../../file-storage/dto/update-main-image.dto';
 
 @Injectable()
 export class UserFacade {
@@ -50,9 +52,11 @@ export class UserFacade {
       this.confirmationCodeResending(dto),
     registrationConfirmation: (dto: RegistrationConfirmationDto) =>
       this.registrationConfirmation(dto),
-    deleteUserById: (id: string) => this.deleteUserById(id),
     updateUserProfile: (dto: UpdateUserProfileDto, userId: string) =>
       this.updateUserProfile(dto, userId),
+    uploadUserAvatar: (dto: Partial<UpdateMainImageDto>) =>
+      this.uploadUserAvatar(dto),
+    deleteUserById: (id: string) => this.deleteUserById(id),
   };
   queries = {
     getUserByIdOrUserNameOrEmail: (loginOrEmail: string) =>
@@ -60,7 +64,7 @@ export class UserFacade {
     getUserByConfirmationCode: (code: string) =>
       this.getUserByConfirmationCode(code),
     getUserByRecoveryCode: (code: string) => this.getUserByRecoveryCode(code),
-    getViewUserWithInfo: (id: string) => this.getViewUserWithInfo(id),
+    getUserProfile: (id: string) => this.getUserProfile(id),
   };
 
   private async loginUser(
@@ -129,7 +133,14 @@ export class UserFacade {
     return await this.commandBus.execute(command);
   }
 
-  //Queries
+  private async uploadUserAvatar(
+    dto: Partial<UpdateMainImageDto>,
+  ): Promise<boolean> {
+    const command = new UploadUserAvatarCommand(dto);
+    return await this.commandBus.execute(command);
+  }
+
+  // Queries
   private async getUserByIdOrUserNameOrEmail(
     loginOrEmail: string,
   ): Promise<(ViewUser & { isConfirmed: boolean }) | null> {
@@ -146,7 +157,7 @@ export class UserFacade {
     return await this.queryBus.execute(command);
   }
 
-  private async getViewUserWithInfo(userId: string): Promise<ViewUserWithInfo> {
+  private async getUserProfile(userId: string): Promise<ViewUserWithInfo> {
     const command = new GetViewUserWithInfoCommand(userId);
     return await this.queryBus.execute(command);
   }

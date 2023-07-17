@@ -1,7 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { FileStorageQueryRepository } from '../../db.providers/file.storage.query.repository';
+import { FileStorageQueryRepository } from '../../../main-app/users/db.providers/images/file.storage.query.repository';
 import { fileStorageConstants } from '../../image-validator/file-storage.constants';
 import { PhotoType } from '../../../../libs/shared/enums/photo-type.enum';
+import { settings } from '../../../../libs/shared/settings';
 
 export class GetMainImageCommand {
   constructor(public readonly userId: string) {}
@@ -21,6 +22,7 @@ export class GetMainImageQuery
     if (photo) {
       return photo.photoLink;
     }
-    return fileStorageConstants.avatar.defaultLink;
+
+    return `${settings.cloud.YandexCloud.BASE_URL}/${fileStorageConstants.avatar.defaultLink}`;
   }
 }

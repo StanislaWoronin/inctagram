@@ -1,6 +1,6 @@
 import { RegistrationDto } from '../../../auth/dto/registration.dto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../db.providers/user.repository';
+import { UserRepository } from '../../db.providers/user/user.repository';
 import { EmailManager } from '../../../../../libs/adapters/email.adapter';
 import { ViewUser } from '../../view-model/user.view-model';
 import { NewUser } from '../../entities/new-user.entity';

@@ -36,6 +36,16 @@ export const validationPipeSettings = {
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     FileStorageModule,
+    // {
+    //   transport: Transport.RMQ,
+    //   options: {
+    //     urls: [settings.rmqUrl],
+    //     queue: Microservices.FileStorage,
+    //     queueOptions: {
+    //       durable: true,
+    //     },
+    //   },
+    // },
     getProviderOptions(Microservices.FileStorage),
   );
   app.useGlobalPipes(new ValidationPipe(validationPipeSettings));

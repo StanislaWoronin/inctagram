@@ -6,6 +6,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { Injectable } from '@nestjs/common';
+import { encodeBirthday } from '../shared/helpers';
 
 /**
  * The prism ORM refuses to save the string in the format new Date().toLocalDataString() -.
@@ -26,7 +27,7 @@ export class IsValidBirthdayFormatConstraint
     const currentDate = new Date().toLocaleDateString();
     if (value > currentDate) return false;
 
-    const formattedDate = value.trim().split('.').reverse().join('-');
+    const formattedDate = encodeBirthday(value);
     args.object[args.property] = new Date(formattedDate);
     return true;
   }

@@ -3,7 +3,7 @@ export const userEndpoints = {
     return 'user';
   },
 
-  getUser(test = false): string {
+  getUserProfile(test = false): string {
     const endpoint = ``;
     if (test) return `/${this.default()}`;
     return endpoint;

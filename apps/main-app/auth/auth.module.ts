@@ -13,8 +13,8 @@ import {
 import { IsRecoveryCodeExistConstraint } from '../../../libs/decorators/recovery-code.decorator';
 import { PrismaService } from '../../../libs/providers/prisma/prisma.service';
 import { SharedModule } from '../../../libs/shared/shared.module';
-import { UserQueryRepository } from '../users/db.providers/user-query.repository';
-import { UserRepository } from '../users/db.providers/user.repository';
+import { UserQueryRepository } from '../users/db.providers/user/user-query.repository';
+import { UserRepository } from '../users/db.providers/user/user.repository';
 import { IsValidBirthdayFormatConstraint } from '../../../libs/decorators/birthday-format.decorator';
 import { IsDifferentPasswordConstraint } from '../../../libs/decorators/different-password.decorator';
 

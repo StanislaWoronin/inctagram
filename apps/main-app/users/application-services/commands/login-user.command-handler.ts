@@ -1,9 +1,9 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserQueryRepository } from '../../db.providers/user-query.repository';
+import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import bcrypt from 'bcrypt';
-import { UserRepository } from '../../db.providers/user.repository';
+import { UserRepository } from '../../db.providers/user/user.repository';
 import { TokensFactory } from '../../../../../libs/shared/tokens.factory';
 import { UnauthorizedException } from '@nestjs/common';
 import { PairTokenDto } from '../../../auth/dto/pair-token.dto';

@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { User, Prisma } from '@prisma/client';
-import { PrismaService } from '../../../../libs/providers/prisma/prisma.service';
-import { PasswordRecovery } from '../entities/password-recovery.entity';
-import { Device, EmailConfirmation } from '@prisma/client';
-import { birthday, UpdateUserProfileDto } from '../dto/update-user.dto';
-import { log } from 'util';
+import { Device, EmailConfirmation, Prisma, User } from '@prisma/client';
+import { PrismaService } from '../../../../../libs/providers/prisma/prisma.service';
+import { PasswordRecovery } from '../../entities/password-recovery.entity';
+import { UpdateUserProfileDto } from '../../dto/update-user.dto';
 
 @Injectable()
 export class UserRepository {

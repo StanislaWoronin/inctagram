@@ -78,7 +78,3 @@ export class UpdateUserProfileDto implements TUpdateUserProfileDto {
   @MaxLength(userConstants.aboutMeLength.max)
   aboutMe: string;
 }
-
-export const birthday = (value: string) => {
-  return value?.trim().split('.').reverse().join('-');
-};

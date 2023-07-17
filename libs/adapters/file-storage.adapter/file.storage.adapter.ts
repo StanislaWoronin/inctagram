@@ -1,4 +1,4 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   DeleteObjectCommand,
   DeleteObjectsCommand,
@@ -16,6 +16,7 @@ export class S3StorageAdapter {
   bucketName: string;
   constructor() {
     const cloudOptions = cloudSwitcher();
+    console.log(cloudOptions);
     this.s3Client = new S3Client({
       region: cloudOptions.REGION,
       credentials: {
@@ -38,7 +39,6 @@ export class S3StorageAdapter {
       Body: buffer,
       ContentType: 'image/png',
     };
-
     try {
       const command = new PutObjectCommand(bucketParams);
       await this.s3Client.send(command);

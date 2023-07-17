@@ -6,8 +6,8 @@ import {
   UserFacade,
 } from './application-services';
 import { userFacadeFactory } from './application-services/user-facade.factory';
-import { UserRepository } from './db.providers/user.repository';
-import { UserQueryRepository } from './db.providers/user-query.repository';
+import { UserRepository } from './db.providers/user/user.repository';
+import { UserQueryRepository } from './db.providers/user/user-query.repository';
 import { JwtService } from '@nestjs/jwt';
 import {
   EmailAdapters,
@@ -21,6 +21,7 @@ import { UserController } from './user.controller';
 import { ClientsModule } from '@nestjs/microservices';
 import { getProviderOptions } from '../../../libs/providers/rabbit-mq/providers.option';
 import { Microservices } from '../../../libs/shared/enums/microservices-name.enum';
+import { FileStorageRepository } from './db.providers/images/file.storage.repository';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { Microservices } from '../../../libs/shared/enums/microservices-name.enu
     IsUserNameExistConstraint,
     PrismaService,
     UserController,
+    FileStorageRepository,
   ],
   exports: [UserFacade, UserModule],
 })

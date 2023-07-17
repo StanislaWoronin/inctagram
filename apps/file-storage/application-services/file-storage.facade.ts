@@ -13,24 +13,24 @@ export class FileStorageFacade {
   ) {}
 
   commands = {
-    updateMainImage: (dto: Partial<UpdateMainImageDto>) =>
+    saveNewImage: (dto: Partial<UpdateMainImageDto>) =>
       this.updateMainImage(dto),
   };
   queries = {
-    getMainImage: (userId: string) => this.getMainImage(userId),
+    //getMainImage: (userId: string) => this.getMainImage(userId),
   };
 
   // Commands
   private async updateMainImage(
     dto: Partial<UpdateMainImageDto>,
-  ): Promise<boolean> {
+  ): Promise<string> {
     const command = new UpdateMainImageCommand(dto);
     return await this.commandBus.execute(command);
   }
 
   // Queries
-  private async getMainImage(userId: string): Promise<string> {
-    const command = new GetMainImageCommand(userId);
-    return await this.queryBus.execute(command);
-  }
+  // private async getMainImage(userId: string): Promise<string> {
+  //   const command = new GetMainImageCommand(userId);
+  //   return await this.queryBus.execute(command);
+  // }
 }

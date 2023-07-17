@@ -28,7 +28,7 @@ export class UserRequest {
     accessToken?: string,
   ): Promise<TestResponseType<ViewUserWithInfo>> {
     const response = await request(this.server)
-      .get(userEndpoints.getUser(true))
+      .get(userEndpoints.getUserProfile(true))
       .auth(accessToken, { type: 'bearer' });
 
     return { body: response.body, status: response.status };

@@ -15,7 +15,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus();
     const responseBody: any = exception.getResponse();
 
-    console.log({ exception });
     if (status === 401) {
       response.sendStatus(status);
       return;
