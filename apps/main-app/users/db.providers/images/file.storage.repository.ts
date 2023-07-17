@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../../../../libs/providers/prisma/prisma.service';
-import { PhotoType } from '../../../../../libs/shared/enums/photo-type.enum';
 
 @Injectable()
 export class FileStorageRepository {

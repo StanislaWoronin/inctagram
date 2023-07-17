@@ -11,7 +11,7 @@ export class FullUser implements TFullUser {
   createdAt: string;
   firstName: string;
   lastName: string;
-  birthday: Date;
+  birthday: Date | string;
   city: string;
   aboutMe;
   isConfirmed: boolean;

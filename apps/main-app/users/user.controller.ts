@@ -34,6 +34,10 @@ export class UserController {
   @UseGuards(AuthBearerGuard)
   @ApiCreatePost()
   @Get(userEndpoints.getUserProfile())
+  createPost() {
+    return;
+  }
+
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthBearerGuard)
   @ApiGetUser()
