@@ -355,7 +355,6 @@ describe('Test auth controller.', () => {
         .updateUserProfile(preparedUserData.valid, accessToken);
 
       const updatedProfile = await requests.user().getUserProfile(accessToken);
-      console.log(updatedProfile.body);
       expect(updatedProfile.status).toBe(HttpStatus.OK);
       expect(updatedProfile.body).toStrictEqual(
         getUserProfileResponse(preparedUserData.valid),

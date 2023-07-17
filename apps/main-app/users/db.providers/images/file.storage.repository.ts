@@ -7,31 +7,24 @@ import { PhotoType } from '../../../../../libs/shared/enums/photo-type.enum';
 export class FileStorageRepository {
   constructor(private prisma: PrismaService) {}
 
-  async createImage(data): Promise<boolean> {
-    const result = await this.prisma.photos.create({ data });
-    return typeof result !== null;
-  }
-
   async deleteOldAvatar(userId: string): Promise<boolean> {
-    const result = await this.prisma.photos.deleteMany({
-      where: {
-        userId,
-        photoType: PhotoType.Avatar,
-      },
-    });
-
-    return typeof result !== null;
+    try {
+      await this.prisma.avatar.delete({
+        where: {
+          userId,
+        },
+      });
+      return true;
+    } catch (e) {
+      // If the entry is not found, it will throw an error.
+      return false;
+    }
   }
 
-  async saveImage(
-    userId: string,
-    photoType: PhotoType,
-    photoLink: string,
-  ): Promise<boolean> {
-    const result = await this.prisma.photos.create({
+  async saveImage(userId, photoLink): Promise<boolean> {
+    const result = await this.prisma.avatar.create({
       data: {
         userId,
-        photoType,
         photoLink,
       },
     });

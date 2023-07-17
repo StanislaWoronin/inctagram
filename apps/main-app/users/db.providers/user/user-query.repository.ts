@@ -131,12 +131,9 @@ export class UserQueryRepository {
         birthday: true,
         city: true,
         aboutMe: true,
-        Photos: {
+        Avatar: {
           select: {
             photoLink: true,
-          },
-          where: {
-            photoType: 'avatar',
           },
         },
       },

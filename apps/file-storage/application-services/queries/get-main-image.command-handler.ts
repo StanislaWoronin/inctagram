@@ -17,7 +17,6 @@ export class GetMainImageQuery
   async execute({ userId }: GetMainImageCommand): Promise<string | null> {
     const photo = await this.fileStorageQueryRepository.getPhotosByUserId(
       userId,
-      PhotoType.Avatar,
     );
     if (photo) {
       return photo.photoLink;

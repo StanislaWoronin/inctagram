@@ -7,14 +7,9 @@ import { PhotoType } from '../../../../../libs/shared/enums/photo-type.enum';
 export class FileStorageQueryRepository {
   constructor(private prisma: PrismaService) {}
 
-  async getPhotosByUserId(
-    userId: string,
-    photoType: PhotoType,
-  ): Promise<Photos | null> {
+  async getPhotosByUserId(userId: string): Promise<Photos | null> {
     return this.prisma.photos.findFirst({
-      where: {
-        AND: [{ userId }, { photoType }],
-      },
+      where: { userId },
     });
   }
 }

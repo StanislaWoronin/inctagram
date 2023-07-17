@@ -31,10 +31,6 @@ export class UploadAvatarCommandHandler
     );
 
     await this.fileStorageRepository.deleteOldAvatar(dto.userId);
-    return await this.fileStorageRepository.saveImage(
-      dto.userId,
-      PhotoType.Avatar,
-      avatarLink,
-    );
+    return await this.fileStorageRepository.saveImage(dto.userId, avatarLink);
   }
 }
