@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UpdateMainImageDto } from '../../dto/update-main-image.dto';
+import { UpdateMainImageDto } from '../../../main-app/users/dto/update-main-image.dto';
 import { S3StorageAdapter } from '../../../../libs/adapters/file-storage.adapter/file.storage.adapter';
 import { FileStorageRepository } from '../../../main-app/users/db.providers/images/file.storage.repository';
 import sharp from 'sharp';

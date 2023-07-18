@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { UpdateMainImageDto } from '../dto/update-main-image.dto';
+import { UpdateMainImageDto } from '../../main-app/users/dto/update-main-image.dto';
 import { UpdateMainImageCommand } from './commands/update-main-image.command-handler';
 import { Photos } from '@prisma/client';
 import { GetMainImageCommand } from './queries/get-main-image.command-handler';

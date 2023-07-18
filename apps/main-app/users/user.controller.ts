@@ -25,6 +25,8 @@ import { ViewUserWithInfo } from './view-model/user-with-info.view-model';
 import { fileStorageConstants } from '../../file-storage/image-validator/file-storage.constants';
 import { ImageValidator } from '../../file-storage/image-validator/image.validator';
 import { userEndpoints } from '../../../libs/shared/endpoints/user.endpoints';
+import {CreatePostDto} from "./dto/create-post.dto";
+import {CreatedPostView} from "./view-model/created-post.view-model";
 
 @Controller(userEndpoints.default())
 export class UserController {
@@ -33,11 +35,21 @@ export class UserController {
   @Post(userEndpoints.createPost())
   @UseGuards(AuthBearerGuard)
   @ApiCreatePost()
-  @Get(userEndpoints.getUserProfile())
-  createPost() {
-    return;
+  @UseInterceptors(FileInterceptor(fileStorageConstants.post.name))
+  async createPost(
+      @CurrentUser() userId: string,
+      @Body() dto: CreatePostDto,
+      @UploadedFile(new ImageValidator())
+          postPhotos: Express.Multer.File,
+  ): Promise<CreatedPostView> {
+    return this.userFacade.commands.createPost({
+      userId,
+      description: dto.description,
+      postPhotos
+    });
   }
 
+  @Get(userEndpoints.getUserProfile())
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthBearerGuard)
   @ApiGetUser()

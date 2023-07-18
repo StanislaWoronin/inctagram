@@ -2,13 +2,13 @@ import { Controller } from '@nestjs/common';
 import { FileStorageFacade } from './application-services';
 import { MessagePattern } from '@nestjs/microservices';
 import { Commands } from '../../libs/shared/enums/pattern-commands-name.enum';
-import { UpdateMainImageDto } from './dto/update-main-image.dto';
+import { UpdateMainImageDto } from '../main-app/users/dto/update-main-image.dto';
 
 @Controller()
 export class FileStorageController {
   constructor(private readonly fileStorageFacade: FileStorageFacade) {}
 
-  @MessagePattern({ cmd: Commands.UpdateMainImage })
+  @MessagePattern({ cmd: Commands.UpdateAvatar })
   async updateMainImage({
     userId,
     file,

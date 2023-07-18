@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 
 export const createApp = (app: INestApplication): INestApplication => {
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://localhost:5000'],
   });
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe(validationPipeSettings));

@@ -1,4 +1,5 @@
 export enum Commands {
-  UpdateMainImage = 'update-main-image',
-  GetMainImage = 'get-main-image',
+  UpdateAvatar = 'update-avatar',
+  // GetMainImage = 'get-main-image',
+  UploadPostImages = 'upload-post-images'
 }

@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../../../libs/providers/prisma/prisma.service';
+import {Injectable} from '@nestjs/common';
+import {PrismaService} from '../../../../../libs/providers/prisma/prisma.service';
 
 @Injectable()
 export class FileStorageRepository {
@@ -19,7 +19,7 @@ export class FileStorageRepository {
     }
   }
 
-  async saveImage(userId, photoLink): Promise<boolean> {
+  async saveImage(userId: string, photoLink: string): Promise<boolean> {
     const result = await this.prisma.avatar.create({
       data: {
         userId,
@@ -28,5 +28,21 @@ export class FileStorageRepository {
     });
 
     return typeof result !== null;
+  }
+
+  async savePost(
+      userId: string,
+      description: string,
+      postImagesLink: string[]
+  ) {
+    return await this.prisma.posts.create({
+      data: {
+        userId,
+        description,
+        Photos: {
+          photoLink: postImagesLink
+        }
+      }
+    })
   }
 }

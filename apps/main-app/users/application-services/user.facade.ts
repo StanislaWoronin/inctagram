@@ -1,36 +1,36 @@
-import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { LoginUserCommand } from './commands/login-user.command-handler';
-import { ConfirmationCodeResendingCommand } from './commands/confirmation-code-resending-command.handler';
-import { RegistrationConfirmationCommand } from './commands/registration-confirmation.command-handler';
-import { PasswordRecoveryCommand } from './commands/password-recovery.command-handler';
-import {
-  CreateUserCommand,
-  TCreateUserResponse,
-} from './commands/create-user.command-handler';
-import { UpdatePairTokenCommand } from './commands/update-pair-token.command-handler';
-import { UpdatePasswordCommand } from './commands/update-password.command-handler';
-import { LogoutCommand } from './commands/logout-command-handler';
-import { GetUserByIdOrUserNameOrEmailCommand } from './queries/get-user-by-id-userName-or-email.query';
-import { GetUserByConfirmationCodeCommand } from './queries/get-user-by-confirmation-code.query';
-import { GetUserByRecoveryCodeCommand } from './queries/get-user-by-recovery-code.query';
-import { DeleteUserByIdCommand } from './commands/delete-user-by-id.command-handler';
-import { SessionIdDto, WithClientMeta } from '../../auth/dto/session-id.dto';
-import { LoginDto } from '../../auth/dto/login.dto';
-import { EmailDto } from '../../auth/dto/email.dto';
-import { RegistrationDto } from '../../auth/dto/registration.dto';
-import { NewPasswordDto } from 'apps/main-app/auth/dto/new-password.dto';
-import { RegistrationConfirmationDto } from '../../auth/dto/registration-confirmation.dto';
-import { User } from '@prisma/client';
-import { PairTokenDto } from '../../auth/dto/pair-token.dto';
-import { ViewUser } from '../view-model/user.view-model';
-import { GetViewUserWithInfoCommand } from './queries/get-view-user-with-info.query';
-import { UpdateUserProfileDto } from '../dto/update-user.dto';
-import { UpdateUserProfileCommand } from './commands/update-user-profile-command.handler';
-import { MergeProfileCommand } from './commands/merge-profile.command-handler';
-import { ViewUserWithInfo } from '../view-model/user-with-info.view-model';
-import { UploadUserAvatarCommand } from './commands/upload-user-avatar.command-handler';
-import { UpdateMainImageDto } from '../../../file-storage/dto/update-main-image.dto';
+import {Injectable} from '@nestjs/common';
+import {CommandBus, QueryBus} from '@nestjs/cqrs';
+import {LoginUserCommand} from './commands/login-user.command-handler';
+import {ConfirmationCodeResendingCommand} from './commands/confirmation-code-resending-command.handler';
+import {RegistrationConfirmationCommand} from './commands/registration-confirmation.command-handler';
+import {PasswordRecoveryCommand} from './commands/password-recovery.command-handler';
+import {CreateUserCommand, TCreateUserResponse,} from './commands/create-user.command-handler';
+import {UpdatePairTokenCommand} from './commands/update-pair-token.command-handler';
+import {UpdatePasswordCommand} from './commands/update-password.command-handler';
+import {LogoutCommand} from './commands/logout-command-handler';
+import {GetUserByIdOrUserNameOrEmailCommand} from './queries/get-user-by-id-userName-or-email.query';
+import {GetUserByConfirmationCodeCommand} from './queries/get-user-by-confirmation-code.query';
+import {GetUserByRecoveryCodeCommand} from './queries/get-user-by-recovery-code.query';
+import {DeleteUserByIdCommand} from './commands/delete-user-by-id.command-handler';
+import {SessionIdDto, WithClientMeta} from '../../auth/dto/session-id.dto';
+import {LoginDto} from '../../auth/dto/login.dto';
+import {EmailDto} from '../../auth/dto/email.dto';
+import {RegistrationDto} from '../../auth/dto/registration.dto';
+import {NewPasswordDto} from 'apps/main-app/auth/dto/new-password.dto';
+import {RegistrationConfirmationDto} from '../../auth/dto/registration-confirmation.dto';
+import {User} from '@prisma/client';
+import {PairTokenDto} from '../../auth/dto/pair-token.dto';
+import {ViewUser} from '../view-model/user.view-model';
+import {GetViewUserWithInfoCommand} from './queries/get-view-user-with-info.query';
+import {UpdateUserProfileDto} from '../dto/update-user.dto';
+import {UpdateUserProfileCommand} from './commands/update-user-profile-command.handler';
+import {MergeProfileCommand} from './commands/merge-profile.command-handler';
+import {ViewUserWithInfo} from '../view-model/user-with-info.view-model';
+import {UploadUserAvatarCommand} from './commands/upload-user-avatar.command-handler';
+import {UpdateMainImageDto} from '../dto/update-main-image.dto';
+import {CreatePostTransportDto} from "../dto/create-post.dto";
+import {CreatedPostView} from "../view-model/created-post.view-model";
+import {CreatePostCommand} from "./commands/create-post.command-handler";
 
 @Injectable()
 export class UserFacade {
@@ -40,6 +40,7 @@ export class UserFacade {
   ) {}
 
   commands = {
+    createPost: (dto: Partial<CreatePostTransportDto>) => this.createPost(dto),
     loginUser: (dto: WithClientMeta<LoginDto>) => this.loginUser(dto),
     logout: (deviceId: string) => this.logout(deviceId),
     mergeProfile: (dto: RegistrationDto) => this.mergeProfile(dto),
@@ -66,6 +67,11 @@ export class UserFacade {
     getUserByRecoveryCode: (code: string) => this.getUserByRecoveryCode(code),
     getUserProfile: (id: string) => this.getUserProfile(id),
   };
+
+  private async createPost(dto: Partial<CreatePostTransportDto>): Promise<CreatedPostView> {
+    const command = new CreatePostCommand(dto);
+    return await this.commandBus.execute(command);
+  }
 
   private async loginUser(
     dto: WithClientMeta<LoginDto>,

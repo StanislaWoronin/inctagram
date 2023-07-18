@@ -15,10 +15,12 @@ import { DeleteUserByIdCommandHandler } from './commands/delete-user-by-id.comma
 import { GetViewUserWithInfoQuery } from './queries/get-view-user-with-info.query';
 import { UpdateUserProfileCommandHandler } from './commands/update-user-profile-command.handler';
 import { UploadAvatarCommandHandler } from './commands/upload-user-avatar.command-handler';
+import {CreatePostCommandHandler} from "./commands/create-post.command-handler";
 
 export * from './user.facade';
 
 export const USER_COMMANDS_HANDLERS: Type<ICommandHandler>[] = [
+  CreatePostCommandHandler,
   CreateUserCommandHandler,
   LoginUserCommandHandler,
   LogoutCommandHandler,
