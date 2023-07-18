@@ -27,8 +27,8 @@ import {UpdateUserProfileCommand} from './commands/update-user-profile-command.h
 import {MergeProfileCommand} from './commands/merge-profile.command-handler';
 import {ViewUserWithInfo} from '../view-model/user-with-info.view-model';
 import {UploadUserAvatarCommand} from './commands/upload-user-avatar.command-handler';
-import {UpdateMainImageDto} from '../dto/update-main-image.dto';
-import {CreatePostTransportDto} from "../dto/create-post.dto";
+import {UpdateAvatarDto} from '../dto/update-avatar.dto';
+import {UploadPostImagesDto} from "../dto/create-post.dto";
 import {CreatedPostView} from "../view-model/created-post.view-model";
 import {CreatePostCommand} from "./commands/create-post.command-handler";
 
@@ -40,7 +40,7 @@ export class UserFacade {
   ) {}
 
   commands = {
-    createPost: (dto: Partial<CreatePostTransportDto>) => this.createPost(dto),
+    createPost: (dto: UploadPostImagesDto) => this.createPost(dto),
     loginUser: (dto: WithClientMeta<LoginDto>) => this.loginUser(dto),
     logout: (deviceId: string) => this.logout(deviceId),
     mergeProfile: (dto: RegistrationDto) => this.mergeProfile(dto),
@@ -55,7 +55,7 @@ export class UserFacade {
       this.registrationConfirmation(dto),
     updateUserProfile: (dto: UpdateUserProfileDto, userId: string) =>
       this.updateUserProfile(dto, userId),
-    uploadUserAvatar: (dto: Partial<UpdateMainImageDto>) =>
+    uploadUserAvatar: (dto: UpdateAvatarDto) =>
       this.uploadUserAvatar(dto),
     deleteUserById: (id: string) => this.deleteUserById(id),
   };
@@ -68,7 +68,7 @@ export class UserFacade {
     getUserProfile: (id: string) => this.getUserProfile(id),
   };
 
-  private async createPost(dto: Partial<CreatePostTransportDto>): Promise<CreatedPostView> {
+  private async createPost(dto: UploadPostImagesDto): Promise<CreatedPostView> {
     const command = new CreatePostCommand(dto);
     return await this.commandBus.execute(command);
   }
@@ -140,7 +140,7 @@ export class UserFacade {
   }
 
   private async uploadUserAvatar(
-    dto: Partial<UpdateMainImageDto>,
+    dto: UpdateAvatarDto,
   ): Promise<boolean> {
     const command = new UploadUserAvatarCommand(dto);
     return await this.commandBus.execute(command);

@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UpdateMainImageDto } from '../../../main-app/users/dto/update-main-image.dto';
+import { UpdateAvatarDto } from '../../../main-app/users/dto/update-avatar.dto';
 import { S3StorageAdapter } from '../../../../libs/adapters/file-storage.adapter/file.storage.adapter';
 import { FileStorageRepository } from '../../../main-app/users/db.providers/images/file.storage.repository';
 import sharp from 'sharp';
@@ -12,21 +12,27 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { log } from 'util';
 import { Prisma } from '@prisma/client';
+import {cloudSwitcher} from "../../../../libs/adapters/file-storage.adapter/cloud.switcher";
 
-export class UpdateMainImageCommand {
-  constructor(public readonly dto: Partial<UpdateMainImageDto>) {}
+export class UpdateAvatarCommand {
+  constructor(public readonly dto: UpdateAvatarDto) {}
 }
 
-@CommandHandler(UpdateMainImageCommand)
-export class UpdateMainImageCommandHandler
-  implements ICommandHandler<UpdateMainImageCommand, string>
+@CommandHandler(UpdateAvatarCommand)
+export class UpdateAvatarCommandHandler
+  implements ICommandHandler<UpdateAvatarCommand, string>
 {
   constructor(private filesStorageAdapter: S3StorageAdapter) {}
 
-  async execute({ dto }: UpdateMainImageCommand): Promise<string> {
-    const buffer = Buffer.from(dto.buffer);
+  async execute({ dto }: UpdateAvatarCommand): Promise<string> {
+    const buffer = Buffer.from(dto.file);
     const correctFormatBuffer = await sharp(buffer).toFormat('png').toBuffer();
 
+    const cloudOptions = cloudSwitcher();
+    await this.filesStorageAdapter.deleteFolder(
+        cloudOptions.BUCKET_NAME,
+        `${dto.userId}/${fileStorageConstants.avatar.name}`
+    ) // TODO проверить
     const { photoLink } = await this.filesStorageAdapter.saveFile(
       dto.userId,
       fileStorageConstants.avatar.name,

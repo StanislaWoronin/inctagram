@@ -108,15 +108,6 @@ describe('Test auth controller.', () => {
       expect(response.status).toBe(HttpStatus.BAD_REQUEST);
       expect(response.body).toStrictEqual(errors);
     });
-
-    // it(`Status ${HttpStatus.SEE_OTHER}.
-    //   Should return dto if registered user with an unconfirmed email address is trying to re-register.`, async () => {
-    //   const response = await requests
-    //     .auth()
-    //     .registrationUser(preparedRegistrationData.valid);
-    //   expect(response.status).toBe(HttpStatus.SEE_OTHER);
-    //   expect(response.body).toStrictEqual(preparedRegistrationData.valid);
-    // });
   });
 
   describe('Registration confirmation.', () => {
@@ -230,6 +221,7 @@ describe('Test auth controller.', () => {
     it(`Status ${HttpStatus.OK}.
       Should return access and refresh JWT tokens. `, async () => {
       const response = await requests.auth().loginUser(preparedLoginData.valid);
+      console.log(response.accessToken)
       expect(response.status).toBe(HttpStatus.OK);
       expect(response.accessToken).toBeTruthy();
       expect(response.refreshToken).toBeTruthy();

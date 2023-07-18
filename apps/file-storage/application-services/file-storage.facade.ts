@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { UpdateMainImageDto } from '../../main-app/users/dto/update-main-image.dto';
-import { UpdateMainImageCommand } from './commands/update-main-image.command-handler';
-import { Photos } from '@prisma/client';
-import { GetMainImageCommand } from './queries/get-main-image.command-handler';
+import { UpdateAvatarDto } from '../../main-app/users/dto/update-avatar.dto';
+import { UpdateAvatarCommand } from './commands/update-avatar-command.handler';
+import {UploadPostImagesDto} from "../../main-app/users/dto/create-post.dto";
+import {UploadPostImagesCommand} from "./commands/upload-post-image.command-handler";
 
 @Injectable()
 export class FileStorageFacade {
@@ -13,24 +13,28 @@ export class FileStorageFacade {
   ) {}
 
   commands = {
-    saveNewImage: (dto: Partial<UpdateMainImageDto>) =>
-      this.updateMainImage(dto),
+    updateAvatar: (dto: UpdateAvatarDto) =>
+      this.updateAvatar(dto),
+    uploadPostImage: (dto: UploadPostImagesDto) => this.uploadPostImage(dto)
   };
   queries = {
     //getMainImage: (userId: string) => this.getMainImage(userId),
   };
 
   // Commands
-  private async updateMainImage(
-    dto: Partial<UpdateMainImageDto>,
+  private async updateAvatar(
+    dto: UpdateAvatarDto,
   ): Promise<string> {
-    const command = new UpdateMainImageCommand(dto);
+    const command = new UpdateAvatarCommand(dto);
     return await this.commandBus.execute(command);
   }
 
+  private async uploadPostImage(
+      dto: UploadPostImagesDto,
+  ): Promise<string[]> {
+    const command = new UploadPostImagesCommand(dto)
+    return await this.commandBus.execute(command)
+  }
+
   // Queries
-  // private async getMainImage(userId: string): Promise<string> {
-  //   const command = new GetMainImageCommand(userId);
-  //   return await this.queryBus.execute(command);
-  // }
 }

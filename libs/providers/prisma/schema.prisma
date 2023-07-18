@@ -23,7 +23,6 @@ model User {
   EmailConfirmation EmailConfirmation?
   PasswordRecovery  PasswordRecovery?
   Avatar            Avatar?
-  Photos            Photos[]
   Posts             Posts[]
 }
 
@@ -67,6 +66,4 @@ model Photos {
   photoLink String
   postId    String
   post      Posts   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  User      User?   @relation(fields: [userId], references: [id])
-  userId    String?
 }

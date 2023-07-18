@@ -10,8 +10,8 @@ import { getUserProfileResponse } from '../../../test/response/user/get-user-pro
 export class ImageValidator {
   async transform(image: Express.Multer.File) {
     await isValidImage(fileStorageConstants.avatar.size, image);
-
-    return image;
+    const buffer = image.buffer;
+    return buffer;
   }
 }
 

@@ -29,12 +29,12 @@ export class S3StorageAdapter {
 
   public async saveFile(
     userId: string,
-    typeImageDir: string,
+    imageType: string,
     buffer: Buffer,
   ): Promise<{ photoLink: string }> {
     const bucketParams = {
       Bucket: this.bucketName,
-      Key: `${userId}/${typeImageDir}/${uuidv4()}`,
+      Key: `${userId}/${imageType}/${uuidv4()}`,
       Body: buffer,
       ContentType: 'image/png',
     };
@@ -47,6 +47,33 @@ export class S3StorageAdapter {
     return {
       photoLink: bucketParams.Key,
     };
+  }
+
+  public async saveFiles(
+      userId: string,
+      imageType: string,
+      buffers: Buffer[],
+  ): Promise<string[]> {
+    const photoLinks: string[] = [];
+
+    for (const buffer of buffers) {
+      const bucketParams = {
+        Bucket: this.bucketName,
+        Key: `${userId}/${imageType}/${uuidv4()}`,
+        Body: buffer,
+        ContentType: 'image/png',
+      };
+
+      try {
+        const command = new PutObjectCommand(bucketParams);
+        await this.s3Client.send(command);
+        photoLinks.push(bucketParams.Key);
+      } catch (e) {
+        throw new Error(e);
+      }
+    }
+
+    return photoLinks
   }
 
   public async deleteFolder(

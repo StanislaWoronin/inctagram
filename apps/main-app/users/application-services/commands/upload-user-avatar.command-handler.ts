@@ -1,4 +1,4 @@
-import {UpdateMainImageDto} from '../../dto/update-main-image.dto';
+import {UpdateAvatarDto} from '../../dto/update-avatar.dto';
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
 import {Commands} from '../../../../../libs/shared/enums/pattern-commands-name.enum';
 import {lastValueFrom, map} from 'rxjs';
@@ -8,7 +8,7 @@ import {ClientProxy} from '@nestjs/microservices';
 import {FileStorageRepository} from '../../db.providers/images/file.storage.repository';
 
 export class UploadUserAvatarCommand {
-  constructor(public readonly dto: Partial<UpdateMainImageDto>) {}
+  constructor(public readonly dto: UpdateAvatarDto) {}
 }
 
 @CommandHandler(UploadUserAvatarCommand)

@@ -40,9 +40,14 @@ export class FileStorageRepository {
         userId,
         description,
         Photos: {
-          photoLink: postImagesLink
-        }
-      }
+          create: postImagesLink.map((photoLink) => ({
+            photoLink,
+          })),
+        },
+      },
+      include: {
+        Photos: true,
+      },
     })
   }
 }

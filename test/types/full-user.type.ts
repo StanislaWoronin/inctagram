@@ -1,5 +1,4 @@
 import { User } from '@prisma/client';
-import { PhotoType } from '../../libs/shared/enums/photo-type.enum';
 
 export type TFullUser = Omit<User, 'birthday'> & { birthday: Date | string };
 

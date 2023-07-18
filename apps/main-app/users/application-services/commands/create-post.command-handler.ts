@@ -1,4 +1,4 @@
-import {CreatePostTransportDto} from "../../dto/create-post.dto";
+import {UploadPostImagesDto} from "../../dto/create-post.dto";
 import {CommandHandler, ICommandHandler} from "@nestjs/cqrs";
 import {CreatedPostView} from "../../view-model/created-post.view-model";
 import {Inject} from "@nestjs/common";
@@ -9,7 +9,7 @@ import {Commands} from "../../../../../libs/shared/enums/pattern-commands-name.e
 import {lastValueFrom, map} from "rxjs";
 
 export class CreatePostCommand {
-    constructor(public readonly dto: Partial<CreatePostTransportDto>) {
+    constructor(public readonly dto: UploadPostImagesDto) {
     }
 }
 
