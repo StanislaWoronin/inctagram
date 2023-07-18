@@ -11,24 +11,24 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import {CurrentUser} from '../../../libs/decorators/current-user.decorator';
-import {UserFacade} from './application-services';
-import {UpdateUserProfileDto} from './dto/update-user.dto';
-import {FileInterceptor, FilesInterceptor} from '@nestjs/platform-express';
+import { CurrentUser } from '../../../libs/decorators/current-user.decorator';
+import { UserFacade } from './application-services';
+import { UpdateUserProfileDto } from './dto/update-user.dto';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import {
   ApiCreatePost,
   ApiGetUser,
   ApiUpdateProfile,
   ApiUploadAvatar,
 } from '../../../libs/documentation/swagger/user.documentation';
-import {AuthBearerGuard} from '../../../libs/guards/auth-bearer.guard';
-import {ViewUserWithInfo} from './view-model/user-with-info.view-model';
-import {fileStorageConstants} from '../../file-storage/image-validator/file-storage.constants';
-import {ImageValidator} from '../../file-storage/image-validator/image.validator';
-import {userEndpoints} from '../../../libs/shared/endpoints/user.endpoints';
-import {CreatePostDto} from "./dto/create-post.dto";
-import {CreatedPostView} from "./view-model/created-post.view-model";
-import {ImagesValidator} from "../../file-storage/image-validator/images.validator";
+import { AuthBearerGuard } from '../../../libs/guards/auth-bearer.guard';
+import { ViewUserWithInfo } from './view-model/user-with-info.view-model';
+import { fileStorageConstants } from '../../file-storage/image-validator/file-storage.constants';
+import { ImageValidator } from '../../file-storage/image-validator/image.validator';
+import { userEndpoints } from '../../../libs/shared/endpoints/user.endpoints';
+import { CreatePostDto } from './dto/create-post.dto';
+import { CreatedPostView } from './view-model/created-post.view-model';
+import { ImagesValidator } from '../../file-storage/image-validator/images.validator';
 
 @Controller(userEndpoints.default())
 export class UserController {
@@ -37,18 +37,16 @@ export class UserController {
   @Post(userEndpoints.createPost())
   @UseGuards(AuthBearerGuard)
   @ApiCreatePost()
-  @UseInterceptors(
-      FilesInterceptor(fileStorageConstants.post.name, 10)
-  )
+  @UseInterceptors(FilesInterceptor(fileStorageConstants.post.name))
   async createPost(
-      @CurrentUser() userId: string,
-      @Body() dto: CreatePostDto,
-      @UploadedFiles(new ImagesValidator()) postPhotos: Buffer[],
+    @CurrentUser() userId: string,
+    @Body() dto: CreatePostDto,
+    @UploadedFiles(new ImagesValidator()) postPhotos: Buffer[],
   ): Promise<CreatedPostView> {
     return this.userFacade.commands.createPost({
       userId,
       description: 'dto.description',
-      postPhotos
+      postPhotos,
     });
   }
 

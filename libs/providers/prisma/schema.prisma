@@ -17,7 +17,7 @@ model User {
   lastName          String?
   birthday          DateTime?          @db.Date
   city              String?
-  aboutMe           String?            @db.VarChar(200)
+  aboutMe           String?
   isConfirmed       Boolean            @default(false)
   Device            Device[]
   EmailConfirmation EmailConfirmation?
@@ -57,7 +57,7 @@ model Posts {
   id          String   @id @default(uuid())
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  description String   @db.VarChar(500)
+  description String
   Photos      Photos[]
 }
 
@@ -65,5 +65,5 @@ model Photos {
   id        String  @id @default(uuid())
   photoLink String
   postId    String
-  post      Posts   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  Posts      Posts   @relation(fields: [postId], references: [id], onDelete: Cascade)
 }

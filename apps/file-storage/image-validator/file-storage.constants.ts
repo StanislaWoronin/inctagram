@@ -8,8 +8,9 @@ export const fileStorageConstants = {
     defaultLink: `${settings.cloud.YandexCloud.BUCKET_NAME}/avatars/defaultAvatar.png`,
   },
   post: {
-    name: PhotoType.PostImages
-  }
+    name: PhotoType.PostImages,
+    maxPostsCount: 10,
+  },
 };
 
 export enum ValidPhotoFormat {

@@ -1,18 +1,9 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateAvatarDto } from '../../../main-app/users/dto/update-avatar.dto';
 import { S3StorageAdapter } from '../../../../libs/adapters/file-storage.adapter/file.storage.adapter';
-import { FileStorageRepository } from '../../../main-app/users/db.providers/images/file.storage.repository';
 import sharp from 'sharp';
-import { FileStorageQueryRepository } from '../../../main-app/users/db.providers/images/file.storage.query.repository';
-import { PhotoType } from '../../../../libs/shared/enums/photo-type.enum';
-import {
-  fileStorageConstants,
-  ValidPhotoFormat,
-} from '../../image-validator/file-storage.constants';
-import { ConfigService } from '@nestjs/config';
-import { log } from 'util';
-import { Prisma } from '@prisma/client';
-import {cloudSwitcher} from "../../../../libs/adapters/file-storage.adapter/cloud.switcher";
+import { fileStorageConstants } from '../../image-validator/file-storage.constants';
+import { cloudSwitcher } from '../../../../libs/adapters/file-storage.adapter/cloud.switcher';
 
 export class UpdateAvatarCommand {
   constructor(public readonly dto: UpdateAvatarDto) {}
@@ -30,9 +21,9 @@ export class UpdateAvatarCommandHandler
 
     const cloudOptions = cloudSwitcher();
     await this.filesStorageAdapter.deleteFolder(
-        cloudOptions.BUCKET_NAME,
-        `${dto.userId}/${fileStorageConstants.avatar.name}`
-    ) // TODO проверить
+      cloudOptions.BUCKET_NAME,
+      `${dto.userId}/${fileStorageConstants.avatar.name}`,
+    );
     const { photoLink } = await this.filesStorageAdapter.saveFile(
       dto.userId,
       fileStorageConstants.avatar.name,

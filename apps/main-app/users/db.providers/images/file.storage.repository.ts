@@ -1,5 +1,6 @@
-import {Injectable} from '@nestjs/common';
-import {PrismaService} from '../../../../../libs/providers/prisma/prisma.service';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../../../../../libs/providers/prisma/prisma.service';
+import { CreatedPostView } from '../../view-model/created-post.view-model';
 
 @Injectable()
 export class FileStorageRepository {
@@ -31,11 +32,11 @@ export class FileStorageRepository {
   }
 
   async savePost(
-      userId: string,
-      description: string,
-      postImagesLink: string[]
-  ) {
-    return await this.prisma.posts.create({
+    userId: string,
+    description: string,
+    postImagesLink: string[],
+  ): Promise<CreatedPostView> {
+    const createdPost = await this.prisma.posts.create({
       data: {
         userId,
         description,
@@ -48,6 +49,7 @@ export class FileStorageRepository {
       include: {
         Photos: true,
       },
-    })
+    });
+    return CreatedPostView.toView(createdPost);
   }
 }

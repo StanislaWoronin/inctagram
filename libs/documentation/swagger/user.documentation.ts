@@ -30,8 +30,6 @@ export function ApiCreatePost() {
       description: 'If the inputModel has incorrect values',
       type: ErrorResponse,
     }),
-    ApiOperation({ summary: 'Upload image' }), // TODO test
-    ApiConsumes('multipart/form-data'), // TODO test
     ApiUnauthorizedResponse({
       description: 'If the JWT access token is missing, expired or incorrect',
     }),

@@ -6,9 +6,10 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { v4 as uuidv4 } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
 import { cloudSwitcher } from './cloud.switcher';
+import { randomUUID } from 'crypto';
+import { PhotoType } from '../../shared/enums/photo-type.enum';
 
 @Injectable()
 export class S3StorageAdapter {
@@ -34,7 +35,7 @@ export class S3StorageAdapter {
   ): Promise<{ photoLink: string }> {
     const bucketParams = {
       Bucket: this.bucketName,
-      Key: `${userId}/${imageType}/${uuidv4()}`,
+      Key: `${userId}/${imageType}/${randomUUID()}`,
       Body: buffer,
       ContentType: 'image/png',
     };
@@ -50,16 +51,16 @@ export class S3StorageAdapter {
   }
 
   public async saveFiles(
-      userId: string,
-      imageType: string,
-      buffers: Buffer[],
+    userId: string,
+    imageType: PhotoType,
+    buffers: Buffer[],
   ): Promise<string[]> {
     const photoLinks: string[] = [];
-
+    const postId = randomUUID();
     for (const buffer of buffers) {
       const bucketParams = {
         Bucket: this.bucketName,
-        Key: `${userId}/${imageType}/${uuidv4()}`,
+        Key: `${userId}/${imageType}/${postId}/${randomUUID()}`,
         Body: buffer,
         ContentType: 'image/png',
       };
@@ -73,7 +74,7 @@ export class S3StorageAdapter {
       }
     }
 
-    return photoLinks
+    return photoLinks;
   }
 
   public async deleteFolder(
@@ -87,16 +88,15 @@ export class S3StorageAdapter {
       };
       const listObjectsCommand = new ListObjectsCommand(listObjectsParams);
       const listObjectsOutput = await this.s3Client.send(listObjectsCommand);
+      if (!listObjectsOutput.Contents) {
+        return;
+      }
 
       const deleteObjectsParams = {
         Bucket: bucketName,
         Delete: { Objects: [] },
       };
-      if (!listObjectsOutput.Contents) {
-        return;
-      }
-
-      if (listObjectsOutput && listObjectsOutput.Contents.length > 0) {
+      if (listObjectsOutput.Contents.length > 0) {
         listObjectsOutput.Contents.forEach((content) => {
           deleteObjectsParams.Delete.Objects.push({ Key: content.Key });
         });

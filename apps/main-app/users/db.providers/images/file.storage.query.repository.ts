@@ -6,5 +6,4 @@ import { PhotoType } from '../../../../../libs/shared/enums/photo-type.enum';
 @Injectable()
 export class FileStorageQueryRepository {
   constructor(private prisma: PrismaService) {}
-
 }

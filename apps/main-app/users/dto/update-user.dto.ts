@@ -1,10 +1,16 @@
-import {ApiProperty} from '@nestjs/swagger';
-import {Transform} from 'class-transformer';
-import {IsNotEmpty, IsOptional, IsString, Length, MaxLength,} from 'class-validator';
-import {userConstants} from '../user.constants';
-import {User} from '@prisma/client';
-import {IsUserNameExist} from '../../../../libs/decorators/user-name.decorator';
-import {IsValidBirthdayFormat} from '../../../../libs/decorators/birthday-format.decorator';
+import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+  MaxLength,
+} from 'class-validator';
+import { userConstants } from '../user.constants';
+import { User } from '@prisma/client';
+import { IsUserNameExist } from '../../../../libs/decorators/user-name.decorator';
+import { IsValidBirthdayFormat } from '../../../../libs/decorators/birthday-format.decorator';
 
 type TUpdateUserProfileDto = Pick<
   User,
