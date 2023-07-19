@@ -5,7 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Put,
+  Put, Query,
   UploadedFile,
   UploadedFiles,
   UseGuards,
@@ -17,7 +17,7 @@ import { UpdateUserProfileDto } from './dto/update-user.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import {
   ApiCreatePost,
-  ApiGetUser,
+  ApiGetUser, ApiMyPosts,
   ApiUpdateProfile,
   ApiUploadAvatar,
 } from '../../../libs/documentation/swagger/user.documentation';
@@ -29,11 +29,14 @@ import { userEndpoints } from '../../../libs/shared/endpoints/user.endpoints';
 import { CreatePostDto } from './dto/create-post.dto';
 import { CreatedPostView } from './view-model/created-post.view-model';
 import { ImagesValidator } from '../../file-storage/image-validator/images.validator';
+import {MyPostQuery} from "./dto/my-post.query";
+import {MyPostsView} from "./view-model/my-posts.view-model";
 
 @Controller(userEndpoints.default())
 export class UserController {
   constructor(private readonly userFacade: UserFacade) {}
 
+  // Create new post with description
   @Post(userEndpoints.createPost())
   @UseGuards(AuthBearerGuard)
   @ApiCreatePost()
@@ -50,8 +53,19 @@ export class UserController {
     });
   }
 
+  // Return current user posts
+  @Get(userEndpoints.myPosts())
+  @UseGuards(AuthBearerGuard)
+  @ApiMyPosts()
+  async getMyPosts(
+    @Query() query: MyPostQuery,
+    @CurrentUser() userId: string,
+  ): Promise<MyPostsView> {
+    return await this.userFacade.queries.getMyPosts({userId, skip: query.skip})
+  }
+
+  // Return user profile with avatar photo
   @Get(userEndpoints.getUserProfile())
-  @HttpCode(HttpStatus.OK)
   @UseGuards(AuthBearerGuard)
   @ApiGetUser()
   async getUserProfile(
@@ -60,6 +74,7 @@ export class UserController {
     return await this.userFacade.queries.getUserProfile(userId);
   }
 
+  // Update user profile set additional info about user
   @Put(userEndpoints.updateUserProfile())
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthBearerGuard)
@@ -71,6 +86,7 @@ export class UserController {
     return await this.userFacade.commands.updateUserProfile(dto, userId);
   }
 
+  // Upload user avatar
   @Post(userEndpoints.uploadUserAvatar())
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthBearerGuard)

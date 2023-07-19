@@ -10,8 +10,14 @@ export const userEndpoints = {
   },
 
   getUserProfile(test = false): string {
-    const endpoint = ``;
+    const endpoint = '';
     if (test) return `/${this.default()}`;
+    return endpoint;
+  },
+
+  myPosts(test = false): string {
+    const endpoint = 'my-posts'
+    if (test) return `/${this.default()}/${endpoint}`;
     return endpoint;
   },
 

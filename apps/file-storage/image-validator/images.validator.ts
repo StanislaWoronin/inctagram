@@ -20,7 +20,6 @@ export const isValidImages = async (
   imageSize: number,
   images: Array<Express.Multer.File>,
 ): Promise<boolean> => {
-  console.log(images.length);
   if (images.length > fileStorageConstants.post.maxPostsCount)
     throw new BadRequestException(
       `${fileStorageConstants.post.name}:Number of uploaded photos exceeded`,

@@ -45,4 +45,7 @@ export const settings = {
     ACCESS_TOKEN: '1500 minutes',
     REFRESH_TOKEN: '15 day',
   },
+  pagination: {
+    pageSize: 9,
+  }
 };

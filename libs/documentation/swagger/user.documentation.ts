@@ -16,12 +16,28 @@ import { UpdateUserProfileDto } from '../../../apps/main-app/users/dto/update-us
 import { ErrorResponse } from '../../shared/errors.response';
 import { ViewUserWithInfo } from '../../../apps/main-app/users/view-model/user-with-info.view-model';
 import { CreatedPostView } from '../../../apps/main-app/users/view-model/created-post.view-model';
+import { ApiImplicitFile } from '@nestjs/swagger/dist/decorators/api-implicit-file.decorator';
+import { fileStorageConstants } from '../../../apps/file-storage/image-validator/file-storage.constants';
 
 export function ApiCreatePost() {
   return applyDecorators(
     ApiTags('User'),
     ApiOperation({ summary: 'Create new post by current user.' }),
     ApiBearerAuth(),
+    ApiConsumes('multipart/form-data'),
+    ApiImplicitFile({ name: fileStorageConstants.post.name }),
+    ApiBody({
+      schema: {
+        type: 'object',
+        properties: {
+          description: { type: 'string' },
+          file: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+    }),
     ApiCreatedResponse({
       description: 'Return created post.',
       type: CreatedPostView,
@@ -48,6 +64,16 @@ export function ApiGetUser() {
     ApiUnauthorizedResponse({
       description: 'If the JWT access token is missing, expired or incorrect',
     }),
+  );
+}
+
+export function ApiMyPosts() {
+  return applyDecorators(
+    ApiTags('User'),
+    ApiOperation({
+      summary: 'Return current user posts.',
+    }),
+    ApiBearerAuth(),
   );
 }
 
@@ -83,6 +109,19 @@ export function ApiUploadAvatar() {
       summary: 'Upload user avatar .png or .jpg (.jpeg) file (max size is 1mb)',
     }),
     ApiBearerAuth(),
+    ApiConsumes('multipart/form-data'),
+    ApiImplicitFile({ name: fileStorageConstants.avatar.name }),
+    ApiBody({
+      schema: {
+        type: 'object',
+        properties: {
+          file: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+    }),
     ApiNoContentResponse({
       description: 'If data is valid and data is accepted',
     }),

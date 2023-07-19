@@ -17,6 +17,7 @@ export class S3StorageAdapter {
   bucketName: string;
   constructor() {
     const cloudOptions = cloudSwitcher();
+    console.log(cloudOptions.REGION)
     this.s3Client = new S3Client({
       region: cloudOptions.REGION,
       credentials: {

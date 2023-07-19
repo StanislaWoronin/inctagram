@@ -3,10 +3,46 @@ import { PrismaService } from '../../../../../libs/providers/prisma/prisma.servi
 import { ViewUser } from '../../view-model/user.view-model';
 import { Device, Photos, User } from '@prisma/client';
 import { ViewUserWithInfo } from '../../view-model/user-with-info.view-model';
+import {UserIdWith} from "../../dto/user-with.dto";
+import {MyPostQuery} from "../../dto/my-post.query";
+import {MyPostsView} from "../../view-model/my-posts.view-model";
+import {settings} from "../../../../../libs/shared/settings";
 
 @Injectable()
 export class UserQueryRepository {
   constructor(private prisma: PrismaService) {}
+
+  async getMyPosts(
+      {userId, skip}: UserIdWith<MyPostQuery>
+  ): Promise<MyPostsView> {
+    const userPosts = await this.prisma.user.findUnique({
+      select: {
+        userName: true,
+        aboutMe: true,
+        Avatar: {
+          select: {
+            photoLink: true
+          }
+        },
+        Posts: {
+          select: {
+            Photos: {
+              select: {
+                photoLink: true
+              }
+            }
+          },
+          skip,
+          take: settings.pagination.pageSize
+        },
+      },
+      where: {
+        id: userId
+      },
+    })
+
+    return MyPostsView.toView(userPosts)
+  }
 
   async getUserByField(
     value: string,

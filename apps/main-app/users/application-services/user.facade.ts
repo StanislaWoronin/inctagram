@@ -34,6 +34,10 @@ import { UpdateAvatarDto } from '../dto/update-avatar.dto';
 import { UploadPostImagesDto } from '../dto/create-post.dto';
 import { CreatedPostView } from '../view-model/created-post.view-model';
 import { CreatePostCommand } from './commands/create-post.command-handler';
+import {MyPostsView} from "../view-model/my-posts.view-model";
+import {UserIdWith} from "../dto/user-with.dto";
+import {MyPostQuery} from "../dto/my-post.query";
+import {GetMyPostsCommand} from "./queries/get-my-posts.query";
 
 @Injectable()
 export class UserFacade {
@@ -59,15 +63,16 @@ export class UserFacade {
     updateUserProfile: (dto: UpdateUserProfileDto, userId: string) =>
       this.updateUserProfile(dto, userId),
     uploadUserAvatar: (dto: UpdateAvatarDto) => this.uploadUserAvatar(dto),
-    deleteUserById: (id: string) => this.deleteUserById(id),
+    deleteUserById: (userId: string) => this.deleteUserById(userId),
   };
   queries = {
+    getMyPosts: (dto: UserIdWith<MyPostQuery>) => this.getMyPosts(dto),
     getUserByIdOrUserNameOrEmail: (loginOrEmail: string) =>
       this.getUserByIdOrUserNameOrEmail(loginOrEmail),
     getUserByConfirmationCode: (code: string) =>
       this.getUserByConfirmationCode(code),
     getUserByRecoveryCode: (code: string) => this.getUserByRecoveryCode(code),
-    getUserProfile: (id: string) => this.getUserProfile(id),
+    getUserProfile: (userId: string) => this.getUserProfile(userId),
   };
 
   private async createPost(dto: UploadPostImagesDto): Promise<CreatedPostView> {
@@ -147,6 +152,11 @@ export class UserFacade {
   }
 
   // Queries
+  private async getMyPosts(dto: UserIdWith<MyPostQuery>): Promise<MyPostsView> {
+    const command = new GetMyPostsCommand(dto);
+    return await this.commandBus.execute(command);
+  }
+
   private async getUserByIdOrUserNameOrEmail(
     loginOrEmail: string,
   ): Promise<(ViewUser & { isConfirmed: boolean }) | null> {
