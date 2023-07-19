@@ -3,10 +3,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { BadRequestException, Logger } from '@nestjs/common';
 import { SwaggerModule } from '@nestjs/swagger';
-import {
-  swaggerConfig,
-  swaggerOptions,
-} from '../../libs/documentation/swagger/swagger.config';
+import { swaggerConfig } from '../../libs/documentation/swagger/swagger.config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './users/user.module';
 import { createApp } from './create-app';
@@ -41,7 +38,8 @@ async function bootstrap() {
     operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
     include: [AppModule, AuthModule, UserModule],
   });
-  SwaggerModule.setup('swagger', app, usersDocument, swaggerOptions(serverUrl));
+  //SwaggerModule.setup('swagger', app, usersDocument, swaggerOptions(serverUrl));
+  SwaggerModule.setup('swagger', app, usersDocument);
 
   await app.listen(port, () => {
     Logger.verbose(`Application listen on port: ${port}`, 'Main-app.Main');

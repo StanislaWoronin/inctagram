@@ -172,7 +172,7 @@ export class UserFacade {
   // Queries
   private async getMyPosts(dto: UserIdWith<MyPostQuery>): Promise<MyPostsView> {
     const command = new GetMyPostsCommand(dto);
-    return await this.commandBus.execute(command);
+    return await this.queryBus.execute(command);
   }
 
   private async getUserByIdOrUserNameOrEmail(

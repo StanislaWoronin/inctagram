@@ -17,7 +17,7 @@ export class MyPostQuery {
   @ApiProperty({ default: 0, required: false })
   @IsOptional()
   @IsNumber()
-  page: number;
+  page = 1;
 
   /**
    * Property "skip" are only getter. Don\'t set value

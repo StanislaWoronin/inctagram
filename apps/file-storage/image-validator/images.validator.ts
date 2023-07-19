@@ -7,6 +7,7 @@ import { RpcException } from '@nestjs/microservices';
 import sharp from 'sharp';
 import { getUserProfileResponse } from '../../../test/response/user/get-user-profile.response';
 import { log } from 'util';
+import { settings } from '../../../libs/shared/settings';
 
 export class ImagesValidator {
   async transform(images: Array<Express.Multer.File>) {
@@ -20,7 +21,7 @@ export const isValidImages = async (
   imageSize: number,
   images: Array<Express.Multer.File>,
 ): Promise<boolean> => {
-  if (images.length > fileStorageConstants.post.maxPostsCount)
+  if (images.length > settings.uploadFile.maxPostCount)
     throw new BadRequestException(
       `${fileStorageConstants.post.name}:Number of uploaded photos exceeded`,
     );

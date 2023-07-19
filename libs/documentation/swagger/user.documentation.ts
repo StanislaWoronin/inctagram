@@ -18,10 +18,11 @@ import { ViewUserWithInfo } from '../../../apps/main-app/users/view-model/user-w
 import { CreatedPostView } from '../../../apps/main-app/users/view-model/created-post.view-model';
 import { ApiImplicitFile } from '@nestjs/swagger/dist/decorators/api-implicit-file.decorator';
 import { fileStorageConstants } from '../../../apps/file-storage/image-validator/file-storage.constants';
-import { UpdatePostDto } from '../../../apps/main-app/users/dto/update-post.dto';
 import { PostDto } from '../../../apps/main-app/users/dto/post.dto';
 import { MyPostsView } from '../../../apps/main-app/users/view-model/my-posts.view-model';
 import { DeletePostDto } from '../../../apps/main-app/users/dto/delete-post.dto';
+import { CreatePostDto } from '../../../apps/main-app/users/dto/create-post.dto';
+import { settings } from '../../shared/settings';
 
 export function ApiCreatePost() {
   return applyDecorators(
@@ -29,19 +30,11 @@ export function ApiCreatePost() {
     ApiOperation({ summary: 'Create new post by current user.' }),
     ApiBearerAuth(),
     ApiConsumes('multipart/form-data'),
-    ApiImplicitFile({ name: fileStorageConstants.post.name }),
-    ApiBody({
-      schema: {
-        type: 'object',
-        properties: {
-          description: { type: 'string' },
-          file: {
-            type: 'string',
-            format: 'binary',
-          },
-        },
-      },
+    ApiImplicitFile({
+      name: fileStorageConstants.post.name,
+      description: `Нou can upload up to ${settings.uploadFile.maxPostCount} photos`,
     }),
+    ApiBody({ type: CreatePostDto }),
     ApiCreatedResponse({
       description: 'Return created post.',
       type: CreatedPostView,
@@ -160,17 +153,6 @@ export function ApiUploadAvatar() {
     ApiBearerAuth(),
     ApiConsumes('multipart/form-data'),
     ApiImplicitFile({ name: fileStorageConstants.avatar.name }),
-    ApiBody({
-      schema: {
-        type: 'object',
-        properties: {
-          file: {
-            type: 'string',
-            format: 'binary',
-          },
-        },
-      },
-    }),
     ApiNoContentResponse({
       description: 'If data is valid and data is accepted',
     }),

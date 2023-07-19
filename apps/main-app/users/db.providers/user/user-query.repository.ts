@@ -47,7 +47,14 @@ export class UserQueryRepository {
       },
     });
 
-    return MyPostsView.toView(userPosts);
+    const totalCount = await this.prisma.posts.count({
+      where: {
+        userId,
+        isDeleted: false,
+      },
+    });
+
+    return MyPostsView.toView(userPosts, totalCount);
   }
 
   async getUserByField(

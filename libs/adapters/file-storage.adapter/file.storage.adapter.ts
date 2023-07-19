@@ -59,9 +59,10 @@ export class S3StorageAdapter {
     const photoLinks: string[] = [];
     const postId = randomUUID();
     for (const buffer of buffers) {
+      const imageId = randomUUID();
       const bucketParams = {
         Bucket: this.bucketName,
-        Key: `${userId}/${imageType}/${postId}/${randomUUID()}`,
+        Key: `${userId}/${imageType}/${postId}/${imageId}`,
         Body: buffer,
         ContentType: 'image/png',
       };

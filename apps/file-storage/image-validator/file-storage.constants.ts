@@ -9,7 +9,6 @@ export const fileStorageConstants = {
   },
   post: {
     name: PhotoType.PostImages,
-    maxPostsCount: 10,
   },
 };
 

@@ -1,17 +1,27 @@
+import { toViewPhotoLink } from '../../../../libs/shared/helpers';
+
 export class MyPostsView {
-  postId: string;
   userName: string;
   aboutMe: string;
   userAvatar: string;
-  posts: string[] | [];
+  posts: {
+    postId: string;
+    photosLink: string[];
+  };
+  postsCount: number;
 
-  static toView(userPosts) {
+  static toView(userPosts, totalCount: number): MyPostsView {
     return {
-      postId: userPosts.id,
       userName: userPosts.userName,
-      aboutMe: userPosts.aboutMe,
-      userAvatar: userPosts.Avatar.userAvatar,
-      posts: userPosts.Posts.Avatar.photoLink,
+      aboutMe: userPosts.aboutMe ?? null,
+      userAvatar: userPosts.Avatar?.userAvatar ?? null,
+      posts: userPosts.Posts.map((p) => {
+        return {
+          postId: p.id,
+          photosLink: p.Photos.map((pl) => toViewPhotoLink(pl.photoLink)),
+        };
+      }),
+      postsCount: totalCount,
     };
   }
 }

@@ -17,6 +17,8 @@ import { UpdateUserProfileCommandHandler } from './commands/update-user-profile-
 import { UploadAvatarCommandHandler } from './commands/upload-user-avatar.command-handler';
 import { CreatePostCommandHandler } from './commands/create-post.command-handler';
 import { UpdatePostCommandHandler } from './commands/update-post.command-handler';
+import { GetMyPostsQuery } from './queries/get-my-posts.query';
+import { DeletePostCommandHandler } from './commands/delete-post.command-handler';
 
 export * from './user.facade';
 
@@ -24,6 +26,7 @@ export const USER_COMMANDS_HANDLERS: Type<ICommandHandler>[] = [
   ConfirmationCodeResendingCommandHandler,
   CreatePostCommandHandler,
   CreateUserCommandHandler,
+  DeletePostCommandHandler,
   DeleteUserByIdCommandHandler,
   LoginUserCommandHandler,
   LogoutCommandHandler,
@@ -37,6 +40,7 @@ export const USER_COMMANDS_HANDLERS: Type<ICommandHandler>[] = [
 ];
 
 export const USER_QUERIES_HANDLERS: Type<IQueryHandler>[] = [
+  GetMyPostsQuery,
   GetUserByConfirmationCodeQuery,
   GetUserByIdUserNameOrEmailQuery,
   GetUserByRecoveryCodeQuery,

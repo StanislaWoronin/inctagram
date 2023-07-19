@@ -15,7 +15,7 @@ export const swaggerOptions = (url: string) => {
   const port = settings.port.MAIN_APP;
   return {
     explorer: true,
-    showExtensions: true,
+    // showExtensions: true,
     swaggerOptions: {
       urls: [
         {

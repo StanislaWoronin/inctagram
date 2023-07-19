@@ -38,6 +38,7 @@ import { ImagesValidator } from '../../file-storage/image-validator/images.valid
 import { MyPostQuery } from './dto/my-post.query';
 import { MyPostsView } from './view-model/my-posts.view-model';
 import { DeletePostDto } from './dto/delete-post.dto';
+import { ParamsId } from '../../../libs/shared/dto/params-id';
 
 @Controller(userEndpoints.default())
 @UseGuards(AuthBearerGuard)
@@ -65,9 +66,12 @@ export class UserController {
   @ApiDeletePost()
   async deletePost(
     @Body() dto: DeletePostDto,
-    @Param() postId: string,
+    @Param() postId: ParamsId,
   ): Promise<boolean> {
-    return this.userFacade.commands.deletePost({ postId, ...dto });
+    return this.userFacade.commands.deletePost({
+      postId: postId.id,
+      ...dto,
+    });
   }
 
   // Return user profile with avatar photo
@@ -110,11 +114,11 @@ export class UserController {
   async updatePost(
     @Body() dto: PostDto,
     @CurrentUser() userId: string,
-    @Param() postId: string,
+    @Param() postId: ParamsId,
   ): Promise<boolean> {
     return await this.userFacade.commands.updatePost({
       userId,
-      postId,
+      postId: postId.id,
       description: dto.description,
     });
   }

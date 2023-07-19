@@ -33,7 +33,11 @@ export class UserRepository {
   async createReasonDeletingPost(postId: string, role: Role): Promise<boolean> {
     const result = await this.prisma.deletedPosts.create({
       data: {
-        postId,
+        posts: {
+          connect: {
+            id: postId,
+          },
+        },
         deleteAt: Date.now().toString(),
         deleteBy: role,
       },

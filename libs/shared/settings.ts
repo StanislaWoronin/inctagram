@@ -48,4 +48,7 @@ export const settings = {
   pagination: {
     pageSize: 9,
   },
+  uploadFile: {
+    maxPostCount: 10,
+  },
 };
