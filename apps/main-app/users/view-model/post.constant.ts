@@ -1,6 +1,6 @@
 export const postConstant = {
   description: {
-    maxLength: 200,
+    maxLength: 500,
   },
   imageCount: 10,
 };
