@@ -1,6 +1,6 @@
-import {ApiProperty} from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class DeletePostDto {
-    @ApiProperty({default: true})
-    isDeleted: boolean = true
+  @ApiProperty({ default: true })
+  isDeleted = true;
 }

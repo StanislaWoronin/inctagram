@@ -1,6 +1,7 @@
 import {
   Body,
-  Controller, Delete,
+  Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -18,7 +19,8 @@ import { UserFacade } from './application-services';
 import { UpdateUserProfileDto } from './dto/update-user.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import {
-  ApiCreatePost, ApiDeletePost,
+  ApiCreatePost,
+  ApiDeletePost,
   ApiGetUser,
   ApiMyPosts,
   ApiUpdatePost,
@@ -35,7 +37,7 @@ import { CreatedPostView } from './view-model/created-post.view-model';
 import { ImagesValidator } from '../../file-storage/image-validator/images.validator';
 import { MyPostQuery } from './dto/my-post.query';
 import { MyPostsView } from './view-model/my-posts.view-model';
-import {DeletePostDto} from "./dto/delete-post.dto";
+import { DeletePostDto } from './dto/delete-post.dto';
 
 @Controller(userEndpoints.default())
 @UseGuards(AuthBearerGuard)
@@ -65,7 +67,7 @@ export class UserController {
     @Body() dto: DeletePostDto,
     @Param() postId: string,
   ): Promise<boolean> {
-    return this.userFacade.commands.deletePost({postId, ...dto})
+    return this.userFacade.commands.deletePost({ postId, ...dto });
   }
 
   // Return user profile with avatar photo

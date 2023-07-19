@@ -1,11 +1,11 @@
-import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
-import {UserRepository} from '../../db.providers/user/user.repository';
-import {EmailManager} from '../../../../../libs/adapters/email.adapter';
-import {UserQueryRepository} from '../../db.providers/user/user-query.repository';
-import {RegistrationDto} from '../../../auth/dto/registration.dto';
-import {EmailConfirmation} from '../../entities/email-confirmation.entity';
-import {ViewUser} from '../../view-model/user.view-model';
-import {NewUser} from '../../entities/new-user.entity';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { UserRepository } from '../../db.providers/user/user.repository';
+import { EmailManager } from '../../../../../libs/adapters/email.adapter';
+import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
+import { RegistrationDto } from '../../../auth/dto/registration.dto';
+import { EmailConfirmation } from '../../entities/email-confirmation.entity';
+import { ViewUser } from '../../view-model/user.view-model';
+import { NewUser } from '../../entities/new-user.entity';
 
 export class CreateUserCommand {
   constructor(public readonly dto: RegistrationDto) {}

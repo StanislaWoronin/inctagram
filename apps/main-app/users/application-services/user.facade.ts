@@ -34,14 +34,14 @@ import { AvatarDto } from '../dto/avatar.dto';
 import { CreatedPostView } from '../view-model/created-post.view-model';
 import { CreatePostCommand } from './commands/create-post.command-handler';
 import { MyPostsView } from '../view-model/my-posts.view-model';
-import {PostIdWith, UserIdWith} from '../dto/id-with.dto';
+import { PostIdWith, UserIdWith } from '../dto/id-with.dto';
 import { MyPostQuery } from '../dto/my-post.query';
 import { GetMyPostsCommand } from './queries/get-my-posts.query';
 import { UpdatePostCommand } from './commands/update-post.command-handler';
 import { PostImagesDto } from '../dto/post-images.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
-import {DeletePostDto} from "../dto/delete-post.dto";
-import {DeletePostCommand} from "./commands/delete-post.command-handler";
+import { DeletePostDto } from '../dto/delete-post.dto';
+import { DeletePostCommand } from './commands/delete-post.command-handler';
 
 @Injectable()
 export class UserFacade {
@@ -89,11 +89,9 @@ export class UserFacade {
     return await this.commandBus.execute(command);
   }
 
-  private async deletePost(
-      dto: PostIdWith<DeletePostDto>
-  ): Promise<boolean> {
-    const command = new DeletePostCommand(dto)
-    return await this.commandBus.execute(command)
+  private async deletePost(dto: PostIdWith<DeletePostDto>): Promise<boolean> {
+    const command = new DeletePostCommand(dto);
+    return await this.commandBus.execute(command);
   }
 
   private async loginUser(

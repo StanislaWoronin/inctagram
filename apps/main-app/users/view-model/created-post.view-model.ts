@@ -1,7 +1,9 @@
 import { Posts } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-type TCreatedPost = Posts & { postPhotos: string[] };
+type TCreatedPost = Omit<Posts, 'Photos' | 'isDeleted'> & {
+  postPhotos: string[];
+};
 
 export class CreatedPostView implements TCreatedPost {
   @ApiProperty({ example: 'Post ID.' })

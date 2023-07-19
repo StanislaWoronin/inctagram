@@ -7,7 +7,7 @@ import { UserIdWith } from '../../dto/id-with.dto';
 import { MyPostQuery } from '../../dto/my-post.query';
 import { MyPostsView } from '../../view-model/my-posts.view-model';
 import { settings } from '../../../../../libs/shared/settings';
-import {not} from "rxjs/internal/util/not";
+import { not } from 'rxjs/internal/util/not';
 
 @Injectable()
 export class UserQueryRepository {
@@ -17,7 +17,7 @@ export class UserQueryRepository {
     userId,
     skip,
   }: UserIdWith<MyPostQuery>): Promise<MyPostsView> {
-    const userPosts = await this.prisma.user.findMany({
+    const userPosts = await this.prisma.user.findUnique({
       select: {
         userName: true,
         aboutMe: true,
@@ -35,14 +35,16 @@ export class UserQueryRepository {
               },
             },
           },
+          where: {
+            isDeleted: false,
+          },
           skip,
           take: settings.pagination.pageSize,
         },
       },
       where: {
         id: userId,
-        isDeleted: false
-      }
+      },
     });
 
     return MyPostsView.toView(userPosts);
