@@ -3,8 +3,8 @@ import { Device, EmailConfirmation, Prisma, User } from '@prisma/client';
 import { PrismaService } from '../../../../../libs/providers/prisma/prisma.service';
 import { PasswordRecovery } from '../../entities/password-recovery.entity';
 import { UpdateUserProfileDto } from '../../dto/update-user.dto';
-import {UserIdWith} from "../../dto/user-with.dto";
-import {UpdatePostDto} from "../../dto/update-post.dto";
+import { UserIdWith } from '../../dto/user-with.dto';
+import { UpdatePostDto } from '../../dto/update-post.dto';
 
 @Injectable()
 export class UserRepository {
@@ -89,15 +89,13 @@ export class UserRepository {
     return typeof result !== null;
   }
 
-  async updatePost(
-      dto: UserIdWith<UpdatePostDto>
-  ): Promise<boolean> {
+  async updatePost(dto: UserIdWith<UpdatePostDto>): Promise<boolean> {
     const result = await this.prisma.posts.update({
-      where: {id: dto.postId},
+      where: { id: dto.postId },
       data: {
-        description: dto.description
-      }
-    })
+        description: dto.description,
+      },
+    });
 
     return typeof result !== null;
   }

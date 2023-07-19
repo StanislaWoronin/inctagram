@@ -16,7 +16,7 @@ import { GetViewUserWithInfoQuery } from './queries/get-view-user-with-info.quer
 import { UpdateUserProfileCommandHandler } from './commands/update-user-profile-command.handler';
 import { UploadAvatarCommandHandler } from './commands/upload-user-avatar.command-handler';
 import { CreatePostCommandHandler } from './commands/create-post.command-handler';
-import {UpdatePostCommandHandler} from "./commands/update-post.command-handler";
+import { UpdatePostCommandHandler } from './commands/update-post.command-handler';
 
 export * from './user.facade';
 

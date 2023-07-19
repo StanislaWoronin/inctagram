@@ -47,5 +47,5 @@ export const settings = {
   },
   pagination: {
     pageSize: 9,
-  }
+  },
 };

@@ -10,7 +10,7 @@ export class PostDto implements TCreatePostDto {
   @ApiProperty({
     example: 'Some description for the current post.',
     maxLength: postConstant.description.maxLength,
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsString()
@@ -18,5 +18,3 @@ export class PostDto implements TCreatePostDto {
   @MaxLength(postConstant.description.maxLength)
   description: string;
 }
-
-

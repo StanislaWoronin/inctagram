@@ -33,13 +33,13 @@ import { UploadUserAvatarCommand } from './commands/upload-user-avatar.command-h
 import { AvatarDto } from '../dto/avatar.dto';
 import { CreatedPostView } from '../view-model/created-post.view-model';
 import { CreatePostCommand } from './commands/create-post.command-handler';
-import {MyPostsView} from "../view-model/my-posts.view-model";
-import {UserIdWith} from "../dto/user-with.dto";
-import {MyPostQuery} from "../dto/my-post.query";
-import {GetMyPostsCommand} from "./queries/get-my-posts.query";
-import {UpdatePostCommand} from "./commands/update-post.command-handler";
-import {PostImagesDto} from "../dto/post-images.dto";
-import {UpdatePostDto} from "../dto/update-post.dto";
+import { MyPostsView } from '../view-model/my-posts.view-model';
+import { UserIdWith } from '../dto/user-with.dto';
+import { MyPostQuery } from '../dto/my-post.query';
+import { GetMyPostsCommand } from './queries/get-my-posts.query';
+import { UpdatePostCommand } from './commands/update-post.command-handler';
+import { PostImagesDto } from '../dto/post-images.dto';
+import { UpdatePostDto } from '../dto/update-post.dto';
 
 @Injectable()
 export class UserFacade {
@@ -65,7 +65,8 @@ export class UserFacade {
     updatePost: (dto: UserIdWith<UpdatePostDto>) => this.updatePost(dto),
     updateUserProfile: (dto: UserIdWith<UpdateUserProfileDto>) =>
       this.updateUserProfile(dto),
-    uploadUserAvatar: (dto: UserIdWith<AvatarDto>) => this.uploadUserAvatar(dto),
+    uploadUserAvatar: (dto: UserIdWith<AvatarDto>) =>
+      this.uploadUserAvatar(dto),
     deleteUserById: (userId: string) => this.deleteUserById(userId),
   };
   queries = {
@@ -78,7 +79,9 @@ export class UserFacade {
     getUserProfile: (userId: string) => this.getUserProfile(userId),
   };
 
-  private async createPost(dto: UserIdWith<PostImagesDto>): Promise<CreatedPostView> {
+  private async createPost(
+    dto: UserIdWith<PostImagesDto>,
+  ): Promise<CreatedPostView> {
     const command = new CreatePostCommand(dto);
     return await this.commandBus.execute(command);
   }

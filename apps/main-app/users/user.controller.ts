@@ -3,9 +3,11 @@ import {
   Controller,
   Get,
   HttpCode,
-  HttpStatus, Param,
+  HttpStatus,
+  Param,
   Post,
-  Put, Query,
+  Put,
+  Query,
   UploadedFile,
   UploadedFiles,
   UseGuards,
@@ -17,7 +19,9 @@ import { UpdateUserProfileDto } from './dto/update-user.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import {
   ApiCreatePost,
-  ApiGetUser, ApiMyPosts, ApiUpdatePost,
+  ApiGetUser,
+  ApiMyPosts,
+  ApiUpdatePost,
   ApiUpdateProfile,
   ApiUploadAvatar,
 } from '../../../libs/documentation/swagger/user.documentation';
@@ -26,12 +30,11 @@ import { ViewUserWithInfo } from './view-model/user-with-info.view-model';
 import { fileStorageConstants } from '../../file-storage/image-validator/file-storage.constants';
 import { ImageValidator } from '../../file-storage/image-validator/image.validator';
 import { userEndpoints } from '../../../libs/shared/endpoints/user.endpoints';
-import {PostDto} from './dto/post.dto';
+import { PostDto } from './dto/post.dto';
 import { CreatedPostView } from './view-model/created-post.view-model';
 import { ImagesValidator } from '../../file-storage/image-validator/images.validator';
-import {MyPostQuery} from "./dto/my-post.query";
-import {MyPostsView} from "./view-model/my-posts.view-model";
-import {UpdatePostDto} from "./dto/update-post.dto";
+import { MyPostQuery } from './dto/my-post.query';
+import { MyPostsView } from './view-model/my-posts.view-model';
 
 @Controller(userEndpoints.default())
 @UseGuards(AuthBearerGuard)
@@ -61,7 +64,10 @@ export class UserController {
     @Query() query: MyPostQuery,
     @CurrentUser() userId: string,
   ): Promise<MyPostsView> {
-    return await this.userFacade.queries.getMyPosts({userId, skip: query.skip})
+    return await this.userFacade.queries.getMyPosts({
+      userId,
+      skip: query.skip,
+    });
   }
 
   // Return user profile with avatar photo
@@ -81,7 +87,7 @@ export class UserController {
     @Body() dto: UpdateUserProfileDto,
     @CurrentUser() userId: string,
   ): Promise<boolean> {
-    return await this.userFacade.commands.updateUserProfile({userId, ...dto});
+    return await this.userFacade.commands.updateUserProfile({ userId, ...dto });
   }
 
   // Update user's post
@@ -93,7 +99,11 @@ export class UserController {
     @Param() postId: string,
     @CurrentUser() userId: string,
   ): Promise<boolean> {
-    return await this.userFacade.commands.updatePost({userId, postId, description: dto.description})
+    return await this.userFacade.commands.updatePost({
+      userId,
+      postId,
+      description: dto.description,
+    });
   }
 
   // Upload user avatar

@@ -6,8 +6,8 @@ import { ClientProxy } from '@nestjs/microservices';
 import { FileStorageRepository } from '../../db.providers/images/file.storage.repository';
 import { Commands } from '../../../../../libs/shared/enums/pattern-commands-name.enum';
 import { lastValueFrom, map } from 'rxjs';
-import {UserIdWith} from "../../dto/user-with.dto";
-import {PostImagesDto} from "../../dto/post-images.dto";
+import { UserIdWith } from '../../dto/user-with.dto';
+import { PostImagesDto } from '../../dto/post-images.dto';
 
 export class CreatePostCommand {
   constructor(public readonly dto: UserIdWith<PostImagesDto>) {}

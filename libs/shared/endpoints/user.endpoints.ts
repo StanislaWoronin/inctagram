@@ -16,7 +16,7 @@ export const userEndpoints = {
   },
 
   myPosts(test = false): string {
-    const endpoint = 'my-posts'
+    const endpoint = 'my-posts';
     if (test) return `/${this.default()}/${endpoint}`;
     return endpoint;
   },

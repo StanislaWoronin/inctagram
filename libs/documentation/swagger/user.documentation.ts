@@ -18,8 +18,8 @@ import { ViewUserWithInfo } from '../../../apps/main-app/users/view-model/user-w
 import { CreatedPostView } from '../../../apps/main-app/users/view-model/created-post.view-model';
 import { ApiImplicitFile } from '@nestjs/swagger/dist/decorators/api-implicit-file.decorator';
 import { fileStorageConstants } from '../../../apps/file-storage/image-validator/file-storage.constants';
-import {UpdatePostDto} from "../../../apps/main-app/users/dto/update-post.dto";
-import {PostDto} from "../../../apps/main-app/users/dto/post.dto";
+import { UpdatePostDto } from '../../../apps/main-app/users/dto/update-post.dto';
+import { PostDto } from '../../../apps/main-app/users/dto/post.dto';
 
 export function ApiCreatePost() {
   return applyDecorators(
@@ -106,24 +106,24 @@ export function ApiUpdateProfile() {
 
 export function ApiUpdatePost() {
   return applyDecorators(
-      ApiTags('User'),
-      ApiOperation({ summary: 'Update user\'s post.' }),
-      ApiBearerAuth(),
-      ApiBody({type: PostDto}),
-      ApiParam({
-        name: 'postId',
-        type: 'string',
-      }),
-      ApiNoContentResponse({
-        description: 'Update is success.',
-      }),
-      ApiBadRequestResponse({
-        description: 'If the inputModel has incorrect values',
-        type: ErrorResponse,
-      }),
-      ApiUnauthorizedResponse({
-        description: 'If the JWT access token is missing, expired or incorrect',
-      }),
+    ApiTags('User'),
+    ApiOperation({ summary: "Update user's post." }),
+    ApiBearerAuth(),
+    ApiBody({ type: PostDto }),
+    ApiParam({
+      name: 'postId',
+      type: 'string',
+    }),
+    ApiNoContentResponse({
+      description: 'Update is success.',
+    }),
+    ApiBadRequestResponse({
+      description: 'If the inputModel has incorrect values',
+      type: ErrorResponse,
+    }),
+    ApiUnauthorizedResponse({
+      description: 'If the JWT access token is missing, expired or incorrect',
+    }),
   );
 }
 
