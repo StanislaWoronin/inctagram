@@ -4,7 +4,7 @@ import { MessagePattern } from '@nestjs/microservices';
 import { Commands } from '../../libs/shared/enums/pattern-commands-name.enum';
 import { AvatarDto } from '../main-app/users/dto/avatar.dto';
 import { PostImagesDto } from '../main-app/users/dto/post-images.dto';
-import { UserIdWith } from '../main-app/users/dto/user-with.dto';
+import { UserIdWith } from '../main-app/users/dto/id-with.dto';
 
 @Controller()
 export class FileStorageController {

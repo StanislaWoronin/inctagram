@@ -54,16 +54,31 @@ model Avatar {
 }
 
 model Posts {
-  id          String   @id @default(uuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  description String
-  Photos      Photos[]
+  id           String         @id @default(uuid())
+  userId       String
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  description  String
+  Photos       Photos[]
+  isDeleted    Boolean        @default(false)
+  DeletedPosts DeletedPosts[]
+}
+
+model DeletedPosts {
+  postId   String  @id
+  posts    Posts   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  deleteAt String
+  deleteBy Role
+  reason   String? @db.VarChar(200)
+}
+
+enum Role {
+  ADMIN
+  USER
 }
 
 model Photos {
-  id        String  @id @default(uuid())
+  id        String @id @default(uuid())
   photoLink String
   postId    String
-  Posts      Posts   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  posts     Posts  @relation(fields: [postId], references: [id], onDelete: Cascade)
 }

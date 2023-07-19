@@ -4,7 +4,7 @@ import { S3StorageAdapter } from '../../../../libs/adapters/file-storage.adapter
 import sharp from 'sharp';
 import { fileStorageConstants } from '../../image-validator/file-storage.constants';
 import { cloudSwitcher } from '../../../../libs/adapters/file-storage.adapter/cloud.switcher';
-import { UserIdWith } from '../../../main-app/users/dto/user-with.dto';
+import { UserIdWith } from '../../../main-app/users/dto/id-with.dto';
 
 export class UpdateAvatarCommand {
   constructor(public readonly dto: UserIdWith<AvatarDto>) {}

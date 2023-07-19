@@ -3,10 +3,11 @@ import { PrismaService } from '../../../../../libs/providers/prisma/prisma.servi
 import { ViewUser } from '../../view-model/user.view-model';
 import { Device, Photos, User } from '@prisma/client';
 import { ViewUserWithInfo } from '../../view-model/user-with-info.view-model';
-import { UserIdWith } from '../../dto/user-with.dto';
+import { UserIdWith } from '../../dto/id-with.dto';
 import { MyPostQuery } from '../../dto/my-post.query';
 import { MyPostsView } from '../../view-model/my-posts.view-model';
 import { settings } from '../../../../../libs/shared/settings';
+import {not} from "rxjs/internal/util/not";
 
 @Injectable()
 export class UserQueryRepository {
@@ -16,7 +17,7 @@ export class UserQueryRepository {
     userId,
     skip,
   }: UserIdWith<MyPostQuery>): Promise<MyPostsView> {
-    const userPosts = await this.prisma.user.findUnique({
+    const userPosts = await this.prisma.user.findMany({
       select: {
         userName: true,
         aboutMe: true,
@@ -40,7 +41,8 @@ export class UserQueryRepository {
       },
       where: {
         id: userId,
-      },
+        isDeleted: false
+      }
     });
 
     return MyPostsView.toView(userPosts);

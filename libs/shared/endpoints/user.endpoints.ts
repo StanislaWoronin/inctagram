@@ -9,8 +9,14 @@ export const userEndpoints = {
     return endpoint;
   },
 
+  deletePost(test = false, postId?: string): string {
+    const endpoint = 'post';
+    if (test) return `/${this.default()}/${endpoint}/${postId}`;
+    return `${endpoint}/:postId`;
+  },
+
   getUserProfile(test = false): string {
-    const endpoint = '';
+    const endpoint = 'post';
     if (test) return `/${this.default()}`;
     return endpoint;
   },
@@ -24,7 +30,7 @@ export const userEndpoints = {
   updatePost(test = false, userId?: string): string {
     const endpoint = 'post';
     if (test) return `/${this.default()}/${endpoint}/${userId}`;
-    return `endpoint/:userId`;
+    return `${endpoint}/:userId`;
   },
 
   updateUserProfile(test = false): string {

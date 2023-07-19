@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -18,7 +18,7 @@ import { UserFacade } from './application-services';
 import { UpdateUserProfileDto } from './dto/update-user.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import {
-  ApiCreatePost,
+  ApiCreatePost, ApiDeletePost,
   ApiGetUser,
   ApiMyPosts,
   ApiUpdatePost,
@@ -35,6 +35,7 @@ import { CreatedPostView } from './view-model/created-post.view-model';
 import { ImagesValidator } from '../../file-storage/image-validator/images.validator';
 import { MyPostQuery } from './dto/my-post.query';
 import { MyPostsView } from './view-model/my-posts.view-model';
+import {DeletePostDto} from "./dto/delete-post.dto";
 
 @Controller(userEndpoints.default())
 @UseGuards(AuthBearerGuard)
@@ -57,6 +58,25 @@ export class UserController {
     });
   }
 
+  // Delete user post
+  @Delete(userEndpoints.deletePost())
+  @ApiDeletePost()
+  async deletePost(
+    @Body() dto: DeletePostDto,
+    @Param() postId: string,
+  ): Promise<boolean> {
+    return this.userFacade.commands.deletePost({postId, ...dto})
+  }
+
+  // Return user profile with avatar photo
+  @Get(userEndpoints.getUserProfile())
+  @ApiGetUser()
+  async getUserProfile(
+    @CurrentUser() userId: string,
+  ): Promise<ViewUserWithInfo> {
+    return await this.userFacade.queries.getUserProfile(userId);
+  }
+
   // Return current user posts
   @Get(userEndpoints.myPosts())
   @ApiMyPosts()
@@ -68,15 +88,6 @@ export class UserController {
       userId,
       skip: query.skip,
     });
-  }
-
-  // Return user profile with avatar photo
-  @Get(userEndpoints.getUserProfile())
-  @ApiGetUser()
-  async getUserProfile(
-    @CurrentUser() userId: string,
-  ): Promise<ViewUserWithInfo> {
-    return await this.userFacade.queries.getUserProfile(userId);
   }
 
   // Update user profile set additional info about user
@@ -96,8 +107,8 @@ export class UserController {
   @ApiUpdatePost()
   async updatePost(
     @Body() dto: PostDto,
-    @Param() postId: string,
     @CurrentUser() userId: string,
+    @Param() postId: string,
   ): Promise<boolean> {
     return await this.userFacade.commands.updatePost({
       userId,

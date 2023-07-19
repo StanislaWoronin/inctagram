@@ -20,6 +20,8 @@ import { ApiImplicitFile } from '@nestjs/swagger/dist/decorators/api-implicit-fi
 import { fileStorageConstants } from '../../../apps/file-storage/image-validator/file-storage.constants';
 import { UpdatePostDto } from '../../../apps/main-app/users/dto/update-post.dto';
 import { PostDto } from '../../../apps/main-app/users/dto/post.dto';
+import {MyPostsView} from "../../../apps/main-app/users/view-model/my-posts.view-model";
+import {DeletePostDto} from "../../../apps/main-app/users/dto/delete-post.dto";
 
 export function ApiCreatePost() {
   return applyDecorators(
@@ -54,6 +56,21 @@ export function ApiCreatePost() {
   );
 }
 
+export function ApiDeletePost() {
+  return applyDecorators(
+      ApiTags('User'),
+      ApiOperation({ summary: 'Delete user\'s post.' }),
+      ApiBearerAuth(),
+      ApiBody({
+        type: DeletePostDto,
+      }),
+      ApiNoContentResponse(),
+      ApiUnauthorizedResponse({
+        description: 'If the JWT access token is missing, expired or incorrect',
+      }),
+  )
+}
+
 export function ApiGetUser() {
   return applyDecorators(
     ApiTags('User'),
@@ -76,6 +93,13 @@ export function ApiMyPosts() {
       summary: 'Return current user posts.',
     }),
     ApiBearerAuth(),
+      ApiOkResponse({
+        description: 'Return current user posts.',
+        type: MyPostsView,
+      }),
+      ApiUnauthorizedResponse({
+        description: 'If the JWT access token is missing, expired or incorrect',
+      }),
   );
 }
 

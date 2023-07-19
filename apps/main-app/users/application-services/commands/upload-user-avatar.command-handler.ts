@@ -6,7 +6,7 @@ import { Inject } from '@nestjs/common';
 import { Microservices } from '../../../../../libs/shared/enums/microservices-name.enum';
 import { ClientProxy } from '@nestjs/microservices';
 import { FileStorageRepository } from '../../db.providers/images/file.storage.repository';
-import { UserIdWith } from '../../dto/user-with.dto';
+import { UserIdWith } from '../../dto/id-with.dto';
 
 export class UploadUserAvatarCommand {
   constructor(public readonly dto: UserIdWith<AvatarDto>) {}

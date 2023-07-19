@@ -3,7 +3,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AvatarDto } from '../../main-app/users/dto/avatar.dto';
 import { UpdateAvatarCommand } from './commands/update-avatar-command.handler';
 import { UploadPostImagesCommand } from './commands/upload-post-image.command-handler';
-import { UserIdWith } from '../../main-app/users/dto/user-with.dto';
+import { UserIdWith } from '../../main-app/users/dto/id-with.dto';
 import { PostImagesDto } from '../../main-app/users/dto/post-images.dto';
 
 @Injectable()

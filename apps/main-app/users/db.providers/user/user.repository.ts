@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Device, EmailConfirmation, Prisma, User } from '@prisma/client';
+import {Device, EmailConfirmation, Prisma, Role, User} from '@prisma/client';
 import { PrismaService } from '../../../../../libs/providers/prisma/prisma.service';
 import { PasswordRecovery } from '../../entities/password-recovery.entity';
 import { UpdateUserProfileDto } from '../../dto/update-user.dto';
-import { UserIdWith } from '../../dto/user-with.dto';
+import {PostIdWith, UserIdWith} from '../../dto/id-with.dto';
 import { UpdatePostDto } from '../../dto/update-post.dto';
+import {DeletePostDto} from "../../dto/delete-post.dto";
 
 @Injectable()
 export class UserRepository {
@@ -14,7 +15,7 @@ export class UserRepository {
     user: Prisma.UserCreateInput,
     emailConfirmation: EmailConfirmation,
   ): Promise<User> {
-    return this.prisma.user.create({
+    return await this.prisma.user.create({
       data: {
         userName: user.userName,
         email: user.email,
@@ -27,6 +28,39 @@ export class UserRepository {
         },
       },
     });
+  }
+
+  async createReasonDeletingPost(postId: string, role: Role): Promise<boolean> {
+    const result = await this.prisma.deletedPosts.create({
+      data: {
+        postId,
+        deleteAt: Date.now().toString(),
+        deleteBy: role
+      }
+    })
+
+    return typeof result !== null;
+  }
+
+  async deleteReasonDeletingPost(postId: string): Promise<boolean> {
+    const result = await this.prisma.deletedPosts.delete({
+      where: {postId}
+    })
+
+    return typeof result !== null;
+  }
+
+  async updateDeleteStatus(
+    dto: PostIdWith<DeletePostDto>
+  ): Promise<boolean> {
+    const result = await this.prisma.posts.update({
+      where: { id: dto.postId },
+      data: {
+        isDeleted: dto.isDeleted
+      }
+    })
+
+    return typeof result !== null;
   }
 
   async mergeUserProfile(

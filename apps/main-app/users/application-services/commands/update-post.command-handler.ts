@@ -1,4 +1,4 @@
-import { UserIdWith } from '../../dto/user-with.dto';
+import { UserIdWith } from '../../dto/id-with.dto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UserRepository } from '../../db.providers/user/user.repository';
 import { UpdatePostDto } from '../../dto/update-post.dto';
