@@ -1,4 +1,4 @@
-import { UpdateAvatarDto } from '../../dto/update-avatar.dto';
+import { AvatarDto } from '../../dto/avatar.dto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Commands } from '../../../../../libs/shared/enums/pattern-commands-name.enum';
 import { lastValueFrom, map } from 'rxjs';
@@ -6,9 +6,10 @@ import { Inject } from '@nestjs/common';
 import { Microservices } from '../../../../../libs/shared/enums/microservices-name.enum';
 import { ClientProxy } from '@nestjs/microservices';
 import { FileStorageRepository } from '../../db.providers/images/file.storage.repository';
+import {UserIdWith} from "../../dto/user-with.dto";
 
 export class UploadUserAvatarCommand {
-  constructor(public readonly dto: UpdateAvatarDto) {}
+  constructor(public readonly dto: UserIdWith<AvatarDto>) {}
 }
 
 @CommandHandler(UploadUserAvatarCommand)

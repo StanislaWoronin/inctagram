@@ -16,27 +16,29 @@ import { GetViewUserWithInfoQuery } from './queries/get-view-user-with-info.quer
 import { UpdateUserProfileCommandHandler } from './commands/update-user-profile-command.handler';
 import { UploadAvatarCommandHandler } from './commands/upload-user-avatar.command-handler';
 import { CreatePostCommandHandler } from './commands/create-post.command-handler';
+import {UpdatePostCommandHandler} from "./commands/update-post.command-handler";
 
 export * from './user.facade';
 
 export const USER_COMMANDS_HANDLERS: Type<ICommandHandler>[] = [
+  ConfirmationCodeResendingCommandHandler,
   CreatePostCommandHandler,
   CreateUserCommandHandler,
+  DeleteUserByIdCommandHandler,
   LoginUserCommandHandler,
   LogoutCommandHandler,
-  ConfirmationCodeResendingCommandHandler,
-  RegistrationConfirmationCommandHandler,
   PasswordRecoveryCommandHandler,
+  RegistrationConfirmationCommandHandler,
   UpdatePairTokenCommandHandler,
   UpdatePasswordCommandHandler,
-  DeleteUserByIdCommandHandler,
+  UpdatePostCommandHandler,
   UpdateUserProfileCommandHandler,
   UploadAvatarCommandHandler,
 ];
 
 export const USER_QUERIES_HANDLERS: Type<IQueryHandler>[] = [
-  GetUserByIdUserNameOrEmailQuery,
   GetUserByConfirmationCodeQuery,
+  GetUserByIdUserNameOrEmailQuery,
   GetUserByRecoveryCodeQuery,
   GetViewUserWithInfoQuery,
 ];

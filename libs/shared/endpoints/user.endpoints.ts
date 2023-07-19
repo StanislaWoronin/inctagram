@@ -21,14 +21,20 @@ export const userEndpoints = {
     return endpoint;
   },
 
+  updatePost(test = false, userId?: string): string {
+    const endpoint = 'post';
+    if (test) return `/${this.default()}/${endpoint}/${userId}`;
+    return `endpoint/:userId`;
+  },
+
   updateUserProfile(test = false): string {
-    const endpoint = `update-profile`;
+    const endpoint = `profile`;
     if (test) return `/${this.default()}/${endpoint}`;
     return endpoint;
   },
 
   uploadUserAvatar(test = false): string {
-    const endpoint = `upload-avatar`;
+    const endpoint = `avatar`;
     if (test) return `/${this.default()}/${endpoint}`;
     return endpoint;
   },

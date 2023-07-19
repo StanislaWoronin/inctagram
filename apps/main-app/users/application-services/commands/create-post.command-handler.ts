@@ -1,4 +1,3 @@
-import { UploadPostImagesDto } from '../../dto/create-post.dto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreatedPostView } from '../../view-model/created-post.view-model';
 import { Inject } from '@nestjs/common';
@@ -7,9 +6,11 @@ import { ClientProxy } from '@nestjs/microservices';
 import { FileStorageRepository } from '../../db.providers/images/file.storage.repository';
 import { Commands } from '../../../../../libs/shared/enums/pattern-commands-name.enum';
 import { lastValueFrom, map } from 'rxjs';
+import {UserIdWith} from "../../dto/user-with.dto";
+import {PostImagesDto} from "../../dto/post-images.dto";
 
 export class CreatePostCommand {
-  constructor(public readonly dto: UploadPostImagesDto) {}
+  constructor(public readonly dto: UserIdWith<PostImagesDto>) {}
 }
 
 @CommandHandler(CreatePostCommand)

@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { UpdateAvatarDto } from '../../main-app/users/dto/update-avatar.dto';
+import { AvatarDto } from '../../main-app/users/dto/avatar.dto';
 import { UpdateAvatarCommand } from './commands/update-avatar-command.handler';
-import { UploadPostImagesDto } from '../../main-app/users/dto/create-post.dto';
 import { UploadPostImagesCommand } from './commands/upload-post-image.command-handler';
+import {UserIdWith} from "../../main-app/users/dto/user-with.dto";
+import {PostImagesDto} from "../../main-app/users/dto/post-images.dto";
 
 @Injectable()
 export class FileStorageFacade {
@@ -13,20 +14,20 @@ export class FileStorageFacade {
   ) {}
 
   commands = {
-    updateAvatar: (dto: UpdateAvatarDto) => this.updateAvatar(dto),
-    uploadPostImage: (dto: UploadPostImagesDto) => this.uploadPostImage(dto),
+    updateAvatar: (dto: UserIdWith<AvatarDto>) => this.updateAvatar(dto),
+    uploadPostImage: (dto: UserIdWith<PostImagesDto>) => this.uploadPostImage(dto),
   };
   queries = {
     //getMainImage: (userId: string) => this.getMainImage(userId),
   };
 
   // Commands
-  private async updateAvatar(dto: UpdateAvatarDto): Promise<string> {
+  private async updateAvatar(dto: UserIdWith<AvatarDto>): Promise<string> {
     const command = new UpdateAvatarCommand(dto);
     return await this.commandBus.execute(command);
   }
 
-  private async uploadPostImage(dto: UploadPostImagesDto): Promise<string[]> {
+  private async uploadPostImage(dto: UserIdWith<PostImagesDto>): Promise<string[]> {
     const command = new UploadPostImagesCommand(dto);
     return await this.commandBus.execute(command);
   }

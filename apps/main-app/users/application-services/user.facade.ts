@@ -30,14 +30,16 @@ import { UpdateUserProfileCommand } from './commands/update-user-profile-command
 import { MergeProfileCommand } from './commands/merge-profile.command-handler';
 import { ViewUserWithInfo } from '../view-model/user-with-info.view-model';
 import { UploadUserAvatarCommand } from './commands/upload-user-avatar.command-handler';
-import { UpdateAvatarDto } from '../dto/update-avatar.dto';
-import { UploadPostImagesDto } from '../dto/create-post.dto';
+import { AvatarDto } from '../dto/avatar.dto';
 import { CreatedPostView } from '../view-model/created-post.view-model';
 import { CreatePostCommand } from './commands/create-post.command-handler';
 import {MyPostsView} from "../view-model/my-posts.view-model";
 import {UserIdWith} from "../dto/user-with.dto";
 import {MyPostQuery} from "../dto/my-post.query";
 import {GetMyPostsCommand} from "./queries/get-my-posts.query";
+import {UpdatePostCommand} from "./commands/update-post.command-handler";
+import {PostImagesDto} from "../dto/post-images.dto";
+import {UpdatePostDto} from "../dto/update-post.dto";
 
 @Injectable()
 export class UserFacade {
@@ -47,7 +49,7 @@ export class UserFacade {
   ) {}
 
   commands = {
-    createPost: (dto: UploadPostImagesDto) => this.createPost(dto),
+    createPost: (dto: UserIdWith<PostImagesDto>) => this.createPost(dto),
     loginUser: (dto: WithClientMeta<LoginDto>) => this.loginUser(dto),
     logout: (deviceId: string) => this.logout(deviceId),
     mergeProfile: (dto: RegistrationDto) => this.mergeProfile(dto),
@@ -60,9 +62,10 @@ export class UserFacade {
       this.confirmationCodeResending(dto),
     registrationConfirmation: (dto: RegistrationConfirmationDto) =>
       this.registrationConfirmation(dto),
-    updateUserProfile: (dto: UpdateUserProfileDto, userId: string) =>
-      this.updateUserProfile(dto, userId),
-    uploadUserAvatar: (dto: UpdateAvatarDto) => this.uploadUserAvatar(dto),
+    updatePost: (dto: UserIdWith<UpdatePostDto>) => this.updatePost(dto),
+    updateUserProfile: (dto: UserIdWith<UpdateUserProfileDto>) =>
+      this.updateUserProfile(dto),
+    uploadUserAvatar: (dto: UserIdWith<AvatarDto>) => this.uploadUserAvatar(dto),
     deleteUserById: (userId: string) => this.deleteUserById(userId),
   };
   queries = {
@@ -75,7 +78,7 @@ export class UserFacade {
     getUserProfile: (userId: string) => this.getUserProfile(userId),
   };
 
-  private async createPost(dto: UploadPostImagesDto): Promise<CreatedPostView> {
+  private async createPost(dto: UserIdWith<PostImagesDto>): Promise<CreatedPostView> {
     const command = new CreatePostCommand(dto);
     return await this.commandBus.execute(command);
   }
@@ -138,15 +141,19 @@ export class UserFacade {
     return await this.commandBus.execute(command);
   }
 
-  private async updateUserProfile(
-    dto: UpdateUserProfileDto,
-    userId: string,
-  ): Promise<boolean> {
-    const command = new UpdateUserProfileCommand(dto, userId);
+  private async updatePost(dto: UserIdWith<UpdatePostDto>): Promise<boolean> {
+    const command = new UpdatePostCommand(dto);
     return await this.commandBus.execute(command);
   }
 
-  private async uploadUserAvatar(dto: UpdateAvatarDto): Promise<boolean> {
+  private async updateUserProfile(
+    dto: UserIdWith<UpdateUserProfileDto>,
+  ): Promise<boolean> {
+    const command = new UpdateUserProfileCommand(dto);
+    return await this.commandBus.execute(command);
+  }
+
+  private async uploadUserAvatar(dto: UserIdWith<AvatarDto>): Promise<boolean> {
     const command = new UploadUserAvatarCommand(dto);
     return await this.commandBus.execute(command);
   }

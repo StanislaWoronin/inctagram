@@ -26,6 +26,7 @@ export class UserQueryRepository {
         },
         Posts: {
           select: {
+            id: true,
             Photos: {
               select: {
                 photoLink: true

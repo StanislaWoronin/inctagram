@@ -3,7 +3,7 @@ import {
   Controller,
   Get,
   HttpCode,
-  HttpStatus,
+  HttpStatus, Param,
   Post,
   Put, Query,
   UploadedFile,
@@ -17,7 +17,7 @@ import { UpdateUserProfileDto } from './dto/update-user.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import {
   ApiCreatePost,
-  ApiGetUser, ApiMyPosts,
+  ApiGetUser, ApiMyPosts, ApiUpdatePost,
   ApiUpdateProfile,
   ApiUploadAvatar,
 } from '../../../libs/documentation/swagger/user.documentation';
@@ -26,24 +26,25 @@ import { ViewUserWithInfo } from './view-model/user-with-info.view-model';
 import { fileStorageConstants } from '../../file-storage/image-validator/file-storage.constants';
 import { ImageValidator } from '../../file-storage/image-validator/image.validator';
 import { userEndpoints } from '../../../libs/shared/endpoints/user.endpoints';
-import { CreatePostDto } from './dto/create-post.dto';
+import {PostDto} from './dto/post.dto';
 import { CreatedPostView } from './view-model/created-post.view-model';
 import { ImagesValidator } from '../../file-storage/image-validator/images.validator';
 import {MyPostQuery} from "./dto/my-post.query";
 import {MyPostsView} from "./view-model/my-posts.view-model";
+import {UpdatePostDto} from "./dto/update-post.dto";
 
 @Controller(userEndpoints.default())
+@UseGuards(AuthBearerGuard)
 export class UserController {
   constructor(private readonly userFacade: UserFacade) {}
 
   // Create new post with description
   @Post(userEndpoints.createPost())
-  @UseGuards(AuthBearerGuard)
   @ApiCreatePost()
   @UseInterceptors(FilesInterceptor(fileStorageConstants.post.name))
   async createPost(
     @CurrentUser() userId: string,
-    @Body() dto: CreatePostDto,
+    @Body() dto: PostDto,
     @UploadedFiles(new ImagesValidator()) postPhotos: Buffer[],
   ): Promise<CreatedPostView> {
     return this.userFacade.commands.createPost({
@@ -55,7 +56,6 @@ export class UserController {
 
   // Return current user posts
   @Get(userEndpoints.myPosts())
-  @UseGuards(AuthBearerGuard)
   @ApiMyPosts()
   async getMyPosts(
     @Query() query: MyPostQuery,
@@ -66,7 +66,6 @@ export class UserController {
 
   // Return user profile with avatar photo
   @Get(userEndpoints.getUserProfile())
-  @UseGuards(AuthBearerGuard)
   @ApiGetUser()
   async getUserProfile(
     @CurrentUser() userId: string,
@@ -77,19 +76,29 @@ export class UserController {
   // Update user profile set additional info about user
   @Put(userEndpoints.updateUserProfile())
   @HttpCode(HttpStatus.NO_CONTENT)
-  @UseGuards(AuthBearerGuard)
   @ApiUpdateProfile()
   async updateUserProfile(
     @Body() dto: UpdateUserProfileDto,
     @CurrentUser() userId: string,
   ): Promise<boolean> {
-    return await this.userFacade.commands.updateUserProfile(dto, userId);
+    return await this.userFacade.commands.updateUserProfile({userId, ...dto});
+  }
+
+  // Update user's post
+  @Put(userEndpoints.updatePost())
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiUpdatePost()
+  async updatePost(
+    @Body() dto: PostDto,
+    @Param() postId: string,
+    @CurrentUser() userId: string,
+  ): Promise<boolean> {
+    return await this.userFacade.commands.updatePost({userId, postId, description: dto.description})
   }
 
   // Upload user avatar
   @Post(userEndpoints.uploadUserAvatar())
   @HttpCode(HttpStatus.NO_CONTENT)
-  @UseGuards(AuthBearerGuard)
   @ApiUploadAvatar()
   @UseInterceptors(FileInterceptor(fileStorageConstants.avatar.name))
   async uploadUserAvatar(
@@ -99,7 +108,7 @@ export class UserController {
   ): Promise<boolean> {
     return await this.userFacade.commands.uploadUserAvatar({
       userId,
-      file: avatar,
+      avatar: avatar,
     });
   }
 }
