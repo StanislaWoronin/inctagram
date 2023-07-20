@@ -61,16 +61,19 @@ export class UserController {
     });
   }
 
-  // Delete user post
-  @Delete(userEndpoints.deletePost())
-  @ApiDeletePost()
-  async deletePost(
-    @Body() dto: DeletePostDto,
-    @Param() postId: ParamsId,
+  // Upload user avatar
+  @Post(userEndpoints.uploadUserAvatar())
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiUploadAvatar()
+  @UseInterceptors(FileInterceptor(fileStorageConstants.avatar.name))
+  async uploadUserAvatar(
+    @CurrentUser() userId: string,
+    @UploadedFile(new ImageValidator())
+    avatar: Buffer,
   ): Promise<boolean> {
-    return this.userFacade.commands.deletePost({
-      postId: postId.id,
-      ...dto,
+    return await this.userFacade.commands.uploadUserAvatar({
+      userId,
+      avatar: avatar,
     });
   }
 
@@ -123,19 +126,16 @@ export class UserController {
     });
   }
 
-  // Upload user avatar
-  @Post(userEndpoints.uploadUserAvatar())
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiUploadAvatar()
-  @UseInterceptors(FileInterceptor(fileStorageConstants.avatar.name))
-  async uploadUserAvatar(
-    @CurrentUser() userId: string,
-    @UploadedFile(new ImageValidator())
-    avatar: Buffer,
+  // Delete user post
+  @Delete(userEndpoints.deletePost())
+  @ApiDeletePost()
+  async deletePost(
+    @Body() dto: DeletePostDto,
+    @Param() postId: ParamsId,
   ): Promise<boolean> {
-    return await this.userFacade.commands.uploadUserAvatar({
-      userId,
-      avatar: avatar,
+    return this.userFacade.commands.deletePost({
+      postId: postId.id,
+      ...dto,
     });
   }
 }

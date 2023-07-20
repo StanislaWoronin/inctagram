@@ -100,7 +100,7 @@ export function ApiUpdateProfile() {
   return applyDecorators(
     ApiTags('User'),
     ApiOperation({
-      summary: 'Update info about user.',
+      summary: 'Update user profile. Set additional info about user.',
     }),
     ApiBearerAuth(),
     ApiBody({

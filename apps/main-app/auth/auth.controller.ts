@@ -40,6 +40,7 @@ import { TCreateUserResponse } from '../users/application-services/commands/crea
 import { authEndpoints } from '../../../libs/shared/endpoints/auth.endpoints';
 import { ConfigService } from '@nestjs/config';
 import { RegistrationConfirmationResponse } from './view-model/registration-confirmation.response';
+import {PasswordRecoveryDto} from "./dto/password-recovery.dto";
 
 @Controller(authEndpoints.default())
 export class AuthController {
@@ -86,12 +87,6 @@ export class AuthController {
     return this.userFacade.commands.logout(deviceId);
   }
 
-  @Put(authEndpoints.mergeProfile())
-  @ApiMergeProfile()
-  async mergeProfile(@Body() dto: RegistrationDto): Promise<ViewUser | null> {
-    return await this.userFacade.commands.mergeProfile(dto);
-  }
-
   @Post(authEndpoints.newPassword())
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNewPassword()
@@ -102,7 +97,9 @@ export class AuthController {
   @Post(authEndpoints.passwordRecovery())
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiPasswordRecovery()
-  async passwordRecovery(@Body() dto: EmailDto): Promise<boolean> {
+  async passwordRecovery(
+    @Body() dto: PasswordRecoveryDto
+  ): Promise<boolean> {
     return await this.userFacade.commands.passwordRecovery(dto);
   }
 
@@ -161,5 +158,11 @@ export class AuthController {
     }
 
     return;
+  }
+
+  @Put(authEndpoints.mergeProfile())
+  @ApiMergeProfile()
+  async mergeProfile(@Body() dto: RegistrationDto): Promise<ViewUser | null> {
+    return await this.userFacade.commands.mergeProfile(dto);
   }
 }

@@ -16,8 +16,8 @@ export const userEndpoints = {
   },
 
   getUserProfile(test = false): string {
-    const endpoint = 'post';
-    if (test) return `/${this.default()}`;
+    const endpoint = 'me';
+    if (test) return `/${this.default()}/${endpoint}`;
     return endpoint;
   },
 
@@ -34,7 +34,7 @@ export const userEndpoints = {
   },
 
   updateUserProfile(test = false): string {
-    const endpoint = `profile`;
+    const endpoint = `me`;
     if (test) return `/${this.default()}/${endpoint}`;
     return endpoint;
   },
