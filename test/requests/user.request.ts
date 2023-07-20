@@ -7,7 +7,7 @@ import { ViewUserWithInfo } from '../../apps/main-app/users/view-model/user-with
 import { fileStorageConstants } from '../../apps/file-storage/image-validator/file-storage.constants';
 import { userEndpoints } from '../../libs/shared/endpoints/user.endpoints';
 import { TUpdateUserProfileTestDto } from '../types/update-user-profile.test-dto';
-import sharp from 'sharp';
+import * as fs from 'fs';
 
 export class UserRequest {
   constructor(private readonly server: any) {}
@@ -38,14 +38,6 @@ export class UserRequest {
     imageName: Images,
     accessToken?: string,
   ): Promise<TestResponseType<ErrorResponse>> {
-    // if (!accessToken) {
-    //   const response = await request(this.server)
-    //     .post(userEndpoints.uploadUserAvatar(true))
-    //     .auth(accessToken, { type: 'bearer' });
-    //
-    //   return { body: response.body, status: response.status };
-    // }
-
     const imagePath = join(
       __dirname,
       '..',
@@ -53,11 +45,12 @@ export class UserRequest {
       'avatar',
       images.avatar[imageName],
     );
+    const file = fs.readFileSync(imagePath);
 
     const response = await request(this.server)
       .post(userEndpoints.uploadUserAvatar(true))
       .auth(accessToken, { type: 'bearer' })
-      .attach(fileStorageConstants.avatar.name, imagePath);
+      .attach(fileStorageConstants.avatar.name, file);
 
     return { status: response.status, body: response.body };
   }

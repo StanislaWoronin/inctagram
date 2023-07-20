@@ -40,7 +40,7 @@ import { TCreateUserResponse } from '../users/application-services/commands/crea
 import { authEndpoints } from '../../../libs/shared/endpoints/auth.endpoints';
 import { ConfigService } from '@nestjs/config';
 import { RegistrationConfirmationResponse } from './view-model/registration-confirmation.response';
-import {PasswordRecoveryDto} from "./dto/password-recovery.dto";
+import { PasswordRecoveryDto } from './dto/password-recovery.dto';
 
 @Controller(authEndpoints.default())
 export class AuthController {
@@ -97,9 +97,7 @@ export class AuthController {
   @Post(authEndpoints.passwordRecovery())
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiPasswordRecovery()
-  async passwordRecovery(
-    @Body() dto: PasswordRecoveryDto
-  ): Promise<boolean> {
+  async passwordRecovery(@Body() dto: PasswordRecoveryDto): Promise<boolean> {
     return await this.userFacade.commands.passwordRecovery(dto);
   }
 

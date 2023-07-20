@@ -17,8 +17,8 @@ import { UserQueryRepository } from '../users/db.providers/user/user-query.repos
 import { UserRepository } from '../users/db.providers/user/user.repository';
 import { IsValidBirthdayFormatConstraint } from '../../../libs/decorators/birthday-format.decorator';
 import { IsDifferentPasswordConstraint } from '../../../libs/decorators/different-password.decorator';
-import {RecaptchaAdapter} from "../../../libs/adapters/recaptcha.adapter/recaptcha.adapter";
-import {IsValidCaptchaConstraint} from "../../../libs/decorators/is-valid-captcha.decorator";
+import { RecaptchaAdapter } from '../../../libs/adapters/recaptcha.adapter/recaptcha.adapter';
+import { IsValidCaptchaConstraint } from '../../../libs/decorators/is-valid-captcha.decorator';
 
 @Module({
   imports: [UserModule, CqrsModule, SharedModule, JwtModule.register({})],

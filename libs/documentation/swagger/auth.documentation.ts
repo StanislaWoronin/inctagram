@@ -19,7 +19,7 @@ import { LoginDto } from '../../../apps/main-app/auth/dto/login.dto';
 import { EmailDto } from '../../../apps/main-app/auth/dto/email.dto';
 import { RegistrationConfirmationDto } from '../../../apps/main-app/auth/dto/registration-confirmation.dto';
 import { NewPasswordDto } from '../../../apps/main-app/auth/dto/new-password.dto';
-import {PasswordRecoveryDto} from "../../../apps/main-app/auth/dto/password-recovery.dto";
+import { PasswordRecoveryDto } from '../../../apps/main-app/auth/dto/password-recovery.dto';
 
 export function ApiRegistration() {
   return applyDecorators(
