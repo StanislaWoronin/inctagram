@@ -14,7 +14,7 @@ import {
 import { TestingRepository } from './testing.repository';
 import { testingEndpoints } from '../../libs/shared/endpoints/testing.endpoints';
 
-@Controller()
+@Controller(testingEndpoints.default())
 export class AppController {
   constructor(private readonly testingRepository: TestingRepository) {}
 

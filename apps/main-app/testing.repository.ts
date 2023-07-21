@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Tokens } from '../../libs/shared/enums/tokens.enum';
 import { settings } from '../../libs/shared/settings';
 import { FullUser } from '../../test/types/full-user.type';
-import { decodeBirthday, encodeBirthday } from '../../libs/shared/helpers';
+import { decodeBirthday } from '../../libs/shared/helpers';
 
 @Injectable()
 export class TestingRepository {
