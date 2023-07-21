@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { AppController } from './app.controller';
+import { TestingController } from './testing/testing.controller';
 import { SharedModule } from '../../libs/shared/shared.module';
 import { AuthModule } from './auth/auth.module';
-import { TestingRepository } from './testing.repository';
+import { TestingRepository } from './testing/testing.repository';
 import { PrismaService } from '../../libs/providers/prisma/prisma.service';
 import { ClientsModule } from '@nestjs/microservices';
 import { getProviderOptions } from '../../libs/providers/rabbit-mq/providers.option';
@@ -23,7 +23,7 @@ import { JwtService } from '@nestjs/jwt';
       serveRoot: process.env.NODE_ENV === 'development' ? '/' : '/swagger',
     }),
   ],
-  controllers: [AppController],
+  controllers: [TestingController],
   providers: [TestingRepository, PrismaService, JwtService],
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Requests } from './requests/requests';
-import { TestingRepository } from '../apps/main-app/testing.repository';
+import { TestingRepository } from '../apps/main-app/testing/testing.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../apps/main-app/app.module';
 import { EmailManager } from '../libs/adapters/email.adapter';

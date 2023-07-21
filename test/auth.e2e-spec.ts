@@ -5,7 +5,7 @@ import {
   preparedLoginData,
   preparedRegistrationData,
 } from './prepared-data/prepared-auth.data';
-import { TestingRepository } from '../apps/main-app/testing.repository';
+import { TestingRepository } from '../apps/main-app/testing/testing.repository';
 import { errorsMessage } from './response/error.response';
 import { EmailManager } from '../libs/adapters/email.adapter';
 import { EmailManagerMock } from './mock/email-adapter.mock';

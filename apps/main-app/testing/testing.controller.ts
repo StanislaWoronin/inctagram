@@ -10,19 +10,13 @@ import { ApiExcludeEndpoint } from '@nestjs/swagger';
 import {
   ApiDropDatabase,
   GetUserFromDatabaseTest,
-} from '../../libs/documentation/swagger/auth.documentation';
+} from '../../../libs/documentation/swagger/auth.documentation';
 import { TestingRepository } from './testing.repository';
-import { testingEndpoints } from '../../libs/shared/endpoints/testing.endpoints';
+import { testingEndpoints } from '../../../libs/shared/endpoints/testing.endpoints';
 
 @Controller(testingEndpoints.default())
-export class AppController {
+export class TestingController {
   constructor(private readonly testingRepository: TestingRepository) {}
-
-  @Get()
-  @ApiExcludeEndpoint()
-  async mainEntry() {
-    return 'Welcome to INCTAGRAM API!!!';
-  }
 
   @Delete(testingEndpoints.deleteAll())
   @HttpCode(HttpStatus.NO_CONTENT)

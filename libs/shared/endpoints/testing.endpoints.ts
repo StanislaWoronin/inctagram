@@ -4,14 +4,14 @@ export const testingEndpoints = {
   },
 
   deleteAll(test = false): string {
-    const url = `${this.default()}/delete-all`;
-    if (test) return `/${url}`;
-    return url;
+    const endpoint = `/delete-all`;
+    if (test) return `/${endpoint}`;
+    return endpoint;
   },
 
   getUserTest(test = false, data?: string): string {
-    const url = `${this.default()}/users`;
-    if (test) return `/${url}/${data}`;
-    return `${url}/:data`;
+    const endpoint = `users`;
+    if (test) return `/${this.default}/${endpoint}/${data}`;
+    return `${endpoint}/:data`;
   },
 };
