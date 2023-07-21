@@ -31,7 +31,7 @@ export class ViewUserWithInfo extends ViewUser {
   })
   avatarLink: string | null;
 
-  static toView(user: Partial<FullUser>) {
+  static toViewProfile(user: Partial<FullUser>) {
     let birthday = null;
     if (user.birthday) birthday = decodeBirthday(user.birthday);
 

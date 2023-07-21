@@ -7,7 +7,7 @@ import { ViewUserWithInfo } from '../../apps/main-app/users/view-model/user-with
 import { fileStorageConstants } from '../../apps/file-storage/image-validator/file-storage.constants';
 import { userEndpoints } from '../../libs/shared/endpoints/user.endpoints';
 import { TUpdateUserProfileTestDto } from '../types/update-user-profile.test-dto';
-import * as fs from 'fs';
+import { readFileSync } from 'fs';
 
 export class UserRequest {
   constructor(private readonly server: any) {}
@@ -45,7 +45,7 @@ export class UserRequest {
       'avatar',
       images.avatar[imageName],
     );
-    const file = fs.readFileSync(imagePath);
+    const file = readFileSync(imagePath);
 
     const response = await request(this.server)
       .post(userEndpoints.uploadUserAvatar(true))

@@ -53,7 +53,8 @@ export class UserFacade {
   commands = {
     createPost: (dto: UserIdWith<PostImagesDto>) => this.createPost(dto),
     deletePost: (dto: PostIdWith<DeletePostDto>) => this.deletePost(dto),
-    loginUser: (dto: WithClientMeta<LoginDto>) => this.loginUser(dto),
+    loginUser: (dto: WithClientMeta<UserIdWith<LoginDto>>) =>
+      this.loginUser(dto),
     logout: (deviceId: string) => this.logout(deviceId),
     mergeProfile: (dto: RegistrationDto) => this.mergeProfile(dto),
     passwordRecovery: (dto: EmailDto) => this.passwordRecovery(dto),
@@ -95,7 +96,7 @@ export class UserFacade {
   }
 
   private async loginUser(
-    dto: WithClientMeta<LoginDto>,
+    dto: WithClientMeta<UserIdWith<LoginDto>>,
   ): Promise<PairTokenDto> {
     const command = new LoginUserCommand(dto);
     return await this.commandBus.execute(command);

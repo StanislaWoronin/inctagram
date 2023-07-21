@@ -35,12 +35,15 @@ import { LoginDto } from './dto/login.dto';
 import { EmailDto } from './dto/email.dto';
 import { NewPasswordDto } from './dto/new-password.dto';
 import { ViewUser } from '../users/view-model/user.view-model';
-import { TokenResponseViewModel } from './view-model/token-response.view-model';
+import { TokenResponseView } from './view-model/token-response.view';
 import { TCreateUserResponse } from '../users/application-services/commands/create-user.command-handler';
 import { authEndpoints } from '../../../libs/shared/endpoints/auth.endpoints';
 import { ConfigService } from '@nestjs/config';
 import { RegistrationConfirmationResponse } from './view-model/registration-confirmation.response';
 import { PasswordRecoveryDto } from './dto/password-recovery.dto';
+import { UserId } from '../../../libs/decorators/user-id.decorator';
+import { TLoginView } from './view-model/login.view-model';
+import { CheckCredentialGuard } from '../../../libs/guards/check-credential.guard';
 
 @Controller(authEndpoints.default())
 export class AuthController {
@@ -58,14 +61,17 @@ export class AuthController {
 
   @Post(authEndpoints.login())
   @HttpCode(HttpStatus.OK)
+  @UseGuards(CheckCredentialGuard)
   @ApiLogin()
   async login(
     @Body() body: LoginDto,
     @Ip() ipAddress: string,
     @Headers('user-agent') title: string,
     @Res({ passthrough: true }) response: Response,
-  ): Promise<TokenResponseViewModel> {
+    @CurrentUser() user: ViewUser,
+  ): Promise<TLoginView> {
     const dto = {
+      userId: user.id,
       ...body,
       ipAddress: ipAddress,
       title: title,
@@ -76,7 +82,7 @@ export class AuthController {
       secure: true,
       maxAge: settings.timeLife.TOKEN_TIME,
     });
-    return { accessToken: tokens.accessToken };
+    return { accessToken: tokens.accessToken, user };
   }
 
   @Post(authEndpoints.logout())
@@ -106,12 +112,12 @@ export class AuthController {
   @UseGuards(RefreshTokenValidationGuard)
   @ApiRefreshToken()
   async updatePairToken(
-    @CurrentUser() userId: string,
+    @UserId() userId: string,
     @CurrentDeviceId() deviceId: string,
     @Ip() ipAddress: string,
     @Headers('user-agent') title: string,
     @Res({ passthrough: true }) response: Response,
-  ): Promise<TokenResponseViewModel> {
+  ): Promise<TokenResponseView> {
     const dto = {
       userId: userId,
       deviceId: deviceId,

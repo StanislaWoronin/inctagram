@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class TokenResponseViewModel {
+export class TokenResponseView {
   @ApiProperty({
     type: String,
     description: 'Access token for user',

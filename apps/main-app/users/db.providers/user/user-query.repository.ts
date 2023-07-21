@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../../libs/providers/prisma/prisma.service';
-import { ViewUser } from '../../view-model/user.view-model';
+import { TExtendsViewUser, ViewUser } from '../../view-model/user.view-model';
 import { Device, Photos, User } from '@prisma/client';
 import { ViewUserWithInfo } from '../../view-model/user-with-info.view-model';
 import { UserIdWith } from '../../dto/id-with.dto';
@@ -90,14 +90,15 @@ export class UserQueryRepository {
     return !!user;
   }
 
-  async getUserWithPrivateField(value: string): Promise<{
-    id: string;
-    isConfirmed: boolean;
-    passwordHash: string;
-  } | null> {
-    return this.prisma.user.findFirst({
+  async getUserWithPrivateField(
+    value: string,
+  ): Promise<TExtendsViewUser | null> {
+    return await this.prisma.user.findFirst({
       select: {
         id: true,
+        userName: true,
+        email: true,
+        createdAt: true,
         passwordHash: true,
         isConfirmed: true,
       },
@@ -188,6 +189,6 @@ export class UserQueryRepository {
       },
     });
 
-    return ViewUserWithInfo.toView(user);
+    return ViewUserWithInfo.toViewProfile(user);
   }
 }

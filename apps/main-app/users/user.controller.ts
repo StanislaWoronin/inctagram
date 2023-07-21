@@ -14,7 +14,6 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { CurrentUser } from '../../../libs/decorators/current-user.decorator';
 import { UserFacade } from './application-services';
 import { UpdateUserProfileDto } from './dto/update-user.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
@@ -39,6 +38,7 @@ import { MyPostQuery } from './dto/my-post.query';
 import { MyPostsView } from './view-model/my-posts.view-model';
 import { DeletePostDto } from './dto/delete-post.dto';
 import { ParamsId } from '../../../libs/shared/dto/params-id';
+import { UserId } from '../../../libs/decorators/user-id.decorator';
 
 @Controller(userEndpoints.default())
 @UseGuards(AuthBearerGuard)
@@ -50,7 +50,7 @@ export class UserController {
   @ApiCreatePost()
   @UseInterceptors(FilesInterceptor(fileStorageConstants.post.name))
   async createPost(
-    @CurrentUser() userId: string,
+    @UserId() userId: string,
     @Body() dto: PostDto,
     @UploadedFiles(new ImagesValidator()) postPhotos: Buffer[],
   ): Promise<CreatedPostView> {
@@ -67,7 +67,7 @@ export class UserController {
   @ApiUploadAvatar()
   @UseInterceptors(FileInterceptor(fileStorageConstants.avatar.name))
   async uploadUserAvatar(
-    @CurrentUser() userId: string,
+    @UserId() userId: string,
     @UploadedFile(new ImageValidator())
     avatar: Buffer,
   ): Promise<boolean> {
@@ -80,9 +80,7 @@ export class UserController {
   // Return user profile with avatar photo
   @Get(userEndpoints.getUserProfile())
   @ApiGetUser()
-  async getUserProfile(
-    @CurrentUser() userId: string,
-  ): Promise<ViewUserWithInfo> {
+  async getUserProfile(@UserId() userId: string): Promise<ViewUserWithInfo> {
     return await this.userFacade.queries.getUserProfile(userId);
   }
 
@@ -91,7 +89,7 @@ export class UserController {
   @ApiMyPosts()
   async getMyPosts(
     @Query() query: MyPostQuery,
-    @CurrentUser() userId: string,
+    @UserId() userId: string,
   ): Promise<MyPostsView> {
     return await this.userFacade.queries.getMyPosts({
       userId,
@@ -105,7 +103,7 @@ export class UserController {
   @ApiUpdateProfile()
   async updateUserProfile(
     @Body() dto: UpdateUserProfileDto,
-    @CurrentUser() userId: string,
+    @UserId() userId: string,
   ): Promise<boolean> {
     return await this.userFacade.commands.updateUserProfile({ userId, ...dto });
   }
@@ -116,7 +114,7 @@ export class UserController {
   @ApiUpdatePost()
   async updatePost(
     @Body() dto: PostDto,
-    @CurrentUser() userId: string,
+    @UserId() userId: string,
     @Param() postId: ParamsId,
   ): Promise<boolean> {
     return await this.userFacade.commands.updatePost({

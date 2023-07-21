@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 
 type TViewUser = Pick<User, 'id' | 'userName' | 'email' | 'createdAt'>;
+export type TExtendsViewUser = TViewUser & Partial<Omit<User, keyof TViewUser>>;
 
 export class ViewUser implements TViewUser {
   @ApiProperty({ description: 'UUID' })
@@ -16,7 +17,7 @@ export class ViewUser implements TViewUser {
   @ApiProperty({ example: new Date().toISOString() })
   createdAt: string;
 
-  static async create(user: User) {
+  static async toView(user: TExtendsViewUser) {
     const viewUser = new ViewUser();
     viewUser.id = user.id;
     viewUser.userName = user.userName;

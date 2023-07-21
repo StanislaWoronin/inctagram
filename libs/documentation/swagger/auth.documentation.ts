@@ -14,12 +14,13 @@ import {
 import { ErrorResponse } from '../../shared/errors.response';
 import { RegistrationDto } from '../../../apps/main-app/auth/dto/registration.dto';
 import { ViewUser } from '../../../apps/main-app/users/view-model/user.view-model';
-import { TokenResponseViewModel } from '../../../apps/main-app/auth/view-model/token-response.view-model';
+import { TokenResponseView } from '../../../apps/main-app/auth/view-model/token-response.view';
 import { LoginDto } from '../../../apps/main-app/auth/dto/login.dto';
 import { EmailDto } from '../../../apps/main-app/auth/dto/email.dto';
 import { RegistrationConfirmationDto } from '../../../apps/main-app/auth/dto/registration-confirmation.dto';
 import { NewPasswordDto } from '../../../apps/main-app/auth/dto/new-password.dto';
 import { PasswordRecoveryDto } from '../../../apps/main-app/auth/dto/password-recovery.dto';
+import {LoginView, TLoginView} from "../../../apps/main-app/auth/view-model/login.view-model";
 
 export function ApiRegistration() {
   return applyDecorators(
@@ -89,7 +90,7 @@ export function ApiLogin() {
       description:
         'Returns JWT accessToken (expired after 10 seconds) in body and JWT' +
         ' refreshToken in cookie (http-only, secure) (expired after 20 seconds)',
-      type: TokenResponseViewModel,
+      type: LoginView,
     }),
     ApiUnauthorizedResponse({
       description:
@@ -211,7 +212,7 @@ export function ApiRefreshToken() {
       description:
         'Returns JWT accessToken (expired after 10 seconds) in body and JWT' +
         ' refreshToken in cookie (http-only, secure) (expired after 20 seconds).',
-      type: TokenResponseViewModel,
+      type: TokenResponseView,
     }),
     ApiUnauthorizedResponse({
       description:

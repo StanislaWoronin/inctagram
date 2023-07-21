@@ -30,6 +30,6 @@ export class MergeProfileCommandHandler
       createdUser.email,
       emailConfirmation.confirmationCode,
     );
-    return await ViewUser.create(createdUser);
+    return await ViewUser.toView(createdUser);
   }
 }

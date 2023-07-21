@@ -36,6 +36,7 @@ export class AuthRequest {
 
     return {
       accessToken: response.body.accessToken,
+      user: response.body.user,
       refreshToken: response.headers['set-cookie'][0]
         .split(';')[0]
         .split('=')[1],
