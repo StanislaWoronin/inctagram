@@ -16,7 +16,6 @@ export class DeletePostCommandHandler
 
   async execute({ dto }: DeletePostCommand): Promise<boolean> {
     if (dto.isDeleted) {
-      console.log(dto);
       await this.userRepository.createReasonDeletingPost(dto.postId, Role.USER);
     } else {
       await this.userRepository.deleteReasonDeletingPost(dto.postId);
