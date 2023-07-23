@@ -44,6 +44,7 @@ import { DeletePostDto } from '../dto/delete-post.dto';
 import { DeletePostCommand } from './commands/delete-post.command-handler';
 import { RegistrationViaThirdPartyServicesDto } from '../../auth/dto/registration-via-third-party-services.dto';
 import { RegistrationViaGitHubCommand } from './commands/registration-via-git-hub.command-handler';
+import { RegistrationViaGoogleCommand } from './commands/registration-via-google.command-handler';
 
 @Injectable()
 export class UserFacade {
