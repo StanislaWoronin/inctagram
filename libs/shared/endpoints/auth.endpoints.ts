@@ -33,26 +33,32 @@ export const authEndpoints = {
     return endpoint;
   },
 
-  registration(test = false): string {
-    const endpoint = `registration`;
-    if (test) return `/${this.default()}/${endpoint}`;
-    return endpoint;
-  },
-
   passwordRecovery(test = false): string {
     const endpoint = `password-recovery`;
     if (test) return `/${this.default()}/${endpoint}`;
     return endpoint;
   },
 
-  passwordRecoveryPage(test = false): string {
-    const endpoint = `password-recovery-page`;
+  pairToken(test = false): string {
+    const endpoint = `refresh-token`;
     if (test) return `/${this.default()}/${endpoint}`;
     return endpoint;
   },
 
-  pairToken(test = false): string {
-    const endpoint = `refresh-token`;
+  registration(test = false): string {
+    const endpoint = `registration`;
+    if (test) return `/${this.default()}/${endpoint}`;
+    return endpoint;
+  },
+
+  registrationViaGitHub(test = false): string {
+    const endpoint = 'github-registration';
+    if (test) return `/${this.default()}/${endpoint}`;
+    return endpoint;
+  },
+
+  registrationViaGoogle(test = false): string {
+    const endpoint = 'google-registration';
     if (test) return `/${this.default()}/${endpoint}`;
     return endpoint;
   },

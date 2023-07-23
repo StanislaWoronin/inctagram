@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+
 <body>
 Recaptcha testing
 
@@ -22,7 +23,7 @@ Recaptcha testing
 
 <script>
     const input = document.getElementById('email-input ')
-    const button = document.getElementById('reset-password-button')
+    //const button = document.getElementById('reset-password-button')
     function onSubmit(recaptchaValue) {
         fetch('http://localhost:5000/auth/password-recovery', {
             headers: {

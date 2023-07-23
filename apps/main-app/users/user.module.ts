@@ -22,6 +22,7 @@ import { ClientsModule } from '@nestjs/microservices';
 import { getProviderOptions } from '../../../libs/providers/rabbit-mq/providers.option';
 import { Microservices } from '../../../libs/shared/enums/microservices-name.enum';
 import { FileStorageRepository } from './db.providers/images/file.storage.repository';
+import { GitHubAdapter } from '../../../libs/adapters/third-party-services.adapter/git-hub.adapter';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { FileStorageRepository } from './db.providers/images/file.storage.reposi
     UserRepository,
     UserQueryRepository,
     JwtService,
+    GitHubAdapter,
     EmailAdapters,
     EmailManager,
     IsConfirmationCodeExistConstraint,

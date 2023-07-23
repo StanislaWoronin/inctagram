@@ -19,6 +19,7 @@ import { CreatePostCommandHandler } from './commands/create-post.command-handler
 import { UpdatePostCommandHandler } from './commands/update-post.command-handler';
 import { GetMyPostsQuery } from './queries/get-my-posts.query';
 import { DeletePostCommandHandler } from './commands/delete-post.command-handler';
+import { RegistrationViaGitHubCommandHandler } from './commands/registration-via-git-hub.command-handler';
 
 export * from './user.facade';
 
@@ -32,6 +33,7 @@ export const USER_COMMANDS_HANDLERS: Type<ICommandHandler>[] = [
   LogoutCommandHandler,
   PasswordRecoveryCommandHandler,
   RegistrationConfirmationCommandHandler,
+  RegistrationViaGitHubCommandHandler,
   UpdatePairTokenCommandHandler,
   UpdatePasswordCommandHandler,
   UpdatePostCommandHandler,

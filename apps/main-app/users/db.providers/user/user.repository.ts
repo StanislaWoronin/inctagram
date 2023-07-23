@@ -30,6 +30,19 @@ export class UserRepository {
     });
   }
 
+  async createUserViaThirdPartyServices(
+    user: Prisma.UserCreateInput,
+  ): Promise<User> {
+    return await this.prisma.user.create({
+      data: {
+        userName: user.userName,
+        email: user.email,
+        createdAt: user.createdAt,
+        isConfirmed: user.isConfirmed,
+      },
+    });
+  }
+
   async createReasonDeletingPost(postId: string, role: Role): Promise<boolean> {
     const result = await this.prisma.deletedPosts.create({
       data: {

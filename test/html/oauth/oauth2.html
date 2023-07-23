@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+
+<style>
+    .my_button {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 20px;
+        margin-right: 30px;
+    }
+    .my_image {
+        width: 80px;
+        height: 80px;
+    }
+</style>
+
+<body>
+<h1>Oath2.0 testing</h1>
+
+<form>
+  <button
+    id="git-hub-button"
+    class="my_button"
+    data-callback='onGitHubSubmit'
+    data-action='submit'>
+    <img src="GitHub.png" alt="" class="my_image" >
+  </button>
+
+  <button
+    id="google-button"
+    class="my_button"
+    data-callback='onGoogleSubmit'
+    data-action='submit'>
+    <img src="google.png" alt="" class="my_image" >
+  </button>
+</form>
+
+<script>
+  function onGitHubSubmit() {
+    const gitHubAT = fetch('https://github.com/login/oauth/authorize?client_id=43b3335372094e72c736&scope=user:email', {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: "GET",
+    })
+      .then(response => response.text())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
+  }
+</script>
+
+</body>
+</html>

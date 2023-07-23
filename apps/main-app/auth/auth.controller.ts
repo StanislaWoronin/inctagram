@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import { UserFacade } from '../users/application-services';
 import {
+  ApiGitHubRegistration,
   ApiLogin,
   ApiLogout,
   ApiMergeProfile,
@@ -44,6 +45,7 @@ import { PasswordRecoveryDto } from './dto/password-recovery.dto';
 import { UserId } from '../../../libs/decorators/user-id.decorator';
 import { TLoginView } from './view-model/login.view-model';
 import { CheckCredentialGuard } from '../../../libs/guards/check-credential.guard';
+import { RegistrationViaThirdPartyServicesDto } from './dto/registration-via-third-party-services.dto';
 
 @Controller(authEndpoints.default())
 export class AuthController {
@@ -140,6 +142,22 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ): Promise<TCreateUserResponse | null> {
     return await this.userFacade.commands.registrationUser(dto);
+  }
+
+  @Post(authEndpoints.registrationViaGitHub())
+  @ApiGitHubRegistration()
+  async registrationViaGitHub(
+    @Body() dto: RegistrationViaThirdPartyServicesDto,
+  ): Promise<TCreateUserResponse | null> {
+    return await this.userFacade.commands.registrationViaGitHub(dto);
+  }
+
+  @Post(authEndpoints.registrationViaGoogle())
+  @ApiGitHubRegistration()
+  async registrationViaGoogle(
+    @Body() dto: RegistrationViaThirdPartyServicesDto,
+  ): Promise<TCreateUserResponse | null> {
+    return await this.userFacade.commands.registrationViaGoogle(dto);
   }
 
   @Get(authEndpoints.registrationConfirmation())

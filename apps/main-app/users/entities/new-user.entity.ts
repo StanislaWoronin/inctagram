@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { BadRequestException } from '@nestjs/common';
 import { User } from '@prisma/client';
+import { GitHubUserDto } from '../../auth/dto/git-hub-user.dto';
 
 export type TUser = User & { password: string; passwordConfirmation: string };
 
@@ -19,13 +20,21 @@ export class NewUser implements TUser {
   readonly password: string;
   readonly passwordConfirmation: string;
 
-  static async create(_user: Partial<NewUser>) {
-    const user = new NewUser();
-    Object.assign(user, _user);
-    if (!_user.createdAt) {
-      user.createdAt = new Date().toISOString();
+  static async create(user: Partial<NewUser>) {
+    const newUser = new NewUser();
+    Object.assign(newUser, user);
+    if (!user.createdAt) {
+      newUser.createdAt = new Date().toISOString();
     }
-    user.passwordHash = await bcrypt.hash(_user.password, 10);
-    return user;
+    newUser.passwordHash = await bcrypt.hash(user.password, 10);
+    return newUser;
+  }
+
+  static createViaThirdPartyServices(user: GitHubUserDto) {
+    const newUser = new NewUser();
+    Object.assign(newUser, user);
+    newUser.createdAt = new Date().toISOString();
+    newUser.isConfirmed = true;
+    return newUser;
   }
 }

@@ -132,6 +132,30 @@ export function ApiRegistrationEmailResending() {
   );
 }
 
+export function ApiGitHubRegistration() {
+  return applyDecorators(
+    ApiTags('Auth'),
+    ApiOperation({
+      summary:
+        'Registration via github. If a profile with a gitHub email address exists on the system and is not verified, ' +
+        'the user can merge their old account with the new, otherwise the user is prompted to login. If account with ' +
+        'this mail not exists, then a new, create activated account with a random name and the user can immediately log in.',
+    }),
+  );
+}
+
+export function ApiGoogleRegistration() {
+  return applyDecorators(
+    ApiTags('Auth'),
+    ApiOperation({
+      summary:
+        'Registration via google. If a profile with a gitHub email address exists on the system and is not verified, ' +
+        'the user can merge their old account with the new, otherwise the user is prompted to login. If account with ' +
+        'this mail not exists, then a new, create activated account with a random name and the user can immediately log in.',
+    }),
+  );
+}
+
 export function ApiRegistrationConfirmation() {
   return applyDecorators(
     ApiTags('Auth'),
