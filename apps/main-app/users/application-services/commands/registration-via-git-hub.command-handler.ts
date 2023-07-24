@@ -37,16 +37,10 @@ export class RegistrationViaGitHubCommandHandler
 
     const newUser = NewUser.createViaThirdPartyServices(user);
     const createdUser =
-      await this.userRepository.createUserViaThirdPartyServices(newUser);
-
-    const pattern = { cmd: Commands.UpdateAvatar };
-    const avatarLink = await lastValueFrom(
-      this.fileStorageProxyClient
-        .send(pattern, dto)
-        .pipe(map((result) => result)),
-    );
-
-    await this.fileStorageRepository.saveImage(newUser.id, avatarLink);
+      await this.userRepository.createUserViaThirdPartyServices(
+        newUser,
+        user.avatarUrl,
+      );
 
     return await ViewUser.toView(createdUser);
   }

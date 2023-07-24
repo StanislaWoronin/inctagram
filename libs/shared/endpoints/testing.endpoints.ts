@@ -4,8 +4,8 @@ export const testingEndpoints = {
   },
 
   deleteAll(test = false): string {
-    const endpoint = `/delete-all`;
-    if (test) return `/${endpoint}`;
+    const endpoint = `delete-all`;
+    if (test) return `/${this.default}/${endpoint}`;
     return endpoint;
   },
 

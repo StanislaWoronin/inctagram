@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -46,6 +47,8 @@ import { UserId } from '../../../libs/decorators/user-id.decorator';
 import { TLoginView } from './view-model/login.view-model';
 import { CheckCredentialGuard } from '../../../libs/guards/check-credential.guard';
 import { RegistrationViaThirdPartyServicesDto } from './dto/registration-via-third-party-services.dto';
+import { GoogleStrategy } from '../../../libs/strategies/google.strategy';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller(authEndpoints.default())
 export class AuthController {
@@ -152,12 +155,20 @@ export class AuthController {
     return await this.userFacade.commands.registrationViaGitHub(dto);
   }
 
+  @UseGuards(AuthGuard('google'))
   @Post(authEndpoints.registrationViaGoogle())
   @ApiGitHubRegistration()
   async registrationViaGoogle(
     @Body() dto: RegistrationViaThirdPartyServicesDto,
   ): Promise<TCreateUserResponse | null> {
     return await this.userFacade.commands.registrationViaGoogle(dto);
+  }
+
+  @UseGuards(AuthGuard('google'))
+  @Get(authEndpoints.registrationViaGoogle())
+  @ApiGitHubRegistration()
+  async registrationViaGoogle2(@Req() req: any) {
+    return req.user;
   }
 
   @Get(authEndpoints.registrationConfirmation())

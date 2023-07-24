@@ -32,6 +32,7 @@ export class UserRepository {
 
   async createUserViaThirdPartyServices(
     user: Prisma.UserCreateInput,
+    photoLink: string,
   ): Promise<User> {
     return await this.prisma.user.create({
       data: {
@@ -39,6 +40,11 @@ export class UserRepository {
         email: user.email,
         createdAt: user.createdAt,
         isConfirmed: user.isConfirmed,
+        Avatar: {
+          create: {
+            photoLink,
+          },
+        },
       },
     });
   }

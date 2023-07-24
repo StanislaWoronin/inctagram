@@ -23,6 +23,7 @@ import { getProviderOptions } from '../../../libs/providers/rabbit-mq/providers.
 import { Microservices } from '../../../libs/shared/enums/microservices-name.enum';
 import { FileStorageRepository } from './db.providers/images/file.storage.repository';
 import { GitHubAdapter } from '../../../libs/adapters/third-party-services.adapter/git-hub.adapter';
+import { GoogleAdapter } from '../../../libs/adapters/third-party-services.adapter/google.adapter';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { GitHubAdapter } from '../../../libs/adapters/third-party-services.adapt
     UserQueryRepository,
     JwtService,
     GitHubAdapter,
+    GoogleAdapter,
     EmailAdapters,
     EmailManager,
     IsConfirmationCodeExistConstraint,
