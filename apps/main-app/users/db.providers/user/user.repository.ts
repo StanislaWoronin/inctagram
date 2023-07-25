@@ -6,6 +6,8 @@ import { UpdateUserProfileDto } from '../../dto/update-user.dto';
 import { PostIdWith, UserIdWith } from '../../dto/id-with.dto';
 import { UpdatePostDto } from '../../dto/update-post.dto';
 import { DeletePostDto } from '../../dto/delete-post.dto';
+import { randomUUID } from 'crypto';
+import { FullUser } from '../../../../../test/types/full-user.type';
 
 @Injectable()
 export class UserRepository {
@@ -30,10 +32,13 @@ export class UserRepository {
     });
   }
 
-  async createUserViaThirdPartyServices(
-    user: Prisma.UserCreateInput,
-    photoLink: string,
-  ): Promise<User> {
+  async createUserViaThirdPartyServices({
+    user,
+    photoLink,
+    deviceId,
+    ipAddress,
+    title,
+  }): Promise<User> {
     return await this.prisma.user.create({
       data: {
         userName: user.userName,
@@ -43,6 +48,14 @@ export class UserRepository {
         Avatar: {
           create: {
             photoLink,
+          },
+        },
+        Device: {
+          create: {
+            deviceId,
+            ipAddress,
+            title,
+            createdAt: new Date().toISOString(),
           },
         },
       },

@@ -21,10 +21,10 @@ export const getSkipCount = (page: number) => {
 
 export const getClientName = (lastClientName?: string): string => {
   if (!lastClientName) {
-    return settings.clientName
+    return settings.clientName + 1;
   }
-  const lastIndex = lastClientName.replace(settings.clientName, '')
-  let newIndex = Number(lastIndex) + 1
+  const lastIndex = lastClientName.replace(settings.clientName, '');
+  const newIndex = Number(lastIndex) + 1;
 
-  return `${settings.clientName}${newIndex}`
-}
+  return `${settings.clientName}${newIndex}`;
+};

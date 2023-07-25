@@ -21,9 +21,7 @@ export class EmailManager {
     return await this.emailAdapters.sendEmail(email, subject, message);
   }
 
-  async sendCongratulationWithAuthEmail(
-      email: string
-  ): Promise<void> {
+  async sendCongratulationWithAuthEmail(email: string): Promise<void> {
     const subject = 'Congratulations!';
     const message = `
       <h1>Thank for your registration</h1>
@@ -33,9 +31,7 @@ export class EmailManager {
     return this.emailAdapters.sendEmail(email, subject, message);
   }
 
-  async sendRefinementEmail(
-      email: string
-  ): Promise<void> {
+  async sendRefinementEmail(email: string): Promise<void> {
     const subject = 'Log in to the system.';
     const message = `
       <p>The user with this email is already registered.

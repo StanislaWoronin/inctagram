@@ -5,7 +5,7 @@ dotenv.config();
 
 export const settings = {
   environment: process.env.NODE_ENV,
-  clientName: 'Client1',
+  clientName: 'Client',
   port: {
     MAIN_APP: Number(process.env.MAIN_APP),
     FILE_STORAGE: Number(process.env.FILE_STORAGE),

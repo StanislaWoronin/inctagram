@@ -24,6 +24,7 @@ import { Microservices } from '../../../libs/shared/enums/microservices-name.enu
 import { FileStorageRepository } from './db.providers/images/file.storage.repository';
 import { GitHubAdapter } from '../../../libs/adapters/third-party-services.adapter/git-hub.adapter';
 import { GoogleAdapter } from '../../../libs/adapters/third-party-services.adapter/google.adapter';
+import { OAuthService } from '../../../libs/adapters/third-party-services.adapter/oauth.service';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { GoogleAdapter } from '../../../libs/adapters/third-party-services.adapt
     EmailManager,
     IsConfirmationCodeExistConstraint,
     IsUserNameExistConstraint,
+    OAuthService,
     PrismaService,
     UserController,
     FileStorageRepository,

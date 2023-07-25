@@ -49,7 +49,7 @@ import { CheckCredentialGuard } from '../../../libs/guards/check-credential.guar
 import { RegistrationViaThirdPartyServicesDto } from './dto/registration-via-third-party-services.dto';
 import { GoogleStrategy } from '../../../libs/strategies/google.strategy';
 import { AuthGuard } from '@nestjs/passport';
-import {userEndpoints} from "../../../libs/shared/endpoints/user.endpoints";
+import { userEndpoints } from '../../../libs/shared/endpoints/user.endpoints';
 
 @Controller(authEndpoints.default())
 export class AuthController {
@@ -79,8 +79,8 @@ export class AuthController {
     const dto = {
       userId: user.id,
       ...body,
-      ipAddress: ipAddress,
-      title: title,
+      ipAddress,
+      title,
     };
     const tokens = await this.userFacade.commands.loginUser(dto);
     response.cookie('refreshToken', tokens.refreshToken, {
@@ -149,30 +149,49 @@ export class AuthController {
   }
 
   @Get(authEndpoints.registrationViaGitHub())
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   @ApiGitHubRegistration()
   async registrationViaGitHub(
+    @Ip() ipAddress: string,
+    @Headers('user-agent') title: string,
     @Query() query: RegistrationViaThirdPartyServicesDto,
-    @Res() response: Response,
-  ): Promise<void> {
-    await this.userFacade.commands.registrationViaGitHub(query);
-    const serverUrl = this.configService.get('SERVER_URI');
-    response.redirect(`${serverUrl}/${userEndpoints.default()}/${userEndpoints.getUserProfile()}`)
-    return
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<TLoginView> {
+    const dto = {
+      ipAddress,
+      title,
+      ...query,
+    };
+    const result = await this.userFacade.commands.registrationViaGitHub(dto);
+    response.cookie('refreshToken', result.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: settings.timeLife.TOKEN_TIME,
+    });
+    return { accessToken: result.accessToken, user: result.user };
   }
 
-  //@UseGuards(AuthGuard('google'))
   @Get(authEndpoints.registrationViaGoogle())
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   @ApiGitHubRegistration()
   async registrationViaGoogle(
-      @Query() query: RegistrationViaThirdPartyServicesDto,
-      @Res() response: Response,
-  ): Promise<void> {
-    await this.userFacade.commands.registrationViaGoogle(query);
-    response.set({ 'Authorization': 'token' })
-    response.redirect(`/${userEndpoints.default()}/${userEndpoints.getUserProfile()}`)
-    return
+    @Ip() ipAddress: string,
+    @Headers('user-agent') title: string,
+    @Query() query: RegistrationViaThirdPartyServicesDto,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<TLoginView> {
+    const dto = {
+      ipAddress,
+      title,
+      ...query,
+    };
+    const result = await this.userFacade.commands.registrationViaGoogle(dto);
+    response.cookie('refreshToken', result.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: settings.timeLife.TOKEN_TIME,
+    });
+    return { accessToken: result.accessToken, user: result.user };
   }
 
   @Get(authEndpoints.registrationConfirmation())

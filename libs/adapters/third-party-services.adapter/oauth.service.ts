@@ -1,42 +1,60 @@
-import {Injectable} from "@nestjs/common";
-import {NewUser} from "../../../apps/main-app/users/entities/new-user.entity";
-import {getClientName} from "../../shared/helpers";
-import {ViewUser} from "../../../apps/main-app/users/view-model/user.view-model";
-import {EmailManager} from "../email.adapter";
-import {GoogleAdapter} from "./google.adapter";
-import {UserRepository} from "../../../apps/main-app/users/db.providers/user/user.repository";
-import {UserQueryRepository} from "../../../apps/main-app/users/db.providers/user/user-query.repository";
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { NewUser } from '../../../apps/main-app/users/entities/new-user.entity';
+import { getClientName } from '../../shared/helpers';
+import { ViewUser } from '../../../apps/main-app/users/view-model/user.view-model';
+import { EmailManager } from '../email.adapter';
+import { GoogleAdapter } from './google.adapter';
+import { UserRepository } from '../../../apps/main-app/users/db.providers/user/user.repository';
+import { UserQueryRepository } from '../../../apps/main-app/users/db.providers/user/user-query.repository';
+import { TLoginView } from '../../../apps/main-app/auth/view-model/login.view-model';
+import { TokensFactory } from '../../shared/tokens.factory';
+import { randomUUID } from 'crypto';
+import { TRegistrationViaThirdPartyServices } from '../../../apps/main-app/auth/dto/registration-via-third-party-services.dto';
 
 @Injectable()
-export abstract class OAuthService {
-    constructor(
-        private readonly emailManager: EmailManager,
-        private googleAdapter: GoogleAdapter,
-        private userRepository: UserRepository,
-        private userQueryRepository: UserQueryRepository
-    ) {}
+export class OAuthService {
+  constructor(
+    private emailManager: EmailManager,
+    private factory: TokensFactory,
+    private googleAdapter: GoogleAdapter,
+    private userRepository: UserRepository,
+    private userQueryRepository: UserQueryRepository,
+  ) {}
 
-    async registerUser({name, email, avatarUrl}) {
-        const user = await this.userQueryRepository.getUserByField(email)
-        if (user) {
-            this.emailManager.sendRefinementEmail(user.email)
-            return
-        }
-
-        const lastClientName = await this.userQueryRepository.getLastClientName();
-        let newUser = NewUser.createViaThirdPartyServices({name, email});
-        newUser.userName = getClientName(lastClientName)
-
-        const createdUser =
-            await this.userRepository.createUserViaThirdPartyServices(
-                newUser,
-                avatarUrl,
-            );
-
-        this.emailManager.sendCongratulationWithAuthEmail(
-            createdUser.email,
-        );
-
-        return await ViewUser.toView(createdUser);
+  async registerUser({
+    name,
+    email,
+    avatarUrl,
+    ipAddress,
+    title,
+  }): Promise<TRegistrationViaThirdPartyServices | null> {
+    const user = await this.userQueryRepository.getUserByField(email);
+    if (user) {
+      if (user.isConfirmed) {
+        throw new BadRequestException('email:This email already confirmed.');
+      }
+      this.emailManager.sendRefinementEmail(user.email);
+      return null;
     }
+
+    const lastClientName = await this.userQueryRepository.getLastClientName();
+    const newUser = NewUser.createViaThirdPartyServices({ name, email });
+    newUser.userName = getClientName(lastClientName);
+
+    const deviceId = randomUUID();
+    const createdUser =
+      await this.userRepository.createUserViaThirdPartyServices({
+        user: newUser,
+        photoLink: avatarUrl,
+        deviceId,
+        ipAddress,
+        title,
+      });
+
+    this.emailManager.sendCongratulationWithAuthEmail(createdUser.email);
+    const tokens = await this.factory.getPairTokens(createdUser.id, deviceId);
+
+    const viewUser = await ViewUser.toView(createdUser);
+    return { user: viewUser, ...tokens };
+  }
 }

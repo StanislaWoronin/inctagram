@@ -42,9 +42,13 @@ import { PostImagesDto } from '../dto/post-images.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { DeletePostDto } from '../dto/delete-post.dto';
 import { DeletePostCommand } from './commands/delete-post.command-handler';
-import { RegistrationViaThirdPartyServicesDto } from '../../auth/dto/registration-via-third-party-services.dto';
+import {
+  RegistrationViaThirdPartyServicesDto,
+  TRegistrationViaThirdPartyServices,
+} from '../../auth/dto/registration-via-third-party-services.dto';
 import { RegistrationViaGitHubCommand } from './commands/registration-via-git-hub.command-handler';
 import { RegistrationViaGoogleCommand } from './commands/registration-via-google.command-handler';
+import { TLoginView } from '../../auth/view-model/login.view-model';
 
 @Injectable()
 export class UserFacade {
@@ -62,10 +66,12 @@ export class UserFacade {
     mergeProfile: (dto: RegistrationDto) => this.mergeProfile(dto),
     passwordRecovery: (dto: EmailDto) => this.passwordRecovery(dto),
     registrationUser: (dto: RegistrationDto) => this.registrationUser(dto),
-    registrationViaGitHub: (dto: RegistrationViaThirdPartyServicesDto) =>
-      this.registrationViaGitHub(dto),
-    registrationViaGoogle: (dto: RegistrationViaThirdPartyServicesDto) =>
-      this.registrationViaGoogle(dto),
+    registrationViaGitHub: (
+      dto: WithClientMeta<RegistrationViaThirdPartyServicesDto>,
+    ) => this.registrationViaGitHub(dto),
+    registrationViaGoogle: (
+      dto: WithClientMeta<RegistrationViaThirdPartyServicesDto>,
+    ) => this.registrationViaGoogle(dto),
     updatePairToken: (dto: WithClientMeta<SessionIdDto>) =>
       this.updatePairToken(dto),
     updatePassword: (data: NewPasswordDto) => this.updatePassword(data),
@@ -144,15 +150,15 @@ export class UserFacade {
   }
 
   private async registrationViaGitHub(
-    dto: RegistrationViaThirdPartyServicesDto,
-  ): Promise<TCreateUserResponse | null> {
+    dto: WithClientMeta<RegistrationViaThirdPartyServicesDto>,
+  ): Promise<TRegistrationViaThirdPartyServices | null> {
     const command = new RegistrationViaGitHubCommand(dto);
     return await this.commandBus.execute(command);
   }
 
   private async registrationViaGoogle(
-    dto: RegistrationViaThirdPartyServicesDto,
-  ): Promise<TCreateUserResponse | null> {
+    dto: WithClientMeta<RegistrationViaThirdPartyServicesDto>,
+  ): Promise<TRegistrationViaThirdPartyServices | null> {
     const command = new RegistrationViaGoogleCommand(dto);
     return await this.commandBus.execute(command);
   }

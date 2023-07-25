@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { GitHubUserDto } from '../../../apps/main-app/auth/dto/git-hub-user.dto';
-import {switchRedirectUrl} from "./switch-redirect-url";
+import { switchRedirectUrl } from './switch-redirect-url';
 
 @Injectable()
 export class GitHubAdapter {

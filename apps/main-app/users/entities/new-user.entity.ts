@@ -30,7 +30,7 @@ export class NewUser implements TUser {
     return newUser;
   }
 
-  static createViaThirdPartyServices({name, email}) {
+  static createViaThirdPartyServices({ name, email }) {
     const newUser = new NewUser();
     newUser.userName = name;
     newUser.email = email;

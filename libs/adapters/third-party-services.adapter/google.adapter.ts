@@ -1,12 +1,12 @@
-import {Injectable, UnauthorizedException} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Auth, google } from 'googleapis';
 import { GitHubUserDto } from '../../../apps/main-app/auth/dto/git-hub-user.dto';
-import {switchRedirectUrl} from "./switch-redirect-url";
-import axios from "axios";
-import * as queryString from "querystring";
-import {IGoogleTokens} from "./types/google-tokens.interface";
-import {GoogleUserDto} from "../../../apps/main-app/auth/dto/google-user.dto";
+import { switchRedirectUrl } from './switch-redirect-url';
+import axios from 'axios';
+import * as queryString from 'querystring';
+import { IGoogleTokens } from './types/google-tokens.interface';
+import { GoogleUserDto } from '../../../apps/main-app/auth/dto/google-user.dto';
 
 @Injectable()
 export class GoogleAdapter {
@@ -47,46 +47,46 @@ export class GoogleAdapter {
   }
 
   async getGoogleOAuthTokens(code: string): Promise<IGoogleTokens> {
-    const url = 'https://oauth2.googleapis.com/token'
+    const url = 'https://oauth2.googleapis.com/token';
 
     const values = {
       code,
       client_id: this.clientId,
       client_secret: this.clientSecret,
-      redirect_uri: this.redirectUrl,
-      grant_type: 'authorization_code'
-    }
+      redirect_uri: 'http://localhost:5000/auth/google-registration',
+      grant_type: 'authorization_code',
+    };
 
     try {
       const response = await axios.post(url, queryString.stringify(values), {
-            headers: {
-              "Content-Type": 'application/x-www-form-urlencoded'
-            }
-          })
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
 
-      return response.data
+      return response.data;
     } catch (e) {
-      console.log(e)
-      throw new UnauthorizedException()
+      console.log(e);
+      throw new UnauthorizedException();
     }
   }
 
-  async getGoogleUser({id_token, access_token}): Promise<GoogleUserDto> {
+  async getGoogleUser({ id_token, access_token }): Promise<GoogleUserDto> {
     try {
-      const url = `https://oauth2.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`
+      const url = `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`;
 
       const response = await axios.get(url, {
         headers: {
-          Authorization: `Bearer ${id_token}`
-        }
-      })
+          Authorization: `Bearer ${id_token}`,
+        },
+      });
 
-      return response.data
+      return response.data;
     } catch (e) {
-      console.log(e)
-      throw new UnauthorizedException()
+      console.log({ e });
+      throw new UnauthorizedException();
     }
   }
 
-  async
+  async;
 }

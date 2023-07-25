@@ -116,7 +116,7 @@ export class UserQueryRepository {
         },
       },
       select: {
-        userName: true
+        userName: true,
       },
       orderBy: {
         userName: 'desc',

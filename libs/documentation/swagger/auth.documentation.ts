@@ -3,7 +3,8 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiCookieAuth,
-  ApiCreatedResponse, ApiFoundResponse,
+  ApiCreatedResponse,
+  ApiFoundResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
@@ -171,10 +172,12 @@ export function ApiRegistrationConfirmation() {
       required: true,
     }),
     ApiFoundResponse({
-      description: 'Email was verified. Account was activated. Redirected to the "congratulations" page.',
+      description:
+        'Email was verified. Account was activated. Redirected to the "congratulations" page.',
     }),
     ApiBadRequestResponse({
-      description: 'If confirmation code incorrect. Redirected to the "resubmit link" page.',
+      description:
+        'If confirmation code incorrect. Redirected to the "resubmit link" page.',
       type: ErrorResponse,
     }),
     // ApiTooManyRequestsResponse({
