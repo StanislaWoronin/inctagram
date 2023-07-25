@@ -1,5 +1,4 @@
 import { cloudSwitcher } from '../adapters/file-storage.adapter/cloud.switcher';
-import { fileStorageConstants } from '../../apps/file-storage/image-validator/file-storage.constants';
 import { settings } from './settings';
 
 export const encodeBirthday = (value: string): string => {
@@ -19,3 +18,13 @@ export const getSkipCount = (page: number) => {
   const pageSize = settings.pagination.pageSize;
   return (page - 1) * pageSize;
 };
+
+export const getClientName = (lastClientName?: string): string => {
+  if (!lastClientName) {
+    return settings.clientName
+  }
+  const lastIndex = lastClientName.replace(settings.clientName, '')
+  let newIndex = Number(lastIndex) + 1
+
+  return `${settings.clientName}${newIndex}`
+}

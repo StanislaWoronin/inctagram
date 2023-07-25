@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { BadRequestException } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { UserThirdPartyServicesDto } from '../../auth/dto/user-third-party-services.dto';
+import { GitHubUserDto } from '../../auth/dto/git-hub-user.dto';
 
 export type TUser = User & { password: string; passwordConfirmation: string };
 
@@ -30,10 +30,10 @@ export class NewUser implements TUser {
     return newUser;
   }
 
-  static createViaThirdPartyServices(user: UserThirdPartyServicesDto) {
+  static createViaThirdPartyServices({name, email}) {
     const newUser = new NewUser();
-    newUser.userName = user.name;
-    newUser.email = user.email;
+    newUser.userName = name;
+    newUser.email = email;
     newUser.createdAt = new Date().toISOString();
     newUser.isConfirmed = true;
     return newUser;

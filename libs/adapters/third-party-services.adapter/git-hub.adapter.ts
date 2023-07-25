@@ -1,14 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-import { UserThirdPartyServicesDto } from '../../../apps/main-app/auth/dto/user-third-party-services.dto';
-import { constraintToString } from 'class-validator/types/validation/ValidationUtils';
+import { GitHubUserDto } from '../../../apps/main-app/auth/dto/git-hub-user.dto';
+import {switchRedirectUrl} from "./switch-redirect-url";
 
 @Injectable()
 export class GitHubAdapter {
   constructor(private configService: ConfigService) {}
 
-  private gitHubAT = this.configService.get('GITHUB_REDIRECT_URL');
+  private gitHubAT = 'https://github.com/login/oauth/access_token';
   private clientId = this.configService.get('GITHUB_CLIENT_ID');
   private clientSecret = this.configService.get('GITHUB_CLIENT_SECRET');
 
@@ -28,7 +28,7 @@ export class GitHubAdapter {
     return response.data;
   }
 
-  async getUserByToken(token): Promise<UserThirdPartyServicesDto> {
+  async getUserByToken(token): Promise<GitHubUserDto> {
     const [userRes, emailRes] = await Promise.all([
       axios.get('https://api.github.com/user', {
         headers: {

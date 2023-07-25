@@ -21,6 +21,32 @@ export class EmailManager {
     return await this.emailAdapters.sendEmail(email, subject, message);
   }
 
+  async sendCongratulationWithAuthEmail(
+      email: string
+  ): Promise<void> {
+    const subject = 'Congratulations!';
+    const message = `
+      <h1>Thank for your registration</h1>
+      <p>Congratulations, you have successfully registered in Instagram!</p>
+    `;
+
+    return this.emailAdapters.sendEmail(email, subject, message);
+  }
+
+  async sendRefinementEmail(
+      email: string
+  ): Promise<void> {
+    const subject = 'Log in to the system.';
+    const message = `
+      <p>The user with this email is already registered.
+         If it's you, then follow the link:
+         <a href='http://localhost:3000/ru/merge'>${magicLink()}</a>   
+      </p>
+    `;
+
+    return this.emailAdapters.sendEmail(email, subject, message);
+  }
+
   async sendPasswordRecoveryEmail(email: string, recoveryCode: string) {
     const subject = 'Password recovery';
     const message = `

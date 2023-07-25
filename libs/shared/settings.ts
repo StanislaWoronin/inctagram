@@ -5,9 +5,15 @@ dotenv.config();
 
 export const settings = {
   environment: process.env.NODE_ENV,
+  clientName: 'Client1',
   port: {
     MAIN_APP: Number(process.env.MAIN_APP),
     FILE_STORAGE: Number(process.env.FILE_STORAGE),
+  },
+  // OAuth settings
+  oauth: {
+    LOCAL_REDIRECT_URL: process.env.LOCAL_REDIRECT_URL,
+    REDIRECT_URL: process.env.REDIRECT_URL,
   },
   // cloud settings
   cloud: {

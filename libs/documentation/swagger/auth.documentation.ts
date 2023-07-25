@@ -3,7 +3,7 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiCookieAuth,
-  ApiCreatedResponse,
+  ApiCreatedResponse, ApiFoundResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
@@ -170,11 +170,11 @@ export function ApiRegistrationConfirmation() {
       type: RegistrationConfirmationDto,
       required: true,
     }),
-    ApiNoContentResponse({
-      description: 'Email was verified. Account was activated',
+    ApiFoundResponse({
+      description: 'Email was verified. Account was activated. Redirected to the "congratulations" page.',
     }),
     ApiBadRequestResponse({
-      description: 'If confirmation code incorrect.',
+      description: 'If confirmation code incorrect. Redirected to the "resubmit link" page.',
       type: ErrorResponse,
     }),
     // ApiTooManyRequestsResponse({

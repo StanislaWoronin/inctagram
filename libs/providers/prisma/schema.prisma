@@ -40,7 +40,7 @@ model PasswordRecovery {
 
 model Device {
   deviceId  String @id
-  ipAddress String
+  ipAddress String?
   title     String
   createdAt String
   userId    String

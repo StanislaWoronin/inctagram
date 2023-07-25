@@ -49,6 +49,7 @@ import { CheckCredentialGuard } from '../../../libs/guards/check-credential.guar
 import { RegistrationViaThirdPartyServicesDto } from './dto/registration-via-third-party-services.dto';
 import { GoogleStrategy } from '../../../libs/strategies/google.strategy';
 import { AuthGuard } from '@nestjs/passport';
+import {userEndpoints} from "../../../libs/shared/endpoints/user.endpoints";
 
 @Controller(authEndpoints.default())
 export class AuthController {
@@ -147,28 +148,31 @@ export class AuthController {
     return await this.userFacade.commands.registrationUser(dto);
   }
 
-  @Post(authEndpoints.registrationViaGitHub())
+  @Get(authEndpoints.registrationViaGitHub())
+  @HttpCode(HttpStatus.FOUND)
   @ApiGitHubRegistration()
   async registrationViaGitHub(
-    @Body() dto: RegistrationViaThirdPartyServicesDto,
-  ): Promise<TCreateUserResponse | null> {
-    return await this.userFacade.commands.registrationViaGitHub(dto);
+    @Query() query: RegistrationViaThirdPartyServicesDto,
+    @Res() response: Response,
+  ): Promise<void> {
+    await this.userFacade.commands.registrationViaGitHub(query);
+    const serverUrl = this.configService.get('SERVER_URI');
+    response.redirect(`${serverUrl}/${userEndpoints.default()}/${userEndpoints.getUserProfile()}`)
+    return
   }
 
-  @UseGuards(AuthGuard('google'))
-  @Post(authEndpoints.registrationViaGoogle())
+  //@UseGuards(AuthGuard('google'))
+  @Get(authEndpoints.registrationViaGoogle())
+  @HttpCode(HttpStatus.FOUND)
   @ApiGitHubRegistration()
   async registrationViaGoogle(
-    @Body() dto: RegistrationViaThirdPartyServicesDto,
-  ): Promise<TCreateUserResponse | null> {
-    return await this.userFacade.commands.registrationViaGoogle(dto);
-  }
-
-  @UseGuards(AuthGuard('google'))
-  @Get(authEndpoints.registrationViaGoogle())
-  @ApiGitHubRegistration()
-  async registrationViaGoogle2(@Req() req: any) {
-    return req.user;
+      @Query() query: RegistrationViaThirdPartyServicesDto,
+      @Res() response: Response,
+  ): Promise<void> {
+    await this.userFacade.commands.registrationViaGoogle(query);
+    response.set({ 'Authorization': 'token' })
+    response.redirect(`/${userEndpoints.default()}/${userEndpoints.getUserProfile()}`)
+    return
   }
 
   @Get(authEndpoints.registrationConfirmation())
@@ -177,7 +181,7 @@ export class AuthController {
   async registrationConfirmation(
     @Query() dto: RegistrationConfirmationDto,
     @Res() response: Response,
-  ): Promise<boolean> {
+  ): Promise<void> {
     const isSuccess = await this.userFacade.commands.registrationConfirmation(
       dto,
     );

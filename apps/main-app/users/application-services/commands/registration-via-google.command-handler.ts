@@ -10,6 +10,11 @@ import { Inject } from '@nestjs/common';
 import { Microservices } from '../../../../../libs/shared/enums/microservices-name.enum';
 import { ClientProxy } from '@nestjs/microservices';
 import { FileStorageRepository } from '../../db.providers/images/file.storage.repository';
+import {JwtService} from "@nestjs/jwt";
+import {UserQueryRepository} from "../../db.providers/user/user-query.repository";
+import {EmailManager} from "../../../../../libs/adapters/email.adapter";
+import {getClientName} from "../../../../../libs/shared/helpers";
+import {OAuthService} from "../../../../../libs/adapters/third-party-services.adapter/oauth.service";
 
 export class RegistrationViaGoogleCommand {
   constructor(public readonly dto: RegistrationViaThirdPartyServicesDto) {}
@@ -21,26 +26,21 @@ export class RegistrationViaGoogleCommandHandler
     ICommandHandler<RegistrationViaGoogleCommand, TCreateUserResponse | null>
 {
   constructor(
-    @Inject(Microservices.FileStorage)
-    private fileStorageProxyClient: ClientProxy,
+    private readonly emailManager: EmailManager,
     private googleAdapter: GoogleAdapter,
-    private fileStorageRepository: FileStorageRepository,
-    private userRepository: UserRepository,
+    private oauthService: OAuthService
   ) {}
 
   async execute({
     dto,
   }: RegistrationViaGitHubCommand): Promise<TCreateUserResponse | null> {
-    await this.googleAdapter.init();
-    const user = await this.googleAdapter.loginGoogleUser(dto.code);
+    const {id_token, access_token} = await this.googleAdapter.getGoogleOAuthTokens(dto.code)
+    const googleUser = await this.googleAdapter.getGoogleUser({id_token, access_token})
 
-    const newUser = NewUser.createViaThirdPartyServices(user);
-    const createdUser =
-      await this.userRepository.createUserViaThirdPartyServices(
-        newUser,
-        user.avatarUrl,
-      );
-
-    return await ViewUser.toView(createdUser);
+    return await this.oauthService.registerUser({
+      name: googleUser.name,
+      email: googleUser.email,
+      avatarUrl: googleUser.picture
+    })
   }
 }

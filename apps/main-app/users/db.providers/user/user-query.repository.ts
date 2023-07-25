@@ -108,6 +108,25 @@ export class UserQueryRepository {
     });
   }
 
+  async getLastClientName(): Promise<string | null> {
+    const latestClient = await this.prisma.user.findFirst({
+      where: {
+        userName: {
+          startsWith: settings.clientName,
+        },
+      },
+      select: {
+        userName: true
+      },
+      orderBy: {
+        userName: 'desc',
+      },
+      take: 1,
+    });
+
+    return latestClient?.userName || null;
+  }
+
   async getUserDevice(userId: string, deviceId: string): Promise<Device> {
     return this.prisma.device.findFirst({
       where: {
