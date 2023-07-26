@@ -63,7 +63,7 @@ export class UserFacade {
     loginUser: (dto: WithClientMeta<UserIdWith<LoginDto>>) =>
       this.loginUser(dto),
     logout: (deviceId: string) => this.logout(deviceId),
-    mergeProfile: (dto: RegistrationDto) => this.mergeProfile(dto),
+    mergeProfile: (dto: WithClientMeta<EmailDto>) => this.mergeProfile(dto),
     passwordRecovery: (dto: EmailDto) => this.passwordRecovery(dto),
     registrationUser: (dto: RegistrationDto) => this.registrationUser(dto),
     registrationViaGitHub: (
@@ -120,7 +120,7 @@ export class UserFacade {
     return await this.commandBus.execute(command);
   }
 
-  private async mergeProfile(dto: RegistrationDto): Promise<ViewUser | null> {
+  private async mergeProfile(dto: WithClientMeta<EmailDto>): Promise<TRegistrationViaThirdPartyServices | null> {
     const command = new MergeProfileCommand(dto);
     return await this.commandBus.execute(command);
   }

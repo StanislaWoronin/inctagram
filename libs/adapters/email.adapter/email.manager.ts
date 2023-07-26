@@ -36,7 +36,7 @@ export class EmailManager {
     const message = `
       <p>The user with this email is already registered.
          If it's you, then follow the link:
-         <a href='http://localhost:3000/ru/merge'>${magicLink()}</a>   
+         <a href='http://localhost:3000/ru/merge?email:email'>${magicLink()}</a>   
       </p>
     `;
 

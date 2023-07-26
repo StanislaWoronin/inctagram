@@ -8,6 +8,8 @@ import { UpdatePostDto } from '../../dto/update-post.dto';
 import { DeletePostDto } from '../../dto/delete-post.dto';
 import { randomUUID } from 'crypto';
 import { FullUser } from '../../../../../test/types/full-user.type';
+import {WithClientMeta} from "../../../auth/dto/session-id.dto";
+import {EmailDto} from "../../../auth/dto/email.dto";
 
 @Injectable()
 export class UserRepository {
@@ -98,20 +100,22 @@ export class UserRepository {
   }
 
   async mergeUserProfile(
-    user: Prisma.UserCreateInput,
-    emailConfirmation: EmailConfirmation,
+    dto: WithClientMeta<EmailDto>,
+    deviceId: string
   ): Promise<User> {
     return await this.prisma.user.update({
-      where: { email: user.email },
+      where: { email: dto.email },
       data: {
-        userName: user.userName,
-        passwordHash: user.passwordHash,
-        createdAt: user.createdAt,
-        EmailConfirmation: {
+        createdAt: new Date().toISOString(),
+        isConfirmed: true,
+        Device: {
           create: {
-            confirmationCode: emailConfirmation.confirmationCode,
-          },
-        },
+            deviceId,
+            ipAddress: dto.ipAddress,
+            title: dto.title,
+            createdAt: new Date().toISOString(),
+          }
+        }
       },
     });
   }

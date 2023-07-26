@@ -160,6 +160,7 @@ export class AuthController {
       ...query,
     };
     const result = await this.userFacade.commands.registrationViaGitHub(dto);
+    if (!result) return;
     response.cookie('refreshToken', result.refreshToken, {
       httpOnly: true,
       secure: true,
@@ -182,6 +183,7 @@ export class AuthController {
       ...query,
     };
     const result = await this.userFacade.commands.registrationViaGoogle(dto);
+    if (!result) return;
     response.cookie('refreshToken', result.refreshToken, {
       httpOnly: true,
       secure: true,
@@ -214,7 +216,24 @@ export class AuthController {
 
   @Put(authEndpoints.mergeProfile())
   @ApiMergeProfile()
-  async mergeProfile(@Body() dto: RegistrationDto): Promise<ViewUser | null> {
-    return await this.userFacade.commands.mergeProfile(dto);
+  async mergeProfile(
+      @Body() dto: EmailDto,
+      @Ip() ipAddress: string,
+      @Headers('user-agent') title: string,
+      @Res({ passthrough: true }) response: Response
+  ): Promise<TLoginView | null> {
+    const dtoPlus = {
+      ...dto,
+      ipAddress,
+      title
+    }
+    const result = await this.userFacade.commands.mergeProfile(dtoPlus);
+    if (!result) return null
+    response.cookie('refreshToken', result.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: settings.timeLife.TOKEN_TIME,
+    });
+    return { accessToken: result.accessToken, user: result.user };
   }
 }

@@ -67,14 +67,14 @@ export function ApiMergeProfile() {
       summary: 'The user entered an existing and unconfirmed mail.',
     }),
     ApiBody({
-      type: RegistrationDto,
+      type: EmailDto,
       required: true,
     }),
-    ApiCreatedResponse({
+    ApiOkResponse({
       description:
         'Input data is accepted. Email with confirmation code will be send to' +
         ' passed email address.',
-      type: ViewUser,
+      type: LoginView,
     }),
   );
 }
