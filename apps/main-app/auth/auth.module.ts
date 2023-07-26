@@ -19,7 +19,6 @@ import { IsValidBirthdayFormatConstraint } from '../../../libs/decorators/birthd
 import { IsDifferentPasswordConstraint } from '../../../libs/decorators/different-password.decorator';
 import { RecaptchaAdapter } from '../../../libs/adapters/recaptcha.adapter/recaptcha.adapter';
 import { IsValidCaptchaConstraint } from '../../../libs/decorators/is-valid-captcha.decorator';
-import { GoogleStrategy } from '../../../libs/strategies/google.strategy';
 
 @Module({
   imports: [UserModule, CqrsModule, SharedModule, JwtModule.register({})],
@@ -38,7 +37,6 @@ import { GoogleStrategy } from '../../../libs/strategies/google.strategy';
     PrismaService,
     UserQueryRepository,
     UserRepository,
-    GoogleStrategy,
   ],
   exports: [],
 })

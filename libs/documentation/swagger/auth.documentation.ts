@@ -25,6 +25,8 @@ import {
   LoginView,
   TLoginView,
 } from '../../../apps/main-app/auth/view-model/login.view-model';
+import { RegistrationViaThirdPartyServicesDto } from '../../../apps/main-app/auth/dto/registration-via-third-party-services.dto';
+import { settings } from '../../shared/settings';
 
 export function ApiRegistration() {
   return applyDecorators(
@@ -91,9 +93,7 @@ export function ApiLogin() {
     ApiOperation({ summary: 'New user login after registration' }),
     ApiBody({ type: LoginDto }),
     ApiOkResponse({
-      description:
-        'Returns JWT accessToken (expired after 10 seconds) in body and JWT' +
-        ' refreshToken in cookie (http-only, secure) (expired after 20 seconds)',
+      description: `Returns JWT accessToken (expired after ${settings.timeLife.ACCESS_TOKEN}) in body and JWT refreshToken in cookie (http-only, secure) (expired after ${settings.timeLife.REFRESH_TOKEN})`,
       type: LoginView,
     }),
     ApiUnauthorizedResponse({
@@ -137,10 +137,32 @@ export function ApiGitHubRegistration() {
   return applyDecorators(
     ApiTags('Auth'),
     ApiOperation({
-      summary:
-        'Registration via github. If a profile with a gitHub email address exists on the system and is not verified, ' +
-        'the user can merge their old account with the new, otherwise the user is prompted to login. If account with ' +
-        'this mail not exists, then a new, create activated account with a random name and the user can immediately log in.',
+      summary: 'Registration via github.',
+      description:
+        'If a profile with a gitHub email address exists on the system and is not verified, ' +
+        'the user can merge their old account with the new, otherwise the user is prompted to login. ' +
+        'If account with this mail not exists, then a new, create activated account with a random name ' +
+        'and the user can immediately log in.',
+    }),
+    ApiQuery({
+      type: RegistrationViaThirdPartyServicesDto,
+      required: true,
+    }),
+    ApiOkResponse({
+      description: `User is registered and log in. 
+           Returns JWT accessToken (expired after ${settings.timeLife.ACCESS_TOKEN}) in body and JWT
+           refreshToken in cookie (http-only, secure) (expired after ${settings.timeLife.REFRESH_TOKEN}).
+           `,
+      type: LoginView,
+    }),
+    ApiBadRequestResponse({
+      description: 'If email from GitHub account already exists.',
+      type: ErrorResponse,
+    }),
+    ApiUnauthorizedResponse({
+      description:
+        'If the code that came from the client is not valid or the token requested by the code has' +
+        ' not been received or decoded',
     }),
   );
 }
@@ -149,10 +171,28 @@ export function ApiGoogleRegistration() {
   return applyDecorators(
     ApiTags('Auth'),
     ApiOperation({
-      summary:
-        'Registration via google. If a profile with a gitHub email address exists on the system and is not verified, ' +
-        'the user can merge their old account with the new, otherwise the user is prompted to login. If account with ' +
-        'this mail not exists, then a new, create activated account with a random name and the user can immediately log in.',
+      summary: 'Registration via google.',
+      description:
+        'If a profile with a gitHub email address exists on the system and is not verified, ' +
+        'the user can merge their old account with the new, otherwise the user is prompted to login. ' +
+        'If account with this mail not exists, then a new, create activated account with a random name ' +
+        'and the user can immediately log in.',
+    }),
+    ApiOkResponse({
+      description: `User is registered and log in. 
+           Returns JWT accessToken (expired after ${settings.timeLife.ACCESS_TOKEN}) in body and JWT
+           refreshToken in cookie (http-only, secure) (expired after ${settings.timeLife.REFRESH_TOKEN}).
+           `,
+      type: LoginView,
+    }),
+    ApiBadRequestResponse({
+      description: 'If email from Google account already exists.',
+      type: ErrorResponse,
+    }),
+    ApiUnauthorizedResponse({
+      description:
+        'If the code that came from the client is not valid or the token requested by the code has' +
+        ' not been received or decoded',
     }),
   );
 }
@@ -161,11 +201,10 @@ export function ApiRegistrationConfirmation() {
   return applyDecorators(
     ApiTags('Auth'),
     ApiOperation({
-      summary:
-        '' +
-        'Confirmation of registration via confirmation code. ' +
-        'If the email confirmation is successful or the email has already been redirected to the "congratulations" page.' +
-        'If the verification code has expired, it will be redirected to the "resubmit link" page.',
+      summary: 'Confirmation of registration via confirmation code.',
+      description:
+        'If the email confirmation is successful or the email has already been redirected to the "congratulations"' +
+        ' page. If the verification code has expired, it will be redirected to the "resubmit link" page.',
     }),
     ApiQuery({
       type: RegistrationConfirmationDto,
@@ -239,9 +278,7 @@ export function ApiRefreshToken() {
     ApiCookieAuth(),
     ApiOperation({ summary: 'Update authorization tokens' }),
     ApiOkResponse({
-      description:
-        'Returns JWT accessToken (expired after 10 seconds) in body and JWT' +
-        ' refreshToken in cookie (http-only, secure) (expired after 20 seconds).',
+      description: `Returns JWT accessToken (expired after ${settings.timeLife.ACCESS_TOKEN}) in body and JWT refreshToken in cookie (http-only, secure) (expired after ${settings.timeLife.REFRESH_TOKEN})`,
       type: TokenResponseView,
     }),
     ApiUnauthorizedResponse({

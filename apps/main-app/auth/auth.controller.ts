@@ -16,6 +16,7 @@ import {
 import { UserFacade } from '../users/application-services';
 import {
   ApiGitHubRegistration,
+  ApiGoogleRegistration,
   ApiLogin,
   ApiLogout,
   ApiMergeProfile,
@@ -47,9 +48,6 @@ import { UserId } from '../../../libs/decorators/user-id.decorator';
 import { TLoginView } from './view-model/login.view-model';
 import { CheckCredentialGuard } from '../../../libs/guards/check-credential.guard';
 import { RegistrationViaThirdPartyServicesDto } from './dto/registration-via-third-party-services.dto';
-import { GoogleStrategy } from '../../../libs/strategies/google.strategy';
-import { AuthGuard } from '@nestjs/passport';
-import { userEndpoints } from '../../../libs/shared/endpoints/user.endpoints';
 
 @Controller(authEndpoints.default())
 export class AuthController {
@@ -149,7 +147,6 @@ export class AuthController {
   }
 
   @Get(authEndpoints.registrationViaGitHub())
-  @HttpCode(HttpStatus.OK)
   @ApiGitHubRegistration()
   async registrationViaGitHub(
     @Ip() ipAddress: string,
@@ -172,8 +169,7 @@ export class AuthController {
   }
 
   @Get(authEndpoints.registrationViaGoogle())
-  @HttpCode(HttpStatus.OK)
-  @ApiGitHubRegistration()
+  @ApiGoogleRegistration()
   async registrationViaGoogle(
     @Ip() ipAddress: string,
     @Headers('user-agent') title: string,
