@@ -169,7 +169,7 @@ export class AuthController {
   @Get(authEndpoints.registrationViaGoogle())
   @ApiGoogleRegistration()
   async registrationViaGoogle(
-      @Metadata() meta: IMetadata,
+    @Metadata() meta: IMetadata,
     @Query() query: RegistrationViaThirdPartyServicesDto,
   ): Promise<TLoginView> {
     const dto = {
