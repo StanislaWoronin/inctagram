@@ -1,7 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ViewUser } from './user.view-model';
-import { User } from '@prisma/client';
-import { access } from 'fs';
 import { FullUser, TFullUser } from '../../../../test/types/full-user.type';
 import { fileStorageConstants } from '../../../file-storage/image-validator/file-storage.constants';
 import {
@@ -35,10 +33,9 @@ export class ViewUserWithInfo extends ViewUser {
     let birthday = null;
     if (user.birthday) birthday = decodeBirthday(user.birthday);
 
-    const avatar = user.Avatar.photoLink;
     let avatarLink = fileStorageConstants.avatar.defaultLink;
-    if (avatar) {
-      avatarLink = avatar;
+    if (user.Avatar?.photoLink) {
+      avatarLink = user.Avatar.photoLink;
     }
 
     return {

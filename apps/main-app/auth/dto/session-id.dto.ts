@@ -7,5 +7,5 @@ export class SessionIdDto implements TSessionIdDto {
   deviceId: string;
 }
 
-export type ClientMeta = { ipAddress: string; title: string }
+export type ClientMeta = { ipAddress: string; title: string };
 export type WithClientMeta<T> = T & ClientMeta;

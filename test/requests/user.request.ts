@@ -51,7 +51,6 @@ export class UserRequest {
       .post(userEndpoints.uploadUserAvatar(true))
       .auth(accessToken, { type: 'bearer' })
       .attach(fileStorageConstants.avatar.name, file);
-
     return { status: response.status, body: response.body };
   }
 }

@@ -48,7 +48,10 @@ import { LoginView, TLoginView } from './view-model/login.view-model';
 import { CheckCredentialGuard } from '../../../libs/guards/check-credential.guard';
 import { RegistrationViaThirdPartyServicesDto } from './dto/registration-via-third-party-services.dto';
 import { SetCookiesInterceptor } from '../../../libs/interceptos/set-cookies.interceptor';
-import {IMetadata, Metadata} from "../../../libs/decorators/metadata.decorator";
+import {
+  IMetadata,
+  Metadata,
+} from '../../../libs/decorators/metadata.decorator';
 
 @Controller(authEndpoints.default())
 @UseInterceptors(SetCookiesInterceptor)
@@ -82,7 +85,7 @@ export class AuthController {
     const dto = {
       userId: user.id,
       ...body,
-      ...meta.clientMeta
+      ...meta.clientMeta,
     };
     const tokens = await this.userFacade.commands.loginUser(dto);
 
@@ -95,8 +98,8 @@ export class AuthController {
   @UseGuards(RefreshTokenValidationGuard)
   @ApiLogout()
   async logout(
-      @CurrentDeviceId() deviceId: string,
-      @Metadata() meta: IMetadata,
+    @CurrentDeviceId() deviceId: string,
+    @Metadata() meta: IMetadata,
   ): Promise<boolean> {
     return await this.userFacade.commands.logout(deviceId);
   }
@@ -106,8 +109,8 @@ export class AuthController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNewPassword()
   async updatePassword(
-      @Body() dto: NewPasswordDto,
-  @Metadata() meta: IMetadata,
+    @Body() dto: NewPasswordDto,
+    @Metadata() meta: IMetadata,
   ): Promise<boolean> {
     return await this.userFacade.commands.updatePassword(dto);
   }
@@ -117,8 +120,8 @@ export class AuthController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiPasswordRecovery()
   async passwordRecovery(
-      @Body() dto: PasswordRecoveryDto,
-      @Metadata() meta: IMetadata,
+    @Body() dto: PasswordRecoveryDto,
+    @Metadata() meta: IMetadata,
   ): Promise<boolean> {
     return await this.userFacade.commands.passwordRecovery(dto);
   }
@@ -155,7 +158,7 @@ export class AuthController {
   @Get(authEndpoints.registrationViaGitHub())
   @ApiGitHubRegistration()
   async registrationViaGitHub(
-      @Metadata() meta: IMetadata,
+    @Metadata() meta: IMetadata,
     @Query() query: RegistrationViaThirdPartyServicesDto,
   ): Promise<LoginView> {
     const dto = {
@@ -184,7 +187,7 @@ export class AuthController {
   @HttpCode(HttpStatus.FOUND)
   @ApiRegistrationConfirmation()
   async registrationConfirmation(
-      @Metadata() meta: IMetadata,
+    @Metadata() meta: IMetadata,
     @Query() dto: RegistrationConfirmationDto,
     @Res() response: Response,
   ): Promise<void> {

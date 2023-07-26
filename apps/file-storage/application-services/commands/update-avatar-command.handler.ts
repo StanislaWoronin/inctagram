@@ -21,6 +21,7 @@ export class UpdateAvatarCommandHandler
     const correctFormatBuffer = await sharp(buffer).toFormat('png').toBuffer();
 
     const cloudOptions = cloudSwitcher();
+
     await this.filesStorageAdapter.deleteFolder(
       cloudOptions.BUCKET_NAME,
       `${dto.userId}/${fileStorageConstants.avatar.name}`,
@@ -30,7 +31,7 @@ export class UpdateAvatarCommandHandler
       fileStorageConstants.avatar.name,
       correctFormatBuffer,
     );
-
+    console.log({ photoLink });
     return photoLink;
   }
 }

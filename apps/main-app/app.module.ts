@@ -29,6 +29,6 @@ import { LoggerMiddleware } from '../../libs/midleware/logger.midleware';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*')
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }

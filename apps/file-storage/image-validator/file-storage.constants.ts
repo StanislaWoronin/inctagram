@@ -5,7 +5,7 @@ export const fileStorageConstants = {
   avatar: {
     name: PhotoType.Avatar,
     size: 1000000, // 10 ** 6
-    defaultLink: `${settings.cloud.YandexCloud.BUCKET_NAME}/avatars/defaultAvatar.png`,
+    defaultLink: `${settings.cloud.YandexCloud.BUCKET_NAME}/default-avatar/defaultAvatar.jpg`,
   },
   post: {
     name: PhotoType.PostImages,

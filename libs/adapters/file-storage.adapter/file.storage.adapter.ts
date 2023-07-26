@@ -43,6 +43,7 @@ export class S3StorageAdapter {
       const command = new PutObjectCommand(bucketParams);
       await this.s3Client.send(command);
     } catch (e) {
+      console.log({ e });
       throw new Error(e);
     }
     return {

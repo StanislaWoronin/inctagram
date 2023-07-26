@@ -39,7 +39,10 @@ import { MyPostsView } from './view-model/my-posts.view-model';
 import { DeletePostDto } from './dto/delete-post.dto';
 import { ParamsId } from '../../../libs/shared/dto/params-id';
 import { UserId } from '../../../libs/decorators/user-id.decorator';
-import {IMetadata, Metadata} from "../../../libs/decorators/metadata.decorator";
+import {
+  IMetadata,
+  Metadata,
+} from '../../../libs/decorators/metadata.decorator';
 
 @Controller(userEndpoints.default())
 @UseGuards(AuthBearerGuard)
@@ -69,7 +72,7 @@ export class UserController {
   @ApiUploadAvatar()
   @UseInterceptors(FileInterceptor(fileStorageConstants.avatar.name))
   async uploadUserAvatar(
-      @Metadata() meta: IMetadata,
+    @Metadata() meta: IMetadata,
     @UploadedFile(new ImageValidator()) avatar: Buffer,
     @UserId() userId: string,
   ): Promise<boolean> {
@@ -83,8 +86,8 @@ export class UserController {
   @Get(userEndpoints.getUserProfile())
   @ApiGetUser()
   async getUserProfile(
-      @Metadata() meta: IMetadata,
-      @UserId() userId: string
+    @Metadata() meta: IMetadata,
+    @UserId() userId: string,
   ): Promise<ViewUserWithInfo> {
     return await this.userFacade.queries.getUserProfile(userId);
   }

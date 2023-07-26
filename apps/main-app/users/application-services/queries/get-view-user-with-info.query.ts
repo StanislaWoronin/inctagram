@@ -14,6 +14,10 @@ export class GetViewUserWithInfoQuery
   constructor(private userQueryRepository: UserQueryRepository) {}
 
   async execute(query: GetViewUserWithInfoCommand): Promise<ViewUserWithInfo> {
-    return await this.userQueryRepository.getViewUserWithInfo(query.userId);
+    const user = await this.userQueryRepository.getViewUserWithInfo(
+      query.userId,
+    );
+
+    return ViewUserWithInfo.toViewProfile(user);
   }
 }

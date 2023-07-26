@@ -7,7 +7,7 @@ import { UserIdWith } from '../../dto/id-with.dto';
 import { MyPostQuery } from '../../dto/my-post.query';
 import { MyPostsView } from '../../view-model/my-posts.view-model';
 import { settings } from '../../../../../libs/shared/settings';
-import { not } from 'rxjs/internal/util/not';
+import { FullUser } from '../../../../../test/types/full-user.type';
 
 @Injectable()
 export class UserQueryRepository {
@@ -185,8 +185,8 @@ export class UserQueryRepository {
     }
   }
 
-  async getViewUserWithInfo(userId: string): Promise<ViewUserWithInfo> {
-    const user = await this.prisma.user.findFirst({
+  async getViewUserWithInfo(userId: string): Promise<Partial<FullUser>> {
+    return await this.prisma.user.findFirst({
       select: {
         id: true,
         userName: true,
@@ -207,7 +207,5 @@ export class UserQueryRepository {
         id: userId,
       },
     });
-
-    return ViewUserWithInfo.toViewProfile(user);
   }
 }
