@@ -108,7 +108,6 @@ export class AuthController {
   }
 
   @Post(authEndpoints.pairToken())
-  @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshTokenValidationGuard)
   @ApiRefreshToken()
   async updatePairToken(
