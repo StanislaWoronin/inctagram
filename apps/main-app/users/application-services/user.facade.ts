@@ -120,7 +120,9 @@ export class UserFacade {
     return await this.commandBus.execute(command);
   }
 
-  private async mergeProfile(dto: WithClientMeta<EmailDto>): Promise<TRegistrationViaThirdPartyServices | null> {
+  private async mergeProfile(
+    dto: WithClientMeta<EmailDto>,
+  ): Promise<TRegistrationViaThirdPartyServices | null> {
     const command = new MergeProfileCommand(dto);
     return await this.commandBus.execute(command);
   }

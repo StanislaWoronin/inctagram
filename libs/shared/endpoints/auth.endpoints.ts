@@ -22,7 +22,7 @@ export const authEndpoints = {
   },
 
   mergeProfile(test = false): string {
-    const endpoint = `merge-profile`;
+    const endpoint = `merge`;
     if (test) return `/${this.default()}/${endpoint}`;
     return endpoint;
   },

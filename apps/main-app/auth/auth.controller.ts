@@ -9,9 +9,9 @@ import {
   Post,
   Put,
   Query,
-  Req,
   Res,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserFacade } from '../users/application-services';
 import {
@@ -28,7 +28,6 @@ import {
   ApiRegistrationEmailResending,
 } from '../../../libs/documentation/swagger/auth.documentation';
 import { RefreshTokenValidationGuard } from '../../../libs/guards/refresh-token-validation.guard';
-import { settings } from '../../../libs/shared/settings';
 import { Response } from 'express';
 import { RegistrationDto } from './dto/registration.dto';
 import { CurrentUser } from '../../../libs/decorators/current-user.decorator';
@@ -45,11 +44,13 @@ import { ConfigService } from '@nestjs/config';
 import { RegistrationConfirmationResponse } from './view-model/registration-confirmation.response';
 import { PasswordRecoveryDto } from './dto/password-recovery.dto';
 import { UserId } from '../../../libs/decorators/user-id.decorator';
-import { TLoginView } from './view-model/login.view-model';
+import { LoginView, TLoginView } from './view-model/login.view-model';
 import { CheckCredentialGuard } from '../../../libs/guards/check-credential.guard';
 import { RegistrationViaThirdPartyServicesDto } from './dto/registration-via-third-party-services.dto';
+import { SetCookiesInterceptor } from '../../../libs/interceptos/set-cookies.interceptor';
 
 @Controller(authEndpoints.default())
+@UseInterceptors(SetCookiesInterceptor)
 export class AuthController {
   constructor(
     private readonly userFacade: UserFacade,
@@ -69,11 +70,10 @@ export class AuthController {
   @ApiLogin()
   async login(
     @Body() body: LoginDto,
+    @CurrentUser() user: ViewUser,
     @Ip() ipAddress: string,
     @Headers('user-agent') title: string,
-    @Res({ passthrough: true }) response: Response,
-    @CurrentUser() user: ViewUser,
-  ): Promise<TLoginView> {
+  ): Promise<LoginView> {
     const dto = {
       userId: user.id,
       ...body,
@@ -81,12 +81,8 @@ export class AuthController {
       title,
     };
     const tokens = await this.userFacade.commands.loginUser(dto);
-    response.cookie('refreshToken', tokens.refreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: settings.timeLife.TOKEN_TIME,
-    });
-    return { accessToken: tokens.accessToken, user };
+
+    return { ...tokens, user };
   }
 
   @Post(authEndpoints.logout())
@@ -120,7 +116,6 @@ export class AuthController {
     @CurrentDeviceId() deviceId: string,
     @Ip() ipAddress: string,
     @Headers('user-agent') title: string,
-    @Res({ passthrough: true }) response: Response,
   ): Promise<TokenResponseView> {
     const dto = {
       userId: userId,
@@ -128,20 +123,13 @@ export class AuthController {
       ipAddress: ipAddress,
       title: title,
     };
-    const tokens = await this.userFacade.commands.updatePairToken(dto);
-    response.cookie('refreshToken', tokens.refreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: settings.timeLife.TOKEN_TIME,
-    });
-    return { accessToken: tokens.accessToken };
+    return await this.userFacade.commands.updatePairToken(dto);
   }
 
   @Post(authEndpoints.registration())
   @ApiRegistration()
   async registration(
     @Body() dto: RegistrationDto,
-    @Res({ passthrough: true }) response: Response,
   ): Promise<TCreateUserResponse | null> {
     return await this.userFacade.commands.registrationUser(dto);
   }
@@ -152,21 +140,13 @@ export class AuthController {
     @Ip() ipAddress: string,
     @Headers('user-agent') title: string,
     @Query() query: RegistrationViaThirdPartyServicesDto,
-    @Res({ passthrough: true }) response: Response,
-  ): Promise<TLoginView> {
+  ): Promise<LoginView> {
     const dto = {
       ipAddress,
       title,
       ...query,
     };
-    const result = await this.userFacade.commands.registrationViaGitHub(dto);
-    if (!result) return;
-    response.cookie('refreshToken', result.refreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: settings.timeLife.TOKEN_TIME,
-    });
-    return { accessToken: result.accessToken, user: result.user };
+    return await this.userFacade.commands.registrationViaGitHub(dto);
   }
 
   @Get(authEndpoints.registrationViaGoogle())
@@ -175,21 +155,13 @@ export class AuthController {
     @Ip() ipAddress: string,
     @Headers('user-agent') title: string,
     @Query() query: RegistrationViaThirdPartyServicesDto,
-    @Res({ passthrough: true }) response: Response,
   ): Promise<TLoginView> {
     const dto = {
       ipAddress,
       title,
       ...query,
     };
-    const result = await this.userFacade.commands.registrationViaGoogle(dto);
-    if (!result) return;
-    response.cookie('refreshToken', result.refreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: settings.timeLife.TOKEN_TIME,
-    });
-    return { accessToken: result.accessToken, user: result.user };
+    return await this.userFacade.commands.registrationViaGoogle(dto);
   }
 
   @Get(authEndpoints.registrationConfirmation())
@@ -217,23 +189,15 @@ export class AuthController {
   @Put(authEndpoints.mergeProfile())
   @ApiMergeProfile()
   async mergeProfile(
-      @Body() dto: EmailDto,
-      @Ip() ipAddress: string,
-      @Headers('user-agent') title: string,
-      @Res({ passthrough: true }) response: Response
+    @Body() dto: EmailDto,
+    @Ip() ipAddress: string,
+    @Headers('user-agent') title: string,
   ): Promise<TLoginView | null> {
     const dtoPlus = {
       ...dto,
       ipAddress,
-      title
-    }
-    const result = await this.userFacade.commands.mergeProfile(dtoPlus);
-    if (!result) return null
-    response.cookie('refreshToken', result.refreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: settings.timeLife.TOKEN_TIME,
-    });
-    return { accessToken: result.accessToken, user: result.user };
+      title,
+    };
+    return await this.userFacade.commands.mergeProfile(dtoPlus);
   }
 }

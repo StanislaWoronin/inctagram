@@ -19,11 +19,17 @@ import { IsValidBirthdayFormatConstraint } from '../../../libs/decorators/birthd
 import { IsDifferentPasswordConstraint } from '../../../libs/decorators/different-password.decorator';
 import { RecaptchaAdapter } from '../../../libs/adapters/recaptcha.adapter/recaptcha.adapter';
 import { IsValidCaptchaConstraint } from '../../../libs/decorators/is-valid-captcha.decorator';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { SetCookiesInterceptor } from '../../../libs/interceptos/set-cookies.interceptor';
 
 @Module({
   imports: [UserModule, CqrsModule, SharedModule, JwtModule.register({})],
   controllers: [AuthController],
   providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: SetCookiesInterceptor,
+    },
     RecaptchaAdapter,
     IsValidCaptchaConstraint,
     IsConfirmationCodeExistConstraint,

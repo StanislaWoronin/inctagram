@@ -4,10 +4,15 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export type TLoginView = TokenResponseView & { user: ViewUser };
 
-export class LoginView extends ViewUser {
+export class LoginView implements TLoginView {
   @ApiProperty({
     type: String,
     description: 'Access token for user',
   })
   accessToken: string;
+
+  @ApiProperty({
+    type: ViewUser,
+  })
+  user: ViewUser;
 }
