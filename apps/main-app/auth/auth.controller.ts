@@ -141,7 +141,6 @@ export class AuthController {
     return await this.userFacade.commands.updatePairToken(dto);
   }
 
-
   // Registration in the system
   @Post(authEndpoints.registration())
   @ApiRegistration()
