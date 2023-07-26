@@ -39,6 +39,7 @@ import { MyPostsView } from './view-model/my-posts.view-model';
 import { DeletePostDto } from './dto/delete-post.dto';
 import { ParamsId } from '../../../libs/shared/dto/params-id';
 import { UserId } from '../../../libs/decorators/user-id.decorator';
+import {IMetadata, Metadata} from "../../../libs/decorators/metadata.decorator";
 
 @Controller(userEndpoints.default())
 @UseGuards(AuthBearerGuard)
@@ -50,9 +51,10 @@ export class UserController {
   @ApiCreatePost()
   @UseInterceptors(FilesInterceptor(fileStorageConstants.post.name))
   async createPost(
-    @UserId() userId: string,
     @Body() dto: PostDto,
+    @Metadata() meta: IMetadata,
     @UploadedFiles(new ImagesValidator()) postPhotos: Buffer[],
+    @UserId() userId: string,
   ): Promise<CreatedPostView> {
     return this.userFacade.commands.createPost({
       userId,
@@ -67,9 +69,9 @@ export class UserController {
   @ApiUploadAvatar()
   @UseInterceptors(FileInterceptor(fileStorageConstants.avatar.name))
   async uploadUserAvatar(
+      @Metadata() meta: IMetadata,
+    @UploadedFile(new ImageValidator()) avatar: Buffer,
     @UserId() userId: string,
-    @UploadedFile(new ImageValidator())
-    avatar: Buffer,
   ): Promise<boolean> {
     return await this.userFacade.commands.uploadUserAvatar({
       userId,
@@ -80,7 +82,10 @@ export class UserController {
   // Return user profile with avatar photo
   @Get(userEndpoints.getUserProfile())
   @ApiGetUser()
-  async getUserProfile(@UserId() userId: string): Promise<ViewUserWithInfo> {
+  async getUserProfile(
+      @Metadata() meta: IMetadata,
+      @UserId() userId: string
+  ): Promise<ViewUserWithInfo> {
     return await this.userFacade.queries.getUserProfile(userId);
   }
 
@@ -89,6 +94,7 @@ export class UserController {
   @ApiMyPosts()
   async getMyPosts(
     @Query() query: MyPostQuery,
+    @Metadata() meta: IMetadata,
     @UserId() userId: string,
   ): Promise<MyPostsView> {
     return await this.userFacade.queries.getMyPosts({
@@ -103,6 +109,7 @@ export class UserController {
   @ApiUpdateProfile()
   async updateUserProfile(
     @Body() dto: UpdateUserProfileDto,
+    @Metadata() meta: IMetadata,
     @UserId() userId: string,
   ): Promise<boolean> {
     return await this.userFacade.commands.updateUserProfile({ userId, ...dto });
@@ -114,8 +121,9 @@ export class UserController {
   @ApiUpdatePost()
   async updatePost(
     @Body() dto: PostDto,
-    @UserId() userId: string,
+    @Metadata() meta: IMetadata,
     @Param() postId: ParamsId,
+    @UserId() userId: string,
   ): Promise<boolean> {
     return await this.userFacade.commands.updatePost({
       userId,
@@ -129,6 +137,7 @@ export class UserController {
   @ApiDeletePost()
   async deletePost(
     @Body() dto: DeletePostDto,
+    @Metadata() meta: IMetadata,
     @Param() postId: ParamsId,
   ): Promise<boolean> {
     return this.userFacade.commands.deletePost({

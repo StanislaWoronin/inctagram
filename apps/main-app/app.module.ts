@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { TestingController } from './testing/testing.controller';
@@ -11,6 +11,7 @@ import { getProviderOptions } from '../../libs/providers/rabbit-mq/providers.opt
 import { Microservices } from '../../libs/shared/enums/microservices-name.enum';
 import { UserModule } from './users/user.module';
 import { JwtService } from '@nestjs/jwt';
+import { LoggerMiddleware } from '../../libs/midleware/logger.midleware';
 
 @Module({
   imports: [
@@ -26,4 +27,8 @@ import { JwtService } from '@nestjs/jwt';
   controllers: [TestingController],
   providers: [TestingRepository, PrismaService, JwtService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*')
+  }
+}

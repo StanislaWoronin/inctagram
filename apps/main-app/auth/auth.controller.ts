@@ -48,6 +48,7 @@ import { LoginView, TLoginView } from './view-model/login.view-model';
 import { CheckCredentialGuard } from '../../../libs/guards/check-credential.guard';
 import { RegistrationViaThirdPartyServicesDto } from './dto/registration-via-third-party-services.dto';
 import { SetCookiesInterceptor } from '../../../libs/interceptos/set-cookies.interceptor';
+import {IMetadata, Metadata} from "../../../libs/decorators/metadata.decorator";
 
 @Controller(authEndpoints.default())
 @UseInterceptors(SetCookiesInterceptor)
@@ -57,13 +58,18 @@ export class AuthController {
     private readonly configService: ConfigService,
   ) {}
 
+  // Confirmation email vie confirmation code from email
   @Post(authEndpoints.confirmationEmailResending())
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiRegistrationEmailResending()
-  async confirmationCodeResending(@Body() dto: EmailDto): Promise<boolean> {
+  async confirmationCodeResending(
+    @Body() dto: EmailDto,
+    @Metadata() meta: IMetadata,
+  ): Promise<boolean> {
     return await this.userFacade.commands.confirmationCodeResending(dto);
   }
 
+  // Log in
   @Post(authEndpoints.login())
   @HttpCode(HttpStatus.OK)
   @UseGuards(CheckCredentialGuard)
@@ -71,102 +77,115 @@ export class AuthController {
   async login(
     @Body() body: LoginDto,
     @CurrentUser() user: ViewUser,
-    @Ip() ipAddress: string,
-    @Headers('user-agent') title: string,
+    @Metadata() meta: IMetadata,
   ): Promise<LoginView> {
     const dto = {
       userId: user.id,
       ...body,
-      ipAddress,
-      title,
+      ...meta.clientMeta
     };
     const tokens = await this.userFacade.commands.loginUser(dto);
 
     return { ...tokens, user };
   }
 
+  // Logout session by id
   @Post(authEndpoints.logout())
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(RefreshTokenValidationGuard)
   @ApiLogout()
-  async logout(@CurrentDeviceId() deviceId: string): Promise<boolean> {
-    return this.userFacade.commands.logout(deviceId);
+  async logout(
+      @CurrentDeviceId() deviceId: string,
+      @Metadata() meta: IMetadata,
+  ): Promise<boolean> {
+    return await this.userFacade.commands.logout(deviceId);
   }
 
+  // Set new password
   @Post(authEndpoints.newPassword())
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNewPassword()
-  async updatePassword(@Body() dto: NewPasswordDto): Promise<boolean> {
+  async updatePassword(
+      @Body() dto: NewPasswordDto,
+  @Metadata() meta: IMetadata,
+  ): Promise<boolean> {
     return await this.userFacade.commands.updatePassword(dto);
   }
 
+  // Create and send email with password recovery
   @Post(authEndpoints.passwordRecovery())
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiPasswordRecovery()
-  async passwordRecovery(@Body() dto: PasswordRecoveryDto): Promise<boolean> {
+  async passwordRecovery(
+      @Body() dto: PasswordRecoveryDto,
+      @Metadata() meta: IMetadata,
+  ): Promise<boolean> {
     return await this.userFacade.commands.passwordRecovery(dto);
   }
 
+  // Generate new pair tokens
   @Post(authEndpoints.pairToken())
+  @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshTokenValidationGuard)
   @ApiRefreshToken()
   async updatePairToken(
     @UserId() userId: string,
     @CurrentDeviceId() deviceId: string,
-    @Ip() ipAddress: string,
-    @Headers('user-agent') title: string,
+    @Metadata() meta: IMetadata,
   ): Promise<TokenResponseView> {
     const dto = {
-      userId: userId,
-      deviceId: deviceId,
-      ipAddress: ipAddress,
-      title: title,
+      userId,
+      deviceId,
+      ...meta.clientMeta,
     };
     return await this.userFacade.commands.updatePairToken(dto);
   }
 
+
+  // Registration in the system
   @Post(authEndpoints.registration())
   @ApiRegistration()
   async registration(
     @Body() dto: RegistrationDto,
+    @Metadata() meta: IMetadata,
   ): Promise<TCreateUserResponse | null> {
     return await this.userFacade.commands.registrationUser(dto);
   }
 
+  // Registration in the system via GitHub and return pair tokens
   @Get(authEndpoints.registrationViaGitHub())
   @ApiGitHubRegistration()
   async registrationViaGitHub(
-    @Ip() ipAddress: string,
-    @Headers('user-agent') title: string,
+      @Metadata() meta: IMetadata,
     @Query() query: RegistrationViaThirdPartyServicesDto,
   ): Promise<LoginView> {
     const dto = {
-      ipAddress,
-      title,
+      ...meta.clientMeta,
       ...query,
     };
     return await this.userFacade.commands.registrationViaGitHub(dto);
   }
 
+  // Registration in the system via Google and return pair tokens
   @Get(authEndpoints.registrationViaGoogle())
   @ApiGoogleRegistration()
   async registrationViaGoogle(
-    @Ip() ipAddress: string,
-    @Headers('user-agent') title: string,
+      @Metadata() meta: IMetadata,
     @Query() query: RegistrationViaThirdPartyServicesDto,
   ): Promise<TLoginView> {
     const dto = {
-      ipAddress,
-      title,
+      ...meta.clientMeta,
       ...query,
     };
     return await this.userFacade.commands.registrationViaGoogle(dto);
   }
 
+  // Confirmation email vie code from email
   @Get(authEndpoints.registrationConfirmation())
   @HttpCode(HttpStatus.FOUND)
   @ApiRegistrationConfirmation()
   async registrationConfirmation(
+      @Metadata() meta: IMetadata,
     @Query() dto: RegistrationConfirmationDto,
     @Res() response: Response,
   ): Promise<void> {
@@ -185,17 +204,16 @@ export class AuthController {
     return;
   }
 
+  // Merge profile if user with this email already exists but email is not confirmed
   @Put(authEndpoints.mergeProfile())
   @ApiMergeProfile()
   async mergeProfile(
     @Body() dto: EmailDto,
-    @Ip() ipAddress: string,
-    @Headers('user-agent') title: string,
+    @Metadata() meta: IMetadata,
   ): Promise<TLoginView | null> {
     const dtoPlus = {
       ...dto,
-      ipAddress,
-      title,
+      ...meta.clientMeta,
     };
     return await this.userFacade.commands.mergeProfile(dtoPlus);
   }
