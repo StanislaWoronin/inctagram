@@ -7,8 +7,6 @@ import { ViewUserWithInfo } from '../../apps/main-app/users/view-model/user-with
 import { fileStorageConstants } from '../../apps/file-storage/image-validator/file-storage.constants';
 import { userEndpoints } from '../../libs/shared/endpoints/user.endpoints';
 import { TUpdateUserProfileTestDto } from '../types/update-user-profile.test-dto';
-import { readFileSync } from 'fs';
-import multer from 'multer';
 
 export class UserRequest {
   constructor(private readonly server: any) {}
@@ -18,7 +16,6 @@ export class UserRequest {
     accessToken?: string,
   ): Promise<TestResponseType<ErrorResponse>> {
     const response = await request(this.server)
-      .put(userEndpoints.updateUserProfile(true))
       .auth(accessToken, { type: 'bearer' })
       .send(dto);
 
@@ -46,7 +43,6 @@ export class UserRequest {
       'avatar',
       images.avatar[imageName],
     );
-    //const file = readFileSync(imagePath);
 
     const response = await request(this.server)
       .post(userEndpoints.uploadUserAvatar(true))

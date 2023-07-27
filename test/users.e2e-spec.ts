@@ -235,13 +235,13 @@ describe('Test auth controller.', () => {
       });
     });
 
-    it.skip(`Status ${HttpStatus.UNAUTHORIZED}.
+    it(`Status ${HttpStatus.UNAUTHORIZED}.
       Try upload avatar with missed access token.`, async () => {
       const response = await requests.user().uploadUserAvatar(Images.Fist);
       expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
     });
 
-    it.skip(`Status ${HttpStatus.UNAUTHORIZED}.
+    it(`Status ${HttpStatus.UNAUTHORIZED}.
       Try upload avatar with incorrect access token.`, async () => {
       const { accessToken } = expect.getState();
       const incorrectToken = accessToken.replace('.', '');
@@ -252,7 +252,7 @@ describe('Test auth controller.', () => {
       expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
     });
 
-    it.skip(`Status ${HttpStatus.UNAUTHORIZED}.
+    it(`Status ${HttpStatus.UNAUTHORIZED}.
       Try upload avatar with expired access token.`, async () => {
       const { accessToken } = expect.getState();
       const expiredToken = await testingRepository.makeTokenExpired(
@@ -290,7 +290,7 @@ describe('Test auth controller.', () => {
       expect(response.body).toStrictEqual(errors);
     });
 
-    it.skip(`Status ${HttpStatus.NO_CONTENT}.
+    it(`Status ${HttpStatus.NO_CONTENT}.
       Should upload new avatar.`, async () => {
       const { accessToken } = expect.getState();
 

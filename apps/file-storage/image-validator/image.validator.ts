@@ -1,14 +1,10 @@
-import {
-  fileStorageConstants,
-  ValidPhotoFormat,
-} from './file-storage.constants';
+import { fileStorageConstants } from './file-storage.constants';
 import { BadRequestException } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
 import sharp from 'sharp';
-import { getUserProfileResponse } from '../../../test/response/user/get-user-profile.response';
 
 export class ImageValidator {
   async transform(image: Express.Multer.File) {
+    console.log({ image });
     await isValidImage(fileStorageConstants.avatar.size, image);
     const buffer = image.buffer;
     return buffer;

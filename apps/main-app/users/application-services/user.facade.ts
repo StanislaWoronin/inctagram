@@ -29,7 +29,7 @@ import { UpdateUserProfileDto } from '../dto/update-user.dto';
 import { UpdateUserProfileCommand } from './commands/update-user-profile-command.handler';
 import { MergeProfileCommand } from './commands/merge-profile.command-handler';
 import { ViewUserWithInfo } from '../view-model/user-with-info.view-model';
-import { UploadUserAvatarCommand } from './commands/upload-user-avatar.command-handler';
+import { UploadUserAvatarCommand } from './commands/upload-avatar/upload-user-avatar.command-handler';
 import { AvatarDto } from '../dto/avatar.dto';
 import { CreatedPostView } from '../view-model/created-post.view-model';
 import { CreatePostCommand } from './commands/create-post.command-handler';
