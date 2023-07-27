@@ -8,6 +8,7 @@ import { fileStorageConstants } from '../../apps/file-storage/image-validator/fi
 import { userEndpoints } from '../../libs/shared/endpoints/user.endpoints';
 import { TUpdateUserProfileTestDto } from '../types/update-user-profile.test-dto';
 import { readFileSync } from 'fs';
+import multer from 'multer';
 
 export class UserRequest {
   constructor(private readonly server: any) {}
@@ -45,12 +46,14 @@ export class UserRequest {
       'avatar',
       images.avatar[imageName],
     );
-    const file = readFileSync(imagePath);
+    //const file = readFileSync(imagePath);
 
     const response = await request(this.server)
       .post(userEndpoints.uploadUserAvatar(true))
       .auth(accessToken, { type: 'bearer' })
-      .attach(fileStorageConstants.avatar.name, file);
+      .set('Content-Type', 'multipart/form-data')
+      .attach(fileStorageConstants.avatar.name, imagePath);
+
     return { status: response.status, body: response.body };
   }
 }
