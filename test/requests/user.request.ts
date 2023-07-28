@@ -7,6 +7,11 @@ import { ViewUserWithInfo } from '../../apps/main-app/users/view-model/user-with
 import { fileStorageConstants } from '../../apps/file-storage/image-validator/file-storage.constants';
 import { userEndpoints } from '../../libs/shared/endpoints/user.endpoints';
 import { TUpdateUserProfileTestDto } from '../types/update-user-profile.test-dto';
+import { createReadStream, readFile, readFileSync } from 'fs';
+//import FormData from 'form-data';
+import { fileToBuffer } from '../helpers';
+import axios from 'axios';
+import { log } from 'util';
 
 export class UserRequest {
   constructor(private readonly server: any) {}
@@ -16,7 +21,7 @@ export class UserRequest {
     accessToken?: string,
   ): Promise<TestResponseType<ErrorResponse>> {
     const response = await request(this.server)
-        .put(userEndpoints.updateUserProfile(true))
+      .put(userEndpoints.updateUserProfile(true))
       .auth(accessToken, { type: 'bearer' })
       .send(dto);
 
@@ -45,12 +50,26 @@ export class UserRequest {
       images.avatar[imageName],
     );
 
-    const response = await request(this.server)
-      .post(userEndpoints.uploadUserAvatar(true))
-      .auth(accessToken, { type: 'bearer' })
-      .set('Content-Type', 'multipart/form-data')
-      .attach(fileStorageConstants.avatar.name, imagePath);
+    // const response = await request(this.server)
+    //   .post(userEndpoints.uploadUserAvatar(true))
+    //   .auth(accessToken, { type: 'bearer' })
+    //   .set('Content-Type', 'multipart/form-data')
+    //   .attach('avatar', imagePath);
+    const formData = new FormData();
+    formData.append('avatar', imagePath);
 
-    return { status: response.status, body: response.body };
+    const response = await axios.post(
+      'http://localhost:5000/user/avatar',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    // @ts-ignore
+    console.log(response.body);
+    return { status: response.status, body: response.data };
   }
 }
