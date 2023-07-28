@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AvatarDto } from '../../main-app/users/dto/avatar.dto';
-import { UpdateAvatarCommand } from './commands/update-avatar-command.handler';
-import { UploadPostImagesCommand } from './commands/upload-post-image.command-handler';
+import { UpdateAvatarCommand } from './commands/update-avatar-handler/update-avatar-command.handler';
+import { UploadPostImagesCommand } from './commands/upload-post-handler/upload-post-image.command-handler';
 import { UserIdWith } from '../../main-app/users/dto/id-with.dto';
 import { PostImagesDto } from '../../main-app/users/dto/post-images.dto';
 

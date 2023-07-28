@@ -14,7 +14,7 @@ import { GetUserByRecoveryCodeQuery } from './queries/get-user-by-recovery-code.
 import { DeleteUserByIdCommandHandler } from './commands/delete-user-by-id.command-handler';
 import { GetViewUserWithInfoQuery } from './queries/get-view-user-with-info.query';
 import { UpdateUserProfileCommandHandler } from './commands/update-user-profile-command.handler';
-import { UploadAvatarCommandHandler } from './commands/upload-avatar/upload-user-avatar.command-handler';
+import { UploadAvatarCommandHandler } from './commands/upload-user-avatar.command-handler';
 import { CreatePostCommandHandler } from './commands/create-post.command-handler';
 import { UpdatePostCommandHandler } from './commands/update-post.command-handler';
 import { GetMyPostsQuery } from './queries/get-my-posts.query';

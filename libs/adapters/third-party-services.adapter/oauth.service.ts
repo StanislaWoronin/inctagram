@@ -16,7 +16,6 @@ export class OAuthService {
   constructor(
     private emailManager: EmailManager,
     private factory: TokensFactory,
-    private googleAdapter: GoogleAdapter,
     private userRepository: UserRepository,
     private userQueryRepository: UserQueryRepository,
   ) {}

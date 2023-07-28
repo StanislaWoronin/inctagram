@@ -27,7 +27,7 @@ describe('Test auth controller.', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule, FileStorageModule],
     })
-      .overrideProvider(EmailManager)
+      .overrideProvider(EmailManager, )
       .useValue(new EmailManagerMock())
       .compile();
 

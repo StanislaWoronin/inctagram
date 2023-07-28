@@ -16,6 +16,7 @@ export class UserRequest {
     accessToken?: string,
   ): Promise<TestResponseType<ErrorResponse>> {
     const response = await request(this.server)
+        .put(userEndpoints.updateUserProfile(true))
       .auth(accessToken, { type: 'bearer' })
       .send(dto);
 
