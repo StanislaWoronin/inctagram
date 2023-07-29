@@ -18,7 +18,7 @@ export class ViewUser implements TViewUser {
   @ApiProperty({ example: new Date().toISOString() })
   createdAt: string;
 
-  static async toView(user: Partial<FullUser>) {
+  static toView(user: Partial<FullUser>) {
     const viewUser = new ViewUser();
     viewUser.id = user.id;
     viewUser.userName = user.userName;

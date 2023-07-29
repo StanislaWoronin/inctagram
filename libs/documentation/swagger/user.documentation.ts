@@ -6,6 +6,7 @@ import {
   ApiConsumes,
   ApiCreatedResponse,
   ApiNoContentResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -61,6 +62,7 @@ export function ApiDeletePost() {
     ApiUnauthorizedResponse({
       description: 'If the JWT access token is missing, expired or incorrect',
     }),
+    ApiNotFoundResponse({ description: 'Post for specific ID not found' }),
   );
 }
 

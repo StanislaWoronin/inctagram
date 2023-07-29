@@ -4,7 +4,6 @@ import { join } from 'path';
 import { images } from '../../../../../test/images/images';
 import { readFileSync } from 'fs';
 import { UserIdWith } from '../../../../main-app/users/dto/id-with.dto';
-import { AvatarDto } from '../../../../main-app/users/dto/avatar.dto';
 import { randomUUID } from 'crypto';
 import { PostImagesDto } from '../../../../main-app/users/dto/post-images.dto';
 
@@ -17,6 +16,11 @@ describe('Upload post.', () => {
   const imagePath = join(
     __dirname,
     '..',
+    '..',
+    '..',
+    '..',
+    '..',
+    'test',
     'images',
     'avatar',
     images.avatar.fist,
@@ -33,8 +37,8 @@ describe('Upload post.', () => {
   describe('Test upload post.', () => {
     it('Upload post with one photo.', async () => {
       const result = await uploadPostImagesCommandHandler.execute({ dto });
-      console.log('Post with one photo upload:', result);
-      expect(typeof result).toBe('string');
+      expect(result).toBeDefined();
+      expect(typeof result[0]).toBe('string');
     });
 
     const count = 4;
@@ -44,9 +48,8 @@ describe('Upload post.', () => {
 
     it('Should upload avatar', async () => {
       const result = await uploadPostImagesCommandHandler.execute({ dto });
-      console.log('Post with many photo upload:', result);
+      expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
-      expect(typeof result[0]).toBe('string');
       expect(result.length).toBe(count + 1);
     });
   });

@@ -60,7 +60,7 @@ model Posts {
   description  String
   Photos       Photos[]
   isDeleted    Boolean        @default(false)
-  DeletedPosts DeletedPosts[]
+  DeletedPosts DeletedPosts?
 }
 
 model DeletedPosts {

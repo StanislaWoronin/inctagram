@@ -6,7 +6,6 @@ import {
   HttpStatus,
   Param,
 } from '@nestjs/common';
-import { ApiExcludeEndpoint } from '@nestjs/swagger';
 import {
   ApiDropDatabase,
   GetUserFromDatabaseTest,

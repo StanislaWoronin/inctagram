@@ -16,6 +16,11 @@ describe('Upload avatar.', () => {
   const imagePath = join(
     __dirname,
     '..',
+    '..',
+    '..',
+    '..',
+    '..',
+    'test',
     'images',
     'avatar',
     images.avatar.fist,
@@ -30,9 +35,8 @@ describe('Upload avatar.', () => {
   describe('Test upload avatar.', () => {
     it('Should upload avatar', async () => {
       const result = await updateAvatarCommandHandler.execute({ dto });
-      console.log('Avatar upload:', result);
-      expect(Array.isArray(result)).toBe(true);
-      expect(typeof result[0]).toBe('string');
+      expect(result).toBeDefined();
+      expect(typeof result).toBe('string');
     });
   });
 });

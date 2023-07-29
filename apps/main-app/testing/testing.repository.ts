@@ -5,17 +5,82 @@ import { Tokens } from '../../../libs/shared/enums/tokens.enum';
 import { settings } from '../../../libs/shared/settings';
 import { FullUser } from '../../../test/types/full-user.type';
 import { decodeBirthday } from '../../../libs/shared/helpers';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class TestingRepository {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
   async deleteAll() {
-    await this.prisma.device.deleteMany({});
-    await this.prisma.emailConfirmation.deleteMany({});
-    await this.prisma.passwordRecovery.deleteMany({});
-    await this.prisma.user.deleteMany({});
-    await this.prisma.photos.deleteMany({});
+    const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
+
+    const tables = modelNames.map((modelName) => {
+      return modelName.replace(/(^|\s)\S/g, (a) => {
+        return a.toLowerCase();
+      });
+    });
+
+    return Promise.all(
+      tables.map((table) => this.prisma[table].deleteMany({})),
+    );
+  }
+
+  async createTestingUser(sto) {
+    return await this.prisma.user.create({
+      data: {
+        userName: sto.userName,
+        email: sto.email,
+        createdAt: sto.createdAt,
+        isConfirmed: true,
+      },
+    });
+  }
+
+  async createTestingPost(dto) {
+    return await this.prisma.user.create({
+      data: {
+        userName: dto.userName,
+        email: dto.email,
+        createdAt: dto.createdAt,
+        isConfirmed: true,
+        Posts: {
+          create: {
+            description: dto.description,
+            Photos: {
+              create: dto.postImagesLink.map((photoLink) => ({
+                photoLink,
+              })),
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+        Posts: {
+          select: {
+            id: true,
+            description: true,
+            Photos: {
+              select: {
+                photoLink: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  async getPost(postId) {
+    return this.prisma.posts.findUnique({
+      where: { id: postId },
+      select: {
+        id: true,
+        description: true,
+        isDeleted: true,
+        DeletedPosts: true,
+      },
+    });
   }
 
   async getUser(userId: string): Promise<FullUser> {

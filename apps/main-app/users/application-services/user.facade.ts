@@ -32,16 +32,16 @@ import { ViewUserWithInfo } from '../view-model/user-with-info.view-model';
 import { UploadUserAvatarCommand } from './commands/upload-user-avatar.command-handler';
 import { AvatarDto } from '../dto/avatar.dto';
 import { CreatedPostView } from '../view-model/created-post.view-model';
-import { CreatePostCommand } from './commands/create-post.command-handler';
+import { CreatePostCommand } from './commands/create-post/create-post.command-handler';
 import { MyPostsView } from '../view-model/my-posts.view-model';
 import { PostIdWith, UserIdWith } from '../dto/id-with.dto';
 import { MyPostQuery } from '../dto/my-post.query';
 import { GetMyPostsCommand } from './queries/get-my-posts.query';
-import { UpdatePostCommand } from './commands/update-post.command-handler';
+import { UpdatePostCommand } from './commands/update-post/update-post.command-handler';
 import { PostImagesDto } from '../dto/post-images.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { DeletePostDto } from '../dto/delete-post.dto';
-import { DeletePostCommand } from './commands/delete-post.command-handler';
+import { DeletePostCommand } from './commands/delete-post/delete-post.command-handler';
 import {
   RegistrationViaThirdPartyServicesDto,
   TRegistrationViaThirdPartyServices,

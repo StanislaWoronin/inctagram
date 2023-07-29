@@ -13,6 +13,8 @@ import { Tokens } from '../libs/shared/enums/tokens.enum';
 import { getUserProfileResponse } from './response/user/get-user-profile.response';
 import { Images } from './images/images';
 import { FileStorageModule } from '../apps/file-storage/file-storage.module';
+import { ClientProxy } from '@nestjs/microservices';
+import { ClientProxyMock } from './mock/client-proxy.mock';
 
 describe('Test auth controller.', () => {
   const second = 1000;
@@ -29,6 +31,8 @@ describe('Test auth controller.', () => {
     })
       .overrideProvider(EmailManager)
       .useValue(new EmailManagerMock())
+      .overrideProvider(ClientProxy)
+      .useValue(new ClientProxyMock())
       .compile();
 
     const rawApp = await moduleFixture.createNestApplication();
@@ -363,10 +367,4 @@ describe('Test auth controller.', () => {
       );
     });
   });
-
-  describe('Create new post.', () => {});
-
-  describe('Update user post.', () => {});
-
-  describe('Delete user post.', () => {});
 });

@@ -1,16 +1,14 @@
-// Мок для JwtService
 import { TokensFactory } from './tokens.factory';
 
 const jwtServiceMock: any = {
-  signAsync: jest.fn().mockResolvedValue('mockedAccessToken'),
+  signAsync: jest
+    .fn()
+    .mockImplementationOnce(() => 'mockedAccessToken')
+    .mockImplementationOnce(() => 'mockedRefreshToken'),
 };
 
 describe('TokensFactory', () => {
-  let tokensFactory: TokensFactory;
-
-  beforeEach(() => {
-    tokensFactory = new TokensFactory(jwtServiceMock);
-  });
+  const tokensFactory = new TokensFactory(jwtServiceMock);
 
   it('should generate pair of tokens', async () => {
     const userId = 'mockUserId';
@@ -32,7 +30,7 @@ describe('TokensFactory', () => {
 
     expect(result).toEqual({
       accessToken: 'mockedAccessToken',
-      refreshToken: 'mockedAccessToken',
+      refreshToken: 'mockedRefreshToken',
     });
   });
 });

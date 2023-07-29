@@ -6,8 +6,6 @@ import { UpdateUserProfileDto } from '../../dto/update-user.dto';
 import { PostIdWith, UserIdWith } from '../../dto/id-with.dto';
 import { UpdatePostDto } from '../../dto/update-post.dto';
 import { DeletePostDto } from '../../dto/delete-post.dto';
-import { randomUUID } from 'crypto';
-import { FullUser } from '../../../../../test/types/full-user.type';
 import { WithClientMeta } from '../../../auth/dto/session-id.dto';
 import { EmailDto } from '../../../auth/dto/email.dto';
 

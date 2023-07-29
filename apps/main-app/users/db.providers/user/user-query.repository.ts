@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../../libs/providers/prisma/prisma.service';
 import { TExtendsViewUser, ViewUser } from '../../view-model/user.view-model';
-import { Device, Photos, User } from '@prisma/client';
-import { ViewUserWithInfo } from '../../view-model/user-with-info.view-model';
+import { Device, Posts, User } from '@prisma/client';
 import { UserIdWith } from '../../dto/id-with.dto';
 import { MyPostQuery } from '../../dto/my-post.query';
 import { MyPostsView } from '../../view-model/my-posts.view-model';
@@ -12,6 +11,10 @@ import { FullUser } from '../../../../../test/types/full-user.type';
 @Injectable()
 export class UserQueryRepository {
   constructor(private prisma: PrismaService) {}
+
+  async getPostById(postId): Promise<Posts> {
+    return await this.prisma.posts.findUnique({ where: { id: postId } });
+  }
 
   async getMyPosts({
     userId,

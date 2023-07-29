@@ -4,7 +4,7 @@ import { postConstant } from '../view-model/post.constant';
 import { IsOptional, IsString, MaxLength } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-type TCreatePostDto = Pick<Posts, 'description'>;
+type TCreatePostDto = Partial<Pick<Posts, 'description'>>;
 
 export class PostDto implements TCreatePostDto {
   @ApiProperty({
@@ -16,5 +16,5 @@ export class PostDto implements TCreatePostDto {
   @IsString()
   @Transform(({ value }) => value?.trim())
   @MaxLength(postConstant.description.maxLength)
-  description: string;
+  description?: string;
 }

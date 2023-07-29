@@ -50,6 +50,7 @@ export class FileStorageRepository {
         Photos: true,
       },
     });
+
     return CreatedPostView.toView(createdPost);
   }
 }
