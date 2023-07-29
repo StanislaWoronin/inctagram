@@ -10,6 +10,7 @@ const testUser = {
   userName: 'UserName',
   email: 'somemail@gmail.com',
   createdAt: new Date().toISOString(),
+  isConfirmed: true,
 };
 
 const expectPhotos = ['some/image1.url', 'some/image2.url', 'some/image3.url'];

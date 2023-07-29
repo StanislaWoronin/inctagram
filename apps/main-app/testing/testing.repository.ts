@@ -25,13 +25,13 @@ export class TestingRepository {
     );
   }
 
-  async createTestingUser(sto) {
+  async createTestingUser(dto) {
     return await this.prisma.user.create({
       data: {
-        userName: sto.userName,
-        email: sto.email,
-        createdAt: sto.createdAt,
-        isConfirmed: true,
+        userName: dto.userName,
+        email: dto.email,
+        createdAt: dto.createdAt,
+        isConfirmed: dto.isConfirmed,
       },
     });
   }

@@ -1,11 +1,11 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../db.providers/user/user.repository';
-import { ViewUser } from '../../view-model/user.view-model';
-import { EmailDto } from '../../../auth/dto/email.dto';
-import { TRegistrationViaThirdPartyServices } from '../../../auth/dto/registration-via-third-party-services.dto';
-import { WithClientMeta } from '../../../auth/dto/session-id.dto';
+import { UserRepository } from '../../../db.providers/user/user.repository';
+import { ViewUser } from '../../../view-model/user.view-model';
+import { EmailDto } from '../../../../auth/dto/email.dto';
+import { TRegistrationViaThirdPartyServices } from '../../../../auth/dto/registration-via-third-party-services.dto';
+import { WithClientMeta } from '../../../../auth/dto/session-id.dto';
 import { randomUUID } from 'crypto';
-import { TokensFactory } from '../../../../../libs/shared/tokens.factory';
+import { TokensFactory } from '../../../../../../libs/shared/tokens.factory';
 
 export class MergeProfileCommand {
   constructor(public readonly dto: WithClientMeta<EmailDto>) {}

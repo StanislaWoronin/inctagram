@@ -21,7 +21,7 @@ import { GetMyPostsQuery } from './queries/get-my-posts.query';
 import { DeletePostCommandHandler } from './commands/delete-post/delete-post.command-handler';
 import { RegistrationViaGitHubCommandHandler } from './commands/registration-via-git-hub.command-handler';
 import { RegistrationViaGoogleCommandHandler } from './commands/registration-via-google.command-handler';
-import { MergeProfileCommandHandler } from './commands/merge-profile.command-handler';
+import { MergeProfileCommandHandler } from './commands/merge-profile/merge-profile.command-handler';
 
 export * from './user.facade';
 

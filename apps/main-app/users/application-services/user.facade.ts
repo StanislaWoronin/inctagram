@@ -27,7 +27,7 @@ import { ViewUser } from '../view-model/user.view-model';
 import { GetViewUserWithInfoCommand } from './queries/get-view-user-with-info.query';
 import { UpdateUserProfileDto } from '../dto/update-user.dto';
 import { UpdateUserProfileCommand } from './commands/update-user-profile-command.handler';
-import { MergeProfileCommand } from './commands/merge-profile.command-handler';
+import { MergeProfileCommand } from './commands/merge-profile/merge-profile.command-handler';
 import { ViewUserWithInfo } from '../view-model/user-with-info.view-model';
 import { UploadUserAvatarCommand } from './commands/upload-user-avatar.command-handler';
 import { AvatarDto } from '../dto/avatar.dto';
