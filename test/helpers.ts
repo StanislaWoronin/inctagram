@@ -1,5 +1,6 @@
 import { createReadStream } from 'fs';
 import { settings } from '../libs/shared/settings';
+import { getSkipCount } from '../libs/shared/helpers';
 
 export const sleep = (delay: number) => {
   const second = 1000;
@@ -47,14 +48,10 @@ export const checkSortingOrder = (arr) => {
   return increasing ? false : true;
 };
 
-export const countPageElements = (
-  totalCount: number,
-  pageNumber = 1,
-  pageSize = settings.pagination.pageSize,
-) => {
-  return totalCount > pageSize
-    ? pageSize
-    : totalCount - pageNumber * pageSize > pageSize
-    ? pageSize
-    : totalCount - pageNumber * pageSize;
+export const countPageElements = (totalCount: number, pageNumber = 1) => {
+  const pageSize = settings.pagination.pageSize;
+
+  const elementsLeft = totalCount - getSkipCount(pageNumber);
+  if (elementsLeft >= pageSize) return pageSize;
+  return elementsLeft;
 };

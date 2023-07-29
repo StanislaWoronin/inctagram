@@ -102,7 +102,7 @@ export class UserController {
   ): Promise<MyPostsView> {
     return await this.userFacade.queries.getMyPosts({
       userId,
-      skip: query.skip,
+      ...query,
     });
   }
 

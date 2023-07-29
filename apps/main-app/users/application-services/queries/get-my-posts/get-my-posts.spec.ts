@@ -52,11 +52,8 @@ describe('Get my posts.', () => {
       currentPage: dto.page,
       postsCount: postCount,
     });
-    console.log(result.posts.length);
-    console.log(countPageElements(postCount));
-    expect(result.posts.length).toBe(
-      countPageElements(countPageElements(postCount)),
-    );
+    const pageElements = countPageElements(postCount);
+    expect(result.posts.length).toBe(pageElements);
 
     const isDescending = checkSortingOrder(result.posts);
     expect(isDescending).toEqual(true);
@@ -75,8 +72,6 @@ describe('Get my posts.', () => {
     };
 
     const result = await getMyPostsQuery.execute({ dto });
-    console.log(result.posts.length);
-    console.log(countPageElements(postCount, dto.page));
     expect(response).toBeDefined();
     expect(result).toEqual({
       id: userId,

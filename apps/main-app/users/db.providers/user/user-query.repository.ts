@@ -41,7 +41,7 @@ export class UserQueryRepository {
             isDeleted: false,
           },
           orderBy: { createdAt: 'desc' },
-          skip: dto.skip,
+          skip: MyPostQuery.getSkipCount(dto.page),
           take: settings.pagination.pageSize,
         },
       },
