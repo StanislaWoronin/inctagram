@@ -40,6 +40,7 @@ export class FileStorageRepository {
       data: {
         userId,
         description,
+        createdAt: new Date().toISOString(),
         Photos: {
           create: postImagesLink.map((photoLink) => ({
             photoLink,

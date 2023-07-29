@@ -24,7 +24,6 @@ export class UploadAvatarCommandHandler
 
   async execute({ dto }: UploadUserAvatarCommand): Promise<boolean> {
     const pattern = { cmd: Commands.UpdateAvatar };
-    console.log('m1', { dto });
     const avatarLink = await lastValueFrom(
       this.fileStorageProxyClient
         .send(pattern, dto)

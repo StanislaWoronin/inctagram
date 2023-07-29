@@ -9,7 +9,7 @@ class PostPhotos {
   photoLink: string;
 }
 
-type TCreatedPost = Omit<Posts, 'Photos' | 'isDeleted'> & {
+type TCreatedPost = Omit<Posts, 'Photos' | 'isDeleted' | 'createdAt'> & {
   postPhotos: PostPhotos[];
 };
 
@@ -23,6 +23,9 @@ export class CreatedPostView implements TCreatedPost {
   @ApiProperty({ example: 'Some post description.' })
   description: string;
 
+  @ApiProperty({ example: new Date().toISOString() })
+  createdAt: string;
+
   @ApiProperty({ example: ['fist-post-image-link', 'second-post-image-link'] })
   postPhotos: PostPhotos[];
 
@@ -31,6 +34,7 @@ export class CreatedPostView implements TCreatedPost {
       id: post.id,
       userId: post.userId,
       description: post.description,
+      createdAt: post.createdAt,
       postPhotos: post.Photos.map((p) => {
         return {
           photoId: p.id,

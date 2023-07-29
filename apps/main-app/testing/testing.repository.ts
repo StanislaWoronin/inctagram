@@ -36,39 +36,46 @@ export class TestingRepository {
     });
   }
 
-  async createTestingPost(dto) {
-    return await this.prisma.user.create({
+  async createTestingPost(dto, postCount = 1) {
+    const user = await this.prisma.user.create({
       data: {
         userName: dto.userName,
         email: dto.email,
         createdAt: dto.createdAt,
         isConfirmed: true,
-        Posts: {
-          create: {
-            description: dto.description,
-            Photos: {
-              create: dto.postImagesLink.map((photoLink) => ({
-                photoLink,
-              })),
-            },
-          },
-        },
       },
-      select: {
-        id: true,
-        Posts: {
-          select: {
-            id: true,
-            description: true,
-            Photos: {
-              select: {
-                photoLink: true,
-              },
-            },
-          },
-        },
-      },
+      select: { id: true },
     });
+
+    const createdPosts = [];
+
+    for (let i = 0; i < postCount; i++) {
+      const createdPost = await this.prisma.posts.create({
+        data: {
+          user: { connect: { id: user.id } },
+          description: dto.description,
+          createdAt: new Date().toISOString(),
+          Photos: {
+            create: dto.postImagesLink.map((photoLink) => ({
+              photoLink,
+            })),
+          },
+        },
+        select: {
+          id: true,
+          description: true,
+          Photos: {
+            select: {
+              photoLink: true,
+            },
+          },
+        },
+      });
+
+      createdPosts.push(createdPost);
+    }
+
+    return { id: user.id, Posts: createdPosts };
   }
 
   async getPost(postId) {

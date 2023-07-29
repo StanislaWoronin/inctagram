@@ -17,7 +17,7 @@ import { UpdateUserProfileCommandHandler } from './commands/update-user-profile-
 import { UploadAvatarCommandHandler } from './commands/upload-user-avatar.command-handler';
 import { CreatePostCommandHandler } from './commands/create-post/create-post.command-handler';
 import { UpdatePostCommandHandler } from './commands/update-post/update-post.command-handler';
-import { GetMyPostsQuery } from './queries/get-my-posts.query';
+import { GetMyPostsQuery } from './queries/get-my-posts/get-my-posts.query';
 import { DeletePostCommandHandler } from './commands/delete-post/delete-post.command-handler';
 import { RegistrationViaGitHubCommandHandler } from './commands/registration-via-git-hub.command-handler';
 import { RegistrationViaGoogleCommandHandler } from './commands/registration-via-google.command-handler';

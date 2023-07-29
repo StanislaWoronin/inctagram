@@ -16,12 +16,10 @@ export class UserQueryRepository {
     return await this.prisma.posts.findUnique({ where: { id: postId } });
   }
 
-  async getMyPosts({
-    userId,
-    skip,
-  }: UserIdWith<MyPostQuery>): Promise<MyPostsView> {
+  async getMyPosts(dto: UserIdWith<MyPostQuery>): Promise<MyPostsView> {
     const userPosts = await this.prisma.user.findUnique({
       select: {
+        id: true,
         userName: true,
         aboutMe: true,
         Avatar: {
@@ -32,6 +30,7 @@ export class UserQueryRepository {
         Posts: {
           select: {
             id: true,
+            createdAt: true,
             Photos: {
               select: {
                 photoLink: true,
@@ -41,23 +40,24 @@ export class UserQueryRepository {
           where: {
             isDeleted: false,
           },
-          skip,
+          orderBy: { createdAt: 'desc' },
+          skip: dto.skip,
           take: settings.pagination.pageSize,
         },
       },
       where: {
-        id: userId,
+        id: dto.userId,
       },
     });
 
     const totalCount = await this.prisma.posts.count({
       where: {
-        userId,
+        userId: dto.userId,
         isDeleted: false,
       },
     });
 
-    return MyPostsView.toView(userPosts, totalCount);
+    return MyPostsView.toView(userPosts, dto.page, totalCount);
   }
 
   async getUserByField(

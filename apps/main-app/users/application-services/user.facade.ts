@@ -36,7 +36,7 @@ import { CreatePostCommand } from './commands/create-post/create-post.command-ha
 import { MyPostsView } from '../view-model/my-posts.view-model';
 import { PostIdWith, UserIdWith } from '../dto/id-with.dto';
 import { MyPostQuery } from '../dto/my-post.query';
-import { GetMyPostsCommand } from './queries/get-my-posts.query';
+import { GetMyPostsCommand } from './queries/get-my-posts/get-my-posts.query';
 import { UpdatePostCommand } from './commands/update-post/update-post.command-handler';
 import { PostImagesDto } from '../dto/post-images.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';

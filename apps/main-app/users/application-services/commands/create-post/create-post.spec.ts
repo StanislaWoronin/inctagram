@@ -52,6 +52,7 @@ describe('Create post.', () => {
       id: expect.any(String),
       userId: dto.userId,
       description: dto.description,
+      createdAt: expect.any(String),
       postPhotos: expectPhotos.map((p) => {
         return {
           photoId: expect.any(String),

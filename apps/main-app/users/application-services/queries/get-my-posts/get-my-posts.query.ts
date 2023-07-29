@@ -1,8 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { MyPostsView } from '../../view-model/my-posts.view-model';
-import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
-import { UserIdWith } from '../../dto/id-with.dto';
-import { MyPostQuery } from '../../dto/my-post.query';
+import { MyPostsView } from '../../../view-model/my-posts.view-model';
+import { UserQueryRepository } from '../../../db.providers/user/user-query.repository';
+import { UserIdWith } from '../../../dto/id-with.dto';
+import { MyPostQuery } from '../../../dto/my-post.query';
 
 export class GetMyPostsCommand {
   constructor(public readonly dto: UserIdWith<MyPostQuery>) {}
