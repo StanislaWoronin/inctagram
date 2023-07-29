@@ -21,10 +21,7 @@ import { EmailDto } from '../../../apps/main-app/auth/dto/email.dto';
 import { RegistrationConfirmationDto } from '../../../apps/main-app/auth/dto/registration-confirmation.dto';
 import { NewPasswordDto } from '../../../apps/main-app/auth/dto/new-password.dto';
 import { PasswordRecoveryDto } from '../../../apps/main-app/auth/dto/password-recovery.dto';
-import {
-  LoginView,
-  TLoginView,
-} from '../../../apps/main-app/auth/view-model/login.view-model';
+import { LoginView } from '../../../apps/main-app/auth/view-model/login.view-model';
 import { RegistrationViaThirdPartyServicesDto } from '../../../apps/main-app/auth/dto/registration-via-third-party-services.dto';
 import { settings } from '../../shared/settings';
 
