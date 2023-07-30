@@ -69,7 +69,6 @@ export class UserRequest {
       },
     );
     // @ts-ignore
-    console.log(response.body);
     return { status: response.status, body: response.data };
   }
 }
