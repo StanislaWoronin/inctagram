@@ -1,5 +1,6 @@
 import { toViewPhotoLink } from '../../../../libs/shared/helpers';
 import { ApiProperty } from '@nestjs/swagger';
+import { de_GetBucketLoggingCommand } from '@aws-sdk/client-s3/dist-types/protocols/Aws_restXml';
 
 class Posts {
   @ApiProperty()
@@ -40,11 +41,13 @@ export class MyPostsView {
       userName: userPosts.userName,
       aboutMe: userPosts.aboutMe ?? null,
       userAvatar: userPosts.Avatar?.userAvatar ?? null,
-      posts: userPosts.Posts.map((p) => {
+      posts: userPosts.Posts?.map((p) => {
         return {
           postId: p.id,
           createdAt: p.createdAt,
-          photosLink: p.Photos.map((pl) => toViewPhotoLink(pl.photoLink)),
+          photosLink: p.Photos?.map((pl) => {
+            toViewPhotoLink(pl.photoLink);
+          }),
         };
       }),
       currentPage: page,

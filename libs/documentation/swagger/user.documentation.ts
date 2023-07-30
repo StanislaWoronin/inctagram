@@ -18,12 +18,10 @@ import { ErrorResponse } from '../../shared/errors.response';
 import { ViewUserWithInfo } from '../../../apps/main-app/users/view-model/user-with-info.view-model';
 import { CreatedPostView } from '../../../apps/main-app/users/view-model/created-post.view-model';
 //import { ApiImplicitFile } from '@nestjs/swagger/dist/decorators/api-implicit-file.decorator';
-import { fileStorageConstants } from '../../../apps/file-storage/image-validator/file-storage.constants';
 import { PostDto } from '../../../apps/main-app/users/dto/post.dto';
 import { MyPostsView } from '../../../apps/main-app/users/view-model/my-posts.view-model';
 import { DeletePostDto } from '../../../apps/main-app/users/dto/delete-post.dto';
 import { CreatePostDto } from '../../../apps/main-app/users/dto/create-post.dto';
-import { settings } from '../../shared/settings';
 
 export function ApiCreatePost() {
   return applyDecorators(
@@ -35,7 +33,7 @@ export function ApiCreatePost() {
       schema: {
         type: 'object',
         properties: {
-          file: {
+          avatar: {
             type: 'string',
             format: 'binary',
           },
@@ -169,7 +167,7 @@ export function ApiUploadAvatar() {
       schema: {
         type: 'object',
         properties: {
-          file: {
+          posts: {
             type: 'string',
             format: 'binary',
           },
