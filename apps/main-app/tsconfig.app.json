@@ -5,7 +5,7 @@
     "outDir": "../../dist/apps/main-app"
   },
   "include": [
-    "**/*"
+    "*"
   ],
   "exclude": ["node_modules", "dist",
     "test", "**/*spec.ts"]
