@@ -17,7 +17,6 @@ export class FileStorageController {
 
   @MessagePattern({ cmd: Commands.UpdateAvatar })
   async updateAvatar(dto: UserIdWith<AvatarDto>): Promise<string> {
-    console.log({ dto });
     return await this.fileStorageFacade.commands.updateAvatar(dto);
   }
 }
