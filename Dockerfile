@@ -7,7 +7,7 @@ FROM node:${NODE_VERSION}-alpine as base
 LABEL fly_launch_runtime="NestJS"
 
 # NestJS app lives here
-WORKDIR /inctagram-api
+WORKDIR /app
 
 # Set production environment
 ENV NODE_ENV=production
@@ -34,7 +34,7 @@ RUN yarn run build
 FROM base
 
 # Copy built application
-COPY . .
+COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 5000
