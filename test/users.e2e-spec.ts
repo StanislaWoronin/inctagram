@@ -14,7 +14,7 @@ import { getUserProfileResponse } from './response/user/get-user-profile.respons
 import { Images } from './images/images';
 import { FileStorageModule } from '../apps/file-storage/file-storage.module';
 
-describe('Test user controller.', () => {
+describe('Test auth controller.', () => {
   const second = 1000;
   jest.setTimeout(10 * second);
 
