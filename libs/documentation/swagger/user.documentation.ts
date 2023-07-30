@@ -18,10 +18,12 @@ import { ErrorResponse } from '../../shared/errors.response';
 import { ViewUserWithInfo } from '../../../apps/main-app/users/view-model/user-with-info.view-model';
 import { CreatedPostView } from '../../../apps/main-app/users/view-model/created-post.view-model';
 //import { ApiImplicitFile } from '@nestjs/swagger/dist/decorators/api-implicit-file.decorator';
+import { fileStorageConstants } from '../../../apps/file-storage/image-validator/file-storage.constants';
 import { PostDto } from '../../../apps/main-app/users/dto/post.dto';
 import { MyPostsView } from '../../../apps/main-app/users/view-model/my-posts.view-model';
 import { DeletePostDto } from '../../../apps/main-app/users/dto/delete-post.dto';
 import { CreatePostDto } from '../../../apps/main-app/users/dto/create-post.dto';
+import { settings } from '../../shared/settings';
 
 export function ApiCreatePost() {
   return applyDecorators(
@@ -29,17 +31,6 @@ export function ApiCreatePost() {
     ApiOperation({ summary: 'Create new post by current user.' }),
     ApiBearerAuth(),
     ApiConsumes('multipart/form-data'),
-    ApiBody({
-      schema: {
-        type: 'object',
-        properties: {
-          avatar: {
-            type: 'string',
-            format: 'binary',
-          },
-        },
-      },
-    }),
     // ApiImplicitFile({
     //   name: fileStorageConstants.post.name,
     //   description: `Нou can upload up to ${settings.uploadFile.maxPostCount} photos`,
@@ -163,18 +154,7 @@ export function ApiUploadAvatar() {
     }),
     ApiBearerAuth(),
     ApiConsumes('multipart/form-data'),
-    ApiBody({
-      schema: {
-        type: 'object',
-        properties: {
-          posts: {
-            type: 'string',
-            format: 'binary',
-          },
-        },
-      },
-    }),
-    // ApiImplicitFile({ name: fileStorageConstants.avatar.name }),
+    //ApiImplicitFile({ name: fileStorageConstants.avatar.name }),
     ApiNoContentResponse({
       description: 'If data is valid and data is accepted',
     }),

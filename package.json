@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nest build",
-    "build:dev": "rimraf dist && tsc -p tsconfig.build.json",
+    "build.dev": "rimraf dist && tsc -p tsconfig.build.json",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start:app": "concurrently \"nest start file-storage --watch\" \"nest start main-app --watch\"",
     "start:dev": "concurrently \"nest start file-storage --watch\" \"nest start main-app --watch\" \"yarn prisma format --schema=prisma/schema.prisma\"",
