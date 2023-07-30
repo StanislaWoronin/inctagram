@@ -7,7 +7,7 @@ FROM node:${NODE_VERSION}-alpine as base
 LABEL fly_launch_runtime="NestJS"
 
 # NestJS app lives here
-WORKDIR /app
+WORKDIR /inctagram-api
 
 # Set production environment
 ENV NODE_ENV=production
