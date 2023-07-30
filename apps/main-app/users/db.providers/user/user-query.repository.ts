@@ -17,7 +17,7 @@ export class UserQueryRepository {
   }
 
   async getMyPosts(dto: UserIdWith<MyPostQuery>): Promise<MyPostsView> {
-    const userPosts = await this.prisma.user.findUnique({
+    const [userPosts] = await this.prisma.user.findMany({
       select: {
         id: true,
         userName: true,

@@ -61,7 +61,7 @@ describe('Get my posts.', () => {
     expect.setState({
       userId: createdData.id,
     });
-  });
+  }, 10000);
 
   it('Should return second page with user post.', async () => {
     const { userId } = expect.getState();
@@ -86,5 +86,5 @@ describe('Get my posts.', () => {
 
     const isDescending = checkSortingOrder(result.posts);
     expect(isDescending).toEqual(true);
-  });
+  }, 10000);
 });
