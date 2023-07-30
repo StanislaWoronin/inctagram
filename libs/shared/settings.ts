@@ -34,7 +34,7 @@ export const settings = {
     },
   },
   // transport settings
-  transportName: Transport.RMQ,
+  transportName: Transport.TCP,
   rmqUrl: process.env.RMQ_URL,
   host: {
     localHost: '0.0.0.0',
