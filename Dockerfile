@@ -34,7 +34,7 @@ RUN yarn run build
 FROM base
 
 # Copy built application
-COPY --from=build /inctagram-api /inctagram-api
+COPY . .
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 5000
