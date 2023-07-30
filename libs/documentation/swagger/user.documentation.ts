@@ -17,7 +17,7 @@ import { UpdateUserProfileDto } from '../../../apps/main-app/users/dto/update-us
 import { ErrorResponse } from '../../shared/errors.response';
 import { ViewUserWithInfo } from '../../../apps/main-app/users/view-model/user-with-info.view-model';
 import { CreatedPostView } from '../../../apps/main-app/users/view-model/created-post.view-model';
-import { ApiImplicitFile } from '@nestjs/swagger/dist/decorators/api-implicit-file.decorator';
+//import { ApiImplicitFile } from '@nestjs/swagger/dist/decorators/api-implicit-file.decorator';
 import { fileStorageConstants } from '../../../apps/file-storage/image-validator/file-storage.constants';
 import { PostDto } from '../../../apps/main-app/users/dto/post.dto';
 import { MyPostsView } from '../../../apps/main-app/users/view-model/my-posts.view-model';
@@ -31,10 +31,23 @@ export function ApiCreatePost() {
     ApiOperation({ summary: 'Create new post by current user.' }),
     ApiBearerAuth(),
     ApiConsumes('multipart/form-data'),
-    ApiImplicitFile({
-      name: fileStorageConstants.post.name,
-      description: `Нou can upload up to ${settings.uploadFile.maxPostCount} photos`,
+    ApiBody({
+      schema: {
+        type: 'object',
+        properties: {
+          comment: { type: 'string' },
+          outletId: { type: 'integer' },
+          file: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
     }),
+    // ApiImplicitFile({
+    //   name: fileStorageConstants.post.name,
+    //   description: `Нou can upload up to ${settings.uploadFile.maxPostCount} photos`,
+    // }),
     ApiBody({ type: CreatePostDto }),
     ApiCreatedResponse({
       description: 'Return created post.',
@@ -154,7 +167,20 @@ export function ApiUploadAvatar() {
     }),
     ApiBearerAuth(),
     ApiConsumes('multipart/form-data'),
-    ApiImplicitFile({ name: fileStorageConstants.avatar.name }),
+    ApiBody({
+      schema: {
+        type: 'object',
+        properties: {
+          comment: { type: 'string' },
+          outletId: { type: 'integer' },
+          file: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+    }),
+    // ApiImplicitFile({ name: fileStorageConstants.avatar.name }),
     ApiNoContentResponse({
       description: 'If data is valid and data is accepted',
     }),
