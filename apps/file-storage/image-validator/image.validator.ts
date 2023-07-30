@@ -4,7 +4,6 @@ import sharp from 'sharp';
 
 export class ImageValidator {
   async transform(image: Express.Multer.File) {
-    console.log({ image });
     await isValidImage(fileStorageConstants.avatar.size, image);
     const buffer = image.buffer;
     return buffer;
