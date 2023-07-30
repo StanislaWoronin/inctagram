@@ -47,7 +47,7 @@ export class LoggerMiddleware implements NestMiddleware {
       logging: {},
       errors: {},
     };
-    req.loggerParams = loggerParams;
+    //req.loggerParams = loggerParams;
     next();
   }
 }

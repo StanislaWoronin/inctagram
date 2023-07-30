@@ -1,9 +1,10 @@
 {
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/main-app",
   "monorepo": true,
-  "root": "apps",
-  "sourceRoot": "apps/main-app/src",
+  "root": "inctagram",
   "compilerOptions": {
-    "webpack": false,
+    "webpack": true,
     "tsConfigPath": "apps/main-app/tsconfig.app.json"
   },
   "projects": {
@@ -11,7 +12,7 @@
       "type": "application",
       "root": "apps/main-app",
       "entryFile": "main",
-      "sourceRoot": "apps/main-app/src",
+      "sourceRoot": "apps/main-app",
       "compilerOptions": {
         "tsConfigPath": "apps/main-app/tsconfig.app.json"
       }
@@ -20,7 +21,7 @@
       "type": "application",
       "root": "apps/file-storage",
       "entryFile": "main",
-      "sourceRoot": "apps/file-storage/src",
+      "sourceRoot": "apps/file-storage",
       "compilerOptions": {
         "tsConfigPath": "apps/file-storage/tsconfig.app.json"
       }
