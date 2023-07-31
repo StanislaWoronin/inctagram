@@ -25,19 +25,20 @@ describe('Test auth controller.', () => {
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule, FileStorageModule],
+      imports: [AppModule],
     })
       .overrideProvider(EmailManager)
       .useValue(new EmailManagerMock())
       .compile();
 
-    const rawApp = await moduleFixture.createNestApplication();
+    const rawApp = moduleFixture.createNestApplication();
     app = createApp(rawApp);
-    await app.init();
 
     testingRepository = app.get(TestingRepository);
     server = await app.getHttpServer();
     requests = new Requests(server);
+
+    await app.init();
   });
 
   afterAll(async () => {
@@ -163,7 +164,7 @@ describe('Test auth controller.', () => {
       expect(response.body).toStrictEqual(errors);
     });
 
-    it(`Status ${HttpStatus.NO_CONTENT}.
+    it(`Status ${HttpStatus.BAD_REQUEST}.
       Try update with incorrect birthday.`, async () => {
       const { accessToken } = expect.getState();
       const errors = errorsMessage<UpdateUserProfileDto>(['birthday']);
@@ -178,8 +179,8 @@ describe('Test auth controller.', () => {
       expect(response.body).toStrictEqual(errors);
     });
 
-    it(`Status ${HttpStatus.NO_CONTENT}.
-      Try update with nonExistingDate birthday.`, async () => {
+    it(`Status ${HttpStatus.BAD_REQUEST}.
+      Try update with non existing birthday data.`, async () => {
       const { accessToken } = expect.getState();
       const errors = errorsMessage<UpdateUserProfileDto>(['birthday']);
 

@@ -46,7 +46,7 @@ describe('Upload post.', () => {
       bufferArray.push(imageBuffer);
     }
 
-    it('Should upload avatar', async () => {
+    it('Should upload many photo.', async () => {
       const result = await uploadPostImagesCommandHandler.execute({ dto });
       expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);

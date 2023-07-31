@@ -1,41 +1,18 @@
-# syntax = docker/dockerfile:1
 
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=16.15
-FROM node:${NODE_VERSION}-alpine as base
+FROM node:18-alpine
 
-LABEL fly_launch_runtime="NestJS"
+WORKDIR /user/src/app
 
-# NestJS app lives here
-WORKDIR /app
+COPY . .
 
-# Set production environment
-ENV NODE_ENV=production
+RUN yarn
 
+RUN yarn prisma:gen
 
-# Throw-away build stage to reduce size of final image
-FROM base as build
+RUN yarn prisma:migrate
 
-# Install node modules
-COPY --link package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production=false
+RUN yarn build
 
-# Generate Prisma Client
-COPY --link libs/providers/prisma .
-RUN npx prisma generate
-# Copy application code
-COPY --link . .
+USER node
 
-# Build application
-RUN yarn run build
-
-
-# Final stage for app image
-FROM base
-
-# Copy built application
-COPY --from=build /app /app
-
-# Start the server by default, this can be overwritten at runtime
-EXPOSE 5000
-CMD [ "yarn", "run", "start" ]
+CMD ["yarn", "start:app"]

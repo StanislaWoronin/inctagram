@@ -8,30 +8,13 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './users/user.module';
 import { createApp } from './create-app';
 
-export const validationPipeSettings = {
-  transform: true,
-  stopAtFirstError: true,
-  exceptionFactory: (errors) => {
-    const errorsForResponse = [];
-    errors.forEach((e) => {
-      const constraintsKeys = Object.keys(e.constraints);
-      constraintsKeys.forEach((key) => {
-        errorsForResponse.push({
-          message: e.constraints[key],
-          field: e.property,
-        });
-      });
-    });
-    throw new BadRequestException(errorsForResponse);
-  },
-};
-
 async function bootstrap() {
   const rawApp = await NestFactory.create(AppModule);
   const app = createApp(rawApp);
 
   const configService = app.get(ConfigService);
   const port = configService.get<number>('MAIN_APP');
+  console.log('main - main', port);
   const serverUrl = configService.get<string>('SERVER_URL');
 
   const usersDocument = SwaggerModule.createDocument(app, swaggerConfig(), {

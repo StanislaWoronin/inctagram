@@ -1,54 +1,85 @@
-version: '1'
+version: '3'
 
 services:
-  main-app:
-    build: ./apps/main-app
-    restart: unless-stopped
-    hostname: main-app
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    env_file:
+      - docker.env
+
+  pz123123123:
+    container_name: nest-api
+    build:
+        context: .
+        dockerfile: Dockerfile
     env_file:
       - .env
     ports:
-      - "5000:5000"
+      - "5050:5050"
     depends_on:
-      - db-app
-      - rmq-app
+      - postgres
     networks:
-      - internet
-      - appnet
+      - postgres
 
-  file-storage-app:
-    build: ./apps/file-storage
-    restart: unless-stopped
-    hostname: file-storage-app
-    env_file:
-      - .env
-    networks:
-      - appnet
-
-  db-app:
-    image: postgres
-    container_name: app-postgres
-    restart: unless-stopped
-    entrypoint:
-      - 'POSTGRES_PASS='
-    networks:
-      - appnet
-
-  rmq-app:
-    image: rmq
-    container_name: rmq-app
-    hostname: rmq-app
-    restart: unless-stopped
-    networks:
-      - appnet
 
 networks:
-  internet:
-    name: internet
+  postgres:
     driver: bridge
-  appnet:
-    name: internet
-    driver: bridge
-volumes:
-  postgresql_data:
-    driver: local
+#  main-app:
+#    build: ./apps/main-app
+#    restart: unless-stopped
+#    hostname: main-app
+#    env_file:
+#      - .env
+#    ports:
+#      - "5000:5000"
+#    depends_on:
+#      - db-app
+#      - rmq-app
+#    networks:
+#      - internet
+#      - appnet
+
+#  file-storage-app:
+#    build: ./apps/file-storage
+#    restart: unless-stopped
+#    hostname: file-storage-app
+#    env_file:
+#      - .env
+#    depends_on:
+#      - rmq-app
+#    networks:
+#      - appnet
+#
+#  db-app:
+#    image: postgres
+#    container_name: app-postgres
+#    restart: unless-stopped
+#    env_file:
+#      - .env
+#    entrypoint:
+#      - 'POSTGRES_PASSWORD=admin'
+#    networks:
+#      - appnet
+#
+#  rmq-app:
+#    image: rabbitmq
+#    container_name: rmq-app
+#    hostname: rmq-app
+#    restart: unless-stopped
+#    networks:
+#      - appnet
+#
+#networks:
+#  internet:
+#    name: internet
+#    driver: bridge
+#  appnet:
+#    name: internet
+#    driver: bridge
+#volumes:
+#  postgresql_data:
+#    driver: local

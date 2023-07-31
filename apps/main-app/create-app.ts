@@ -1,9 +1,30 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import {
+  BadRequestException,
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import { HttpExceptionFilter } from '../../libs/exception-filters/http.exception.filter';
 import { useContainer } from 'class-validator';
 import { AppModule } from './app.module';
-import { validationPipeSettings } from './main';
 import cookieParser from 'cookie-parser';
+
+export const validationPipeSettings = {
+  transform: true,
+  stopAtFirstError: true,
+  exceptionFactory: (errors) => {
+    const errorsForResponse = [];
+    errors.forEach((e) => {
+      const constraintsKeys = Object.keys(e.constraints);
+      constraintsKeys.forEach((key) => {
+        errorsForResponse.push({
+          message: e.constraints[key],
+          field: e.property,
+        });
+      });
+    });
+    throw new BadRequestException(errorsForResponse);
+  },
+};
 
 export const createApp = (app: INestApplication): INestApplication => {
   app.enableCors({
