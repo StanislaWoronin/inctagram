@@ -1,7 +1,7 @@
 import { TestingRepository } from '../../../../testing/testing.repository';
 import { PrismaService } from '../../../../../../libs/providers/prisma/prisma.service';
 import { UpdatePostCommandHandler } from './update-post.command-handler';
-import { UserRepository } from '../../../db.providers/user/user.repository';
+import { UserRepository } from '../../../db.providers/users/user.repository';
 import { UserIdWith } from '../../../dto/id-with.dto';
 import { UpdatePostDto } from '../../../dto/update-post.dto';
 

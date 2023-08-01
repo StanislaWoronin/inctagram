@@ -1,7 +1,8 @@
 import { UserIdWith } from '../../../dto/id-with.dto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../../db.providers/user/user.repository';
+import { UserRepository } from '../../../db.providers/users/user.repository';
 import { UpdatePostDto } from '../../../dto/update-post.dto';
+import {PostRepository} from "../../../db.providers/images/post.repository";
 
 export class UpdatePostCommand {
   constructor(public readonly dto: UserIdWith<UpdatePostDto>) {}
@@ -11,9 +12,9 @@ export class UpdatePostCommand {
 export class UpdatePostCommandHandler
   implements ICommandHandler<UpdatePostCommand, boolean>
 {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly postRepository: PostRepository) {}
 
   async execute({ dto }: UpdatePostCommand): Promise<boolean> {
-    return await this.userRepository.updatePost(dto);
+    return await this.postRepository.updatePost(dto);
   }
 }

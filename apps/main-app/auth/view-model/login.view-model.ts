@@ -7,7 +7,7 @@ export type TLoginView = TokenResponseView & { user: ViewUser };
 export class LoginView implements TLoginView {
   @ApiProperty({
     type: String,
-    description: 'Access token for user',
+    description: 'Access token for users',
   })
   accessToken: string;
 

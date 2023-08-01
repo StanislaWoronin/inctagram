@@ -1,8 +1,8 @@
 import { PrismaService } from '../../../../../../libs/providers/prisma/prisma.service';
-import { UserRepository } from '../../../db.providers/user/user.repository';
+import { UserRepository } from '../../../db.providers/users/user.repository';
 import { DeletePostCommandHandler } from './delete-post.command-handler';
 import { TestingRepository } from '../../../../testing/testing.repository';
-import { UserQueryRepository } from '../../../db.providers/user/user-query.repository';
+import { UserQueryRepository } from '../../../db.providers/users/user.query-repository';
 
 const testData = {
   userName: 'UserName',

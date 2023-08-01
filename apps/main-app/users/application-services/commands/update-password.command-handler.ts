@@ -1,9 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../db.providers/user/user.repository';
-import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
+import { UserRepository } from '../../db.providers/users/user.repository';
+import { UserQueryRepository } from '../../db.providers/users/user.query-repository';
 import bcrypt from 'bcrypt';
 import { BadRequestException } from '@nestjs/common';
 import { NewPasswordDto } from '../../../auth/dto/new-password.dto';
+import {ProfileQueryRepository} from "../../db.providers/profile/profile.query-repository";
 
 export class UpdatePasswordCommand {
   constructor(public readonly dto: NewPasswordDto) {}
@@ -15,13 +16,13 @@ export class UpdatePasswordCommandHandler
 {
   constructor(
     private userRepository: UserRepository,
-    private userQueryRepository: UserQueryRepository,
+    private profileQueryRepository: ProfileQueryRepository,
   ) {}
 
   async execute({ dto }: UpdatePasswordCommand): Promise<boolean> {
     const { newPassword, passwordRecoveryCode } = dto;
 
-    const user = await this.userQueryRepository.getUserByRecoveryCode(
+    const user = await this.profileQueryRepository.getUserByRecoveryCode(
       passwordRecoveryCode,
     );
 

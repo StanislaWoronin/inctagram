@@ -204,7 +204,7 @@ export class AuthController {
     return;
   }
 
-  // Merge profile if user with this email already exists but email is not confirmed
+  // Merge profile if users with this email already exists but email is not confirmed
   @Put(authEndpoints.mergeProfile())
   @ApiMergeProfile()
   async mergeProfile(

@@ -14,7 +14,7 @@ services:
     container_name: nest-api
     build:
         context: .
-        dockerfile: Dockerfile
+        dockerfile: 2Dockerfile2.txt
     env_file:
       - .env
     ports:

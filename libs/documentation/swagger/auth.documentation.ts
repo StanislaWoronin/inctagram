@@ -28,7 +28,7 @@ import { settings } from '../../shared/settings';
 export function ApiRegistration() {
   return applyDecorators(
     ApiTags('Auth'),
-    ApiOperation({ summary: 'A new user is registered in the system' }),
+    ApiOperation({ summary: 'A new users is registered in the system' }),
     ApiBody({
       type: RegistrationDto,
       required: true,
@@ -42,12 +42,12 @@ export function ApiRegistration() {
     // ApiResponse({
     //   status: HttpStatus.SEE_OTHER,
     //   description:
-    //     'Email already exists but not confirmed, user can merge his profile.',
+    //     'Email already exists but not confirmed, users can merge his profile.',
     //   type: RegistrationDto
     // }),
     ApiBadRequestResponse({
       description:
-        'If the inputModel has incorrect values (in particular if the user with' +
+        'If the inputModel has incorrect values (in particular if the users with' +
         ' the given email or password already exists)',
       type: ErrorResponse,
     }),
@@ -61,7 +61,7 @@ export function ApiMergeProfile() {
   return applyDecorators(
     ApiTags('Auth'),
     ApiOperation({
-      summary: 'The user entered an existing and unconfirmed mail.',
+      summary: 'The users entered an existing and unconfirmed mail.',
     }),
     ApiBody({
       type: EmailDto,
@@ -87,7 +87,7 @@ export function ApiMergeProfile() {
 export function ApiLogin() {
   return applyDecorators(
     ApiTags('Auth'),
-    ApiOperation({ summary: 'New user login after registration' }),
+    ApiOperation({ summary: 'New users login after registration' }),
     ApiBody({ type: LoginDto }),
     ApiOkResponse({
       description: `Returns JWT accessToken (expired after ${settings.timeLife.ACCESS_TOKEN}) in body and JWT refreshToken in cookie (http-only, secure) (expired after ${settings.timeLife.REFRESH_TOKEN})`,
@@ -95,7 +95,7 @@ export function ApiLogin() {
     }),
     ApiUnauthorizedResponse({
       description:
-        'if a user with such an email does not exist or the password' +
+        'if a users with such an email does not exist or the password' +
         ' is not suitable for the profile registered with this email',
     }),
     // ApiTooManyRequestsResponse({
@@ -120,7 +120,7 @@ export function ApiRegistrationEmailResending() {
     }),
     ApiBadRequestResponse({
       description:
-        'If the inputModel has incorrect values (in particular if the user with' +
+        'If the inputModel has incorrect values (in particular if the users with' +
         ' the given email or password already exists)',
       type: ErrorResponse,
     }),
@@ -137,9 +137,9 @@ export function ApiGitHubRegistration() {
       summary: 'Registration via github.',
       description:
         'If a profile with a gitHub email address exists on the system and is not verified, ' +
-        'the user can merge their old account with the new, otherwise the user is prompted to login. ' +
+        'the users can merge their old account with the new, otherwise the users is prompted to login. ' +
         'If account with this mail not exists, then a new, create activated account with a random name ' +
-        'and the user can immediately log in.',
+        'and the users can immediately log in.',
     }),
     ApiQuery({
       type: RegistrationViaThirdPartyServicesDto,
@@ -171,9 +171,9 @@ export function ApiGoogleRegistration() {
       summary: 'Registration via google.',
       description:
         'If a profile with a gitHub email address exists on the system and is not verified, ' +
-        'the user can merge their old account with the new, otherwise the user is prompted to login. ' +
+        'the users can merge their old account with the new, otherwise the users is prompted to login. ' +
         'If account with this mail not exists, then a new, create activated account with a random name ' +
-        'and the user can immediately log in.',
+        'and the users can immediately log in.',
     }),
     ApiOkResponse({
       description: `User is registered and log in. 
@@ -232,11 +232,11 @@ export function ApiPasswordRecovery() {
     }),
     ApiNoContentResponse({
       description:
-        "Even if current email is not registered (for prevent user's email detection)",
+        "Even if current email is not registered (for prevent users's email detection)",
     }),
     ApiBadRequestResponse({
       description:
-        'If the inputModel has incorrect values (in particular if the user with' +
+        'If the inputModel has incorrect values (in particular if the users with' +
         ' the given email or password already exists)',
       type: ErrorResponse,
     }),
@@ -259,7 +259,7 @@ export function ApiNewPassword() {
     }),
     ApiBadRequestResponse({
       description:
-        'If the inputModel has incorrect values (in particular if the user with' +
+        'If the inputModel has incorrect values (in particular if the users with' +
         ' the given email or password already exists)',
       type: ErrorResponse,
     }),
@@ -316,10 +316,10 @@ export function GetUserFromDatabaseTest() {
   return applyDecorators(
     ApiTags('Dev endpoints'),
     ApiOperation({
-      summary: 'Get user',
+      summary: 'Get users',
     }),
     ApiOkResponse({
-      description: 'Get user',
+      description: 'Get users',
     }),
   );
 }

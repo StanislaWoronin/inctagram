@@ -1,8 +1,9 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { MyPostsView } from '../../../view-model/my-posts.view-model';
-import { UserQueryRepository } from '../../../db.providers/user/user-query.repository';
+import { UserQueryRepository } from '../../../db.providers/users/user.query-repository';
 import { UserIdWith } from '../../../dto/id-with.dto';
 import { MyPostQuery } from '../../../dto/my-post.query';
+import {PostQueryRepository} from "../../../db.providers/images/post.query-repository";
 
 export class GetMyPostsCommand {
   constructor(public readonly dto: UserIdWith<MyPostQuery>) {}
@@ -12,9 +13,9 @@ export class GetMyPostsCommand {
 export class GetMyPostsQuery
   implements IQueryHandler<GetMyPostsCommand, MyPostsView>
 {
-  constructor(private userQueryRepository: UserQueryRepository) {}
+  constructor(private postQueryRepository: PostQueryRepository) {}
 
   async execute({ dto }: GetMyPostsCommand): Promise<MyPostsView> {
-    return await this.userQueryRepository.getMyPosts(dto);
+    return await this.postQueryRepository.getMyPosts(dto);
   }
 }

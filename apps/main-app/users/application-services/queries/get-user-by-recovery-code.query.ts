@@ -1,5 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
+import { UserQueryRepository } from '../../db.providers/users/user.query-repository';
+import {ProfileQueryRepository} from "../../db.providers/profile/profile.query-repository";
 
 export class GetUserByRecoveryCodeCommand {
   constructor(public readonly code: string) {}
@@ -13,11 +14,11 @@ export class GetUserByRecoveryCodeQuery
       { id: string; passwordHash: string } | null
     >
 {
-  constructor(private userQueryRepository: UserQueryRepository) {}
+  constructor(private profileQueryRepository: ProfileQueryRepository) {}
 
   async execute(
     query: GetUserByRecoveryCodeCommand,
   ): Promise<{ id: string; passwordHash: string } | null> {
-    return await this.userQueryRepository.getUserByRecoveryCode(query.code);
+    return await this.profileQueryRepository.getUserByRecoveryCode(query.code);
   }
 }

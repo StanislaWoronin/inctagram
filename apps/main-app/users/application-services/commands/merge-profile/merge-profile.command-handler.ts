@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../../db.providers/user/user.repository';
+import { UserRepository } from '../../../db.providers/users/user.repository';
 import { ViewUser } from '../../../view-model/user.view-model';
 import { EmailDto } from '../../../../auth/dto/email.dto';
 import { TRegistrationViaThirdPartyServices } from '../../../../auth/dto/registration-via-third-party-services.dto';

@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import bcrypt from 'bcrypt';
-import { UserQueryRepository } from '../../apps/main-app/users/db.providers/user/user-query.repository';
+import { UserQueryRepository } from '../../apps/main-app/users/db.providers/users/user.query-repository';
 import { ViewUser } from '../../apps/main-app/users/view-model/user.view-model';
 
 @Injectable()

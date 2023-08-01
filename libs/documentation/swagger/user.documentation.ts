@@ -27,7 +27,7 @@ import { settings } from '../../shared/settings';
 export function ApiCreatePost() {
   return applyDecorators(
     ApiTags('User'),
-    ApiOperation({ summary: 'Create new post by current user.' }),
+    ApiOperation({ summary: 'Create new post by current users.' }),
     ApiBearerAuth(),
     ApiConsumes('multipart/form-data'),
     // ApiImplicitFile({
@@ -52,7 +52,7 @@ export function ApiCreatePost() {
 export function ApiDeletePost() {
   return applyDecorators(
     ApiTags('User'),
-    ApiOperation({ summary: "Delete user's post." }),
+    ApiOperation({ summary: "Delete users's post." }),
     ApiBearerAuth(),
     ApiBody({
       type: DeletePostDto,
@@ -68,10 +68,10 @@ export function ApiDeletePost() {
 export function ApiGetUser() {
   return applyDecorators(
     ApiTags('User'),
-    ApiOperation({ summary: 'Return user profile' }),
+    ApiOperation({ summary: 'Return users profile' }),
     ApiBearerAuth(),
     ApiOkResponse({
-      description: 'Return user.',
+      description: 'Return users.',
       type: ViewUserWithInfo,
     }),
     ApiUnauthorizedResponse({
@@ -84,11 +84,11 @@ export function ApiMyPosts() {
   return applyDecorators(
     ApiTags('User'),
     ApiOperation({
-      summary: 'Return current user posts.',
+      summary: 'Return current users posts.',
     }),
     ApiBearerAuth(),
     ApiOkResponse({
-      description: 'Return current user posts.',
+      description: 'Return current users posts.',
       type: MyPostsView,
     }),
     ApiUnauthorizedResponse({
@@ -101,7 +101,7 @@ export function ApiUpdateProfile() {
   return applyDecorators(
     ApiTags('User'),
     ApiOperation({
-      summary: 'Update user profile. Set additional info about user.',
+      summary: 'Update users profile. Set additional info about users.',
     }),
     ApiBearerAuth(),
     ApiBody({
@@ -112,7 +112,7 @@ export function ApiUpdateProfile() {
     }),
     ApiBadRequestResponse({
       description:
-        'If the inputModel has incorrect values (in particular if the user with' +
+        'If the inputModel has incorrect values (in particular if the users with' +
         ' the given email or password already exists)',
       type: ErrorResponse,
     }),
@@ -125,7 +125,7 @@ export function ApiUpdateProfile() {
 export function ApiUpdatePost() {
   return applyDecorators(
     ApiTags('User'),
-    ApiOperation({ summary: "Update user's post." }),
+    ApiOperation({ summary: "Update users's post." }),
     ApiBearerAuth(),
     ApiBody({ type: PostDto }),
     ApiParam({
@@ -149,7 +149,7 @@ export function ApiUploadAvatar() {
   return applyDecorators(
     ApiTags('User'),
     ApiOperation({
-      summary: 'Upload user avatar .png or .jpg (.jpeg) file (max size is 1mb)',
+      summary: 'Upload users avatar .png or .jpg (.jpeg) file (max size is 1mb)',
     }),
     ApiBearerAuth(),
     ApiConsumes('multipart/form-data'),

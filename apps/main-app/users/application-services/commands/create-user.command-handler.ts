@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../db.providers/user/user.repository';
+import { UserRepository } from '../../db.providers/users/user.repository';
 import { EmailManager } from '../../../../../libs/adapters/email.adapter';
-import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
+import { UserQueryRepository } from '../../db.providers/users/user.query-repository';
 import { RegistrationDto } from '../../../auth/dto/registration.dto';
 import { EmailConfirmation } from '../../entities/email-confirmation.entity';
 import { ViewUser } from '../../view-model/user.view-model';

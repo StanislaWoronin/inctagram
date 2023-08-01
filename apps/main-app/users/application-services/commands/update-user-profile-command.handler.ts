@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../db.providers/user/user.repository';
-import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
+import { UserRepository } from '../../db.providers/users/user.repository';
+import { UserQueryRepository } from '../../db.providers/users/user.query-repository';
 import { BadRequestException } from '@nestjs/common';
 import { UpdateUserProfileDto } from '../../dto/update-user.dto';
 import { UserIdWith } from '../../dto/id-with.dto';

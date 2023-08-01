@@ -14,7 +14,6 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const port = configService.get<number>('MAIN_APP');
-  console.log('main - main', port);
   const serverUrl = configService.get<string>('SERVER_URL');
 
   const usersDocument = SwaggerModule.createDocument(app, swaggerConfig(), {

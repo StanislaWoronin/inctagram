@@ -19,7 +19,7 @@ export class MyPostsView {
   @ApiProperty({ description: 'User Login.', example: 'UserLogin' })
   userName: string;
 
-  @ApiProperty({ description: 'Brief information about the user.' })
+  @ApiProperty({ description: 'Brief information about the users.' })
   aboutMe: string;
 
   @ApiProperty({ description: 'User avatar link.' })

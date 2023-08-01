@@ -1,6 +1,6 @@
 import { MergeProfileCommandHandler } from './merge-profile.command-handler';
 import { PrismaService } from '../../../../../../libs/providers/prisma/prisma.service';
-import { UserRepository } from '../../../db.providers/user/user.repository';
+import { UserRepository } from '../../../db.providers/users/user.repository';
 import { faker } from '@faker-js/faker';
 import { TestingRepository } from '../../../../testing/testing.repository';
 

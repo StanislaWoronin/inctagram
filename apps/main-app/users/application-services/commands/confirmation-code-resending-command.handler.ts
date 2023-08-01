@@ -1,8 +1,8 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
-import { UserRepository } from '../../db.providers/user/user.repository';
-import { EmailManager } from '../../../../../libs/adapters/email.adapter';
-import { settings } from '../../../../../libs/shared/settings';
+import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
+import {UserQueryRepository} from '../../db.providers/users/user.query-repository';
+import {EmailManager} from '../../../../../libs/adapters/email.adapter';
+import {settings} from '../../../../../libs/shared/settings';
+import {ProfileRepository} from "../../db.providers/profile/profile.repository";
 
 export class ConfirmationCodeResendingCommand {
   constructor(public readonly email: string) {}
@@ -13,7 +13,7 @@ export class ConfirmationCodeResendingCommandHandler
   implements ICommandHandler<ConfirmationCodeResendingCommand, boolean>
 {
   constructor(
-    private userRepository: UserRepository,
+    private profileRepository: ProfileRepository,
     private userQueryRepository: UserQueryRepository,
     private emailManger: EmailManager,
   ) {}
@@ -23,7 +23,7 @@ export class ConfirmationCodeResendingCommandHandler
     const newEmailConfirmationCode = (
       Date.now() + settings.timeLife.CONFIRMATION_CODE
     ).toString();
-    await this.userRepository.updateEmailConfirmationCode(
+    await this.profileRepository.updateEmailConfirmationCode(
       user.id,
       newEmailConfirmationCode,
     );

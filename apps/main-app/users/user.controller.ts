@@ -66,7 +66,7 @@ export class UserController {
     });
   }
 
-  // Upload user avatar
+  // Upload users avatar
   @Post(userEndpoints.uploadUserAvatar())
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiUploadAvatar()
@@ -82,7 +82,7 @@ export class UserController {
     });
   }
 
-  // Return user profile with avatar photo
+  // Return users profile with avatar photo
   @Get(userEndpoints.getUserProfile())
   @ApiGetUser()
   async getUserProfile(
@@ -92,7 +92,7 @@ export class UserController {
     return await this.userFacade.queries.getUserProfile(userId);
   }
 
-  // Return current user posts
+  // Return current users posts
   @Get(userEndpoints.myPosts())
   @ApiMyPosts()
   async getMyPosts(
@@ -106,7 +106,7 @@ export class UserController {
     });
   }
 
-  // Update user profile set additional info about user
+  // Update users profile set additional info about users
   @Put(userEndpoints.updateUserProfile())
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiUpdateProfile()
@@ -118,7 +118,7 @@ export class UserController {
     return await this.userFacade.commands.updateUserProfile({ userId, ...dto });
   }
 
-  // Update user's post
+  // Update users's post
   @Put(userEndpoints.updatePost())
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiUpdatePost()
@@ -135,7 +135,7 @@ export class UserController {
     });
   }
 
-  // Delete user post
+  // Delete users post
   @Delete(userEndpoints.deletePost())
   @ApiDeletePost()
   async deletePost(

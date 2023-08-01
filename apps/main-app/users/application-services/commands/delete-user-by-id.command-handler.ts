@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../db.providers/user/user.repository';
+import { UserRepository } from '../../db.providers/users/user.repository';
 
 export class DeleteUserByIdCommand {
   constructor(public readonly id: string) {}

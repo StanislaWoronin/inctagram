@@ -1,8 +1,9 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
-import { UserRepository } from '../../db.providers/user/user.repository';
+import { UserQueryRepository } from '../../db.providers/users/user.query-repository';
+import { UserRepository } from '../../db.providers/users/user.repository';
 import { BadRequestException } from '@nestjs/common';
 import { RegistrationConfirmationResponse } from '../../../auth/view-model/registration-confirmation.response';
+import {ProfileQueryRepository} from "../../db.providers/profile/profile.query-repository";
 
 export class RegistrationConfirmationCommand {
   constructor(public readonly confirmationCode: string) {}
@@ -14,13 +15,13 @@ export class RegistrationConfirmationCommandHandler
 {
   constructor(
     private userRepository: UserRepository,
-    private userQueryRepository: UserQueryRepository,
+    private profileQueryRepository: ProfileQueryRepository,
   ) {}
 
   async execute({
     confirmationCode,
   }: RegistrationConfirmationCommand): Promise<string> {
-    const user = await this.userQueryRepository.getUserByConfirmationCode(
+    const user = await this.profileQueryRepository.getUserByConfirmationCode(
       confirmationCode,
     );
     if (!user)

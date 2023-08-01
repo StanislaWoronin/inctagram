@@ -45,7 +45,7 @@ describe('Test auth controller.', () => {
     await app.close();
   });
 
-  describe("Return user's profile.", () => {
+  describe("Return users's profile.", () => {
     it('Create data.', async () => {
       await testingRepository.deleteAll();
       const [user] = await requests.userFactory().createAndLoginUsers(1);
@@ -94,7 +94,7 @@ describe('Test auth controller.', () => {
     });
   });
 
-  describe("Update user's profile.", () => {
+  describe("Update users's profile.", () => {
     it('Create data.', async () => {
       await testingRepository.deleteAll();
       const [user] = await requests.userFactory().createAndLoginUsers(1);
@@ -224,7 +224,7 @@ describe('Test auth controller.', () => {
     });
   });
 
-  describe('Upload user avatar.', () => {
+  describe('Upload users avatar.', () => {
     it('Create data.', async () => {
       await testingRepository.deleteAll();
       const [user] = await requests.userFactory().createAndLoginUsers(1);
@@ -302,7 +302,7 @@ describe('Test auth controller.', () => {
     }); // если путь передавать ошибка соединения, если передавать файл, он просто не доходит и тут дело именно в том как мы тестируем, потому что через постман все ок, а 400 падают потому что ничего не приходит, а не из-за валидации)
   });
 
-  describe('Get user profile.', () => {
+  describe('Get users profile.', () => {
     it('Create data.', async () => {
       await testingRepository.deleteAll();
       const [user] = await requests.userFactory().createAndLoginUsers(1);

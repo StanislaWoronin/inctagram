@@ -47,7 +47,7 @@ describe('Test auth controller.', () => {
     await app.close();
   });
 
-  describe('Create new user', () => {
+  describe('Create new users', () => {
     it('Clear data base.', async () => {
       await testingRepository.deleteAll();
     });
@@ -174,7 +174,7 @@ describe('Test auth controller.', () => {
     });
   });
 
-  describe('Log user', () => {
+  describe('Log users', () => {
     it('Create data.', async () => {
       await testingRepository.deleteAll();
       const user = await requests

@@ -5,7 +5,7 @@ import { lastValueFrom, map } from 'rxjs';
 import { Inject } from '@nestjs/common';
 import { Microservices } from '../../../../../libs/shared/enums/microservices-name.enum';
 import { ClientProxy } from '@nestjs/microservices';
-import { FileStorageRepository } from '../../db.providers/images/file.storage.repository';
+import { AvatarRepository } from '../../db.providers/images/avatar.repository';
 import { UserIdWith } from '../../dto/id-with.dto';
 
 export class UploadUserAvatarCommand {
@@ -19,7 +19,7 @@ export class UploadAvatarCommandHandler
   constructor(
     @Inject(Microservices.FileStorage)
     private fileStorageProxyClient: ClientProxy,
-    private fileStorageRepository: FileStorageRepository,
+    private avatarRepository: AvatarRepository,
   ) {}
 
   async execute({ dto }: UploadUserAvatarCommand): Promise<boolean> {
@@ -30,7 +30,7 @@ export class UploadAvatarCommandHandler
         .pipe(map((result) => result)),
     );
 
-    await this.fileStorageRepository.deleteOldAvatar(dto.userId);
-    return await this.fileStorageRepository.saveImage(dto.userId, avatarLink);
+    await this.avatarRepository.deleteOldAvatar(dto.userId);
+    return await this.avatarRepository.saveAvatar(dto.userId, avatarLink);
   }
 }

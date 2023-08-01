@@ -1,5 +1,5 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
+import { UserQueryRepository } from '../../db.providers/users/user.query-repository';
 import { ViewUserWithInfo } from '../../view-model/user-with-info.view-model';
 import { decodeBirthday } from '../../../../../libs/shared/helpers';
 

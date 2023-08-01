@@ -1,8 +1,9 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserQueryRepository } from '../../db.providers/user/user-query.repository';
-import { UserRepository } from '../../db.providers/user/user.repository';
+import { UserQueryRepository } from '../../db.providers/users/user.query-repository';
+import { UserRepository } from '../../db.providers/users/user.repository';
 import { EmailManager } from '../../../../../libs/adapters/email.adapter';
 import { PasswordRecovery } from '../../entities/password-recovery.entity';
+import {ProfileRepository} from "../../db.providers/profile/profile.repository";
 
 export class PasswordRecoveryCommand {
   constructor(public readonly email: string) {}
@@ -13,7 +14,7 @@ export class PasswordRecoveryCommandHandler
   implements ICommandHandler<PasswordRecoveryCommand>
 {
   constructor(
-    private userRepository: UserRepository,
+    private profileRepository: ProfileRepository,
     private userQueryRepository: UserQueryRepository,
     private emailManger: EmailManager,
   ) {}
@@ -22,7 +23,7 @@ export class PasswordRecoveryCommandHandler
     const user = await this.userQueryRepository.getUserByField(email);
     if (user) {
       const passwordRecovery = PasswordRecovery.create(user.id);
-      const isSuccess = await this.userRepository.setPasswordRecovery(
+      const isSuccess = await this.profileRepository.setPasswordRecovery(
         passwordRecovery,
       );
       if (isSuccess)

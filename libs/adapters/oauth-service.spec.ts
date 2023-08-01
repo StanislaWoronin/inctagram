@@ -7,7 +7,7 @@ import { BadRequestException } from '@nestjs/common';
 const dto = {
   name: 'UserName',
   email: 'somemail@gmail.com',
-  avatarUrl: 'user/avatar.url',
+  avatarUrl: 'users/avatar.url',
   ipAddress: faker.internet.ip(),
   title: faker.internet.userAgent(),
 };

@@ -33,7 +33,6 @@ async function bootstrap() {
     FileStorageModule,
     getProviderOptions(Microservices.FileStorage),
   );
-  console.log('fs => main', getProviderOptions(Microservices.FileStorage));
   app.useGlobalPipes(new ValidationPipe(validationPipeSettings));
   useContainer(app.select(FileStorageModule), { fallbackOnErrors: true });
   Logger.verbose('FileStorage Microservice is listening', 'File-storage.Main');

@@ -1,12 +1,13 @@
 import { GetMyPostsQuery } from './get-my-posts.query';
 import { PrismaService } from '../../../../../../libs/providers/prisma/prisma.service';
-import { UserQueryRepository } from '../../../db.providers/user/user-query.repository';
+import { UserQueryRepository } from '../../../db.providers/users/user.query-repository';
 import { TestingRepository } from '../../../../testing/testing.repository';
 import { response } from 'express';
 import {
   checkSortingOrder,
   countPageElements,
 } from '../../../../../../test/helpers';
+import {PostQueryRepository} from "../../../db.providers/images/post.query-repository";
 
 const testData = {
   userName: 'UserName',
@@ -20,8 +21,8 @@ const jwtServiceMock: any = {};
 
 describe('Get my posts.', () => {
   const prismaService = new PrismaService();
-  const userQueryRepository = new UserQueryRepository(prismaService);
-  const getMyPostsQuery = new GetMyPostsQuery(userQueryRepository);
+  const postQueryRepository = new PostQueryRepository(prismaService);
+  const getMyPostsQuery = new GetMyPostsQuery(postQueryRepository);
 
   const testingRepository = new TestingRepository(
     prismaService,
@@ -29,7 +30,7 @@ describe('Get my posts.', () => {
   );
 
   const postCount = 12;
-  it('Return fist page with user posts.', async () => {
+  it('Return fist page with users posts.', async () => {
     await testingRepository.deleteAll();
     const createdData = await testingRepository.createTestingPost(
       testData,
@@ -63,7 +64,7 @@ describe('Get my posts.', () => {
     });
   }, 10000);
 
-  it('Should return second page with user post.', async () => {
+  it('Should return second page with users post.', async () => {
     const { userId } = expect.getState();
 
     const dto = {
