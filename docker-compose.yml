@@ -1,0 +1,57 @@
+version: "3"
+
+services:
+  main-app:
+    build:
+      context: .
+      dockerfile: ./apps/main-app/Dockerfile
+#      target: development
+#    command: yarn start:dev main;
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq-user
+      - postgres-user
+      - file-storage
+#    volumes:
+#      - .:/usr/src/app
+#      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+  file-storage:
+    build:
+      context: .
+      dockerfile: ./apps/file-storage/Dockerfile
+#      target: development
+#    command: yarn start:dev file-storage;
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq-user
+      - postgres-user
+#    volumes:
+#      - .:/usr/src/app
+#      - /usr/src/app/node_modules
+    ports:
+      - "3001:3001"
+
+  rabbitmq-user:
+    image: rabbitmq
+    ports:
+      - '5672:5672'
+
+  postgres-user:
+    image: postgres:latest
+    container_name: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: inctagram-user
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

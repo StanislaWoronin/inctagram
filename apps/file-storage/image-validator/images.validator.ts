@@ -1,12 +1,6 @@
-import {
-  fileStorageConstants,
-  ValidPhotoFormat,
-} from './file-storage.constants';
+import { fileStorageConstants } from './file-storage.constants';
 import { BadRequestException } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
 import sharp from 'sharp';
-import { getUserProfileResponse } from '../../../test/response/user/get-user-profile.response';
-import { log } from 'util';
 import { settings } from '../../../libs/shared/settings';
 
 export class ImagesValidator {

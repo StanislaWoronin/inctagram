@@ -3,6 +3,8 @@ import { UserRepository } from '../../../db.providers/users/user.repository';
 import { DeletePostCommandHandler } from './delete-post.command-handler';
 import { TestingRepository } from '../../../../testing/testing.repository';
 import { UserQueryRepository } from '../../../db.providers/users/user.query-repository';
+import { PostRepository } from '../../../db.providers/images/post.repository';
+import { PostQueryRepository } from '../../../db.providers/images/post.query-repository';
 
 const testData = {
   userName: 'UserName',
@@ -16,11 +18,11 @@ const jwtServiceMock: any = {};
 
 describe('Delete post.', () => {
   const prismaService = new PrismaService();
-  const userRepository = new UserRepository(prismaService);
-  const userQueryRepository = new UserQueryRepository(prismaService);
+  const postRepository = new PostRepository(prismaService);
+  const postQueryRepository = new PostQueryRepository(prismaService);
   const deletePostCommandHandler = new DeletePostCommandHandler(
-    userRepository,
-    userQueryRepository,
+    postRepository,
+    postQueryRepository,
   );
 
   const testingRepository = new TestingRepository(

@@ -4,6 +4,7 @@ import { UpdatePostCommandHandler } from './update-post.command-handler';
 import { UserRepository } from '../../../db.providers/users/user.repository';
 import { UserIdWith } from '../../../dto/id-with.dto';
 import { UpdatePostDto } from '../../../dto/update-post.dto';
+import { PostRepository } from '../../../db.providers/images/post.repository';
 
 const testData = {
   userName: 'UserName',
@@ -17,8 +18,8 @@ const jwtServiceMock: any = {};
 
 describe('Update post.', () => {
   const prismaService = new PrismaService();
-  const userRepository = new UserRepository(prismaService);
-  const updatePostCommandHandler = new UpdatePostCommandHandler(userRepository);
+  const postRepository = new PostRepository(prismaService);
+  const updatePostCommandHandler = new UpdatePostCommandHandler(postRepository);
 
   const testingRepository = new TestingRepository(
     prismaService,

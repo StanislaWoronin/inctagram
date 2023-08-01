@@ -26,7 +26,7 @@ export interface ILoggerParams {
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
-  use(req: Request, res: Response, next: NextFunction) {
+  use(req: Request, next: NextFunction) {
     const loggerParams = {
       id: randomUUID(),
       method: req.method,
@@ -47,7 +47,7 @@ export class LoggerMiddleware implements NestMiddleware {
       logging: {},
       errors: {},
     };
-    //req.loggerParams = loggerParams;
+    req.loggerParams = loggerParams;
     next();
   }
 }
