@@ -24,15 +24,21 @@ export class TaskRepository {
     return;
   }
 
-  async deleteDepricatedPost(): Promise<void> {
+  async deleteDepricatedPost() {
     const deleteDate = Date.now() - settings.timeLife.deletedPost;
-
-    const depricatedPosts = await this.prisma.deletedPosts.findMany({
-      where: { deleteAt: { lte: String(deleteDate) } },
-      select: { postId: true },
+    const deprecatedPosts = await this.prisma.posts.findMany({
+      where: {
+        isDeleted: true,
+        DeletedPosts: {
+          deleteAt: {
+            lte: deleteDate.toString(),
+          },
+        },
+      },
+      select: { id: true },
     });
-    const postsId = depricatedPosts.map((postId) => postsId.push(postId));
 
+    const postsId = deprecatedPosts.map((post) => post.id);
     const deletePost = this.prisma.posts.deleteMany({
       where: {
         id: {
@@ -57,12 +63,10 @@ export class TaskRepository {
       },
     });
 
-    await this.prisma.$transaction([
-      postsId,
+    return await this.prisma.$transaction([
       deletePost,
       removeDeletePostInfo,
       deletePostPhotos,
     ]);
-    return;
   }
 }

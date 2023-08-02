@@ -17,6 +17,7 @@ export class TestingService {
         userName: `${i + startWith + 1}UserName`,
         email: `${i + startWith + 1}somemail@gmail.com`,
         createdAt: new Date().toISOString(),
+        code: Date.now(),
         isConfirmed,
       };
 

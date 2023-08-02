@@ -13,11 +13,11 @@ export class TaskService {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async clearExpiredPasswordRecovery() {
-    await this.taskRepository.clearPasswordRecovery();
+    return await this.taskRepository.clearPasswordRecovery();
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async deleteDepricatedPost() {
-    await this.taskRepository.deleteDepricatedPost();
+    return await this.taskRepository.deleteDepricatedPost();
   }
 }

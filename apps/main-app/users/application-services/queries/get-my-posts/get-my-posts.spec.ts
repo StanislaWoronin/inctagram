@@ -34,6 +34,7 @@ describe('Get my posts.', () => {
     await testingRepository.deleteAll();
     const [createdData] = await testingRepository.createTestingPost(
       testData,
+      1,
       postCount,
     );
 
@@ -46,7 +47,7 @@ describe('Get my posts.', () => {
     expect(response).toBeDefined();
     expect(result).toEqual({
       id: createdData.id,
-      userName: testData.userName,
+      userName: createdData.userName,
       aboutMe: null,
       userAvatar: null,
       posts: expect.any(Array),
@@ -60,23 +61,23 @@ describe('Get my posts.', () => {
     expect(isDescending).toEqual(true);
 
     expect.setState({
-      userId: createdData.id,
+      createdData,
     });
   }, 10000);
 
   it('Should return second page with users post.', async () => {
-    const { userId } = expect.getState();
+    const { createdData } = expect.getState();
 
     const dto = {
-      userId: userId,
+      userId: createdData.id,
       page: 2,
     };
 
     const result = await getMyPostsQuery.execute({ dto });
     expect(response).toBeDefined();
     expect(result).toEqual({
-      id: userId,
-      userName: testData.userName,
+      id: createdData.id,
+      userName: createdData.userName,
       aboutMe: null,
       userAvatar: null,
       posts: expect.any(Array),

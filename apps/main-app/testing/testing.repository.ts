@@ -20,9 +20,7 @@ export class TestingRepository {
       });
     });
 
-    return Promise.all(
-      tables.map((table) => this.prisma[table].deleteMany({})),
-    );
+    for (const table of tables) await this.prisma[table].deleteMany({});
   }
 
   async createTestingUser(dto) {
@@ -45,13 +43,16 @@ export class TestingRepository {
         isConfirmed: dto.isConfirmed,
         EmailConfirmation: {
           create: {
-            confirmationCode: dto.code + settings.timeLife.CONFIRMATION_CODE,
+            confirmationCode: (
+              dto.code + settings.timeLife.CONFIRMATION_CODE
+            ).toString(),
           },
         },
         PasswordRecovery: {
           create: {
-            passwordRecoveryCode:
-              dto.code + settings.timeLife.CONFIRMATION_CODE,
+            passwordRecoveryCode: (
+              dto.code + settings.timeLife.PASSWORD_RECOVERY_CODE
+            ).toString(),
           },
         },
       },
@@ -110,7 +111,7 @@ export class TestingRepository {
           createdAt: dto.createdAt,
           isConfirmed: true,
         },
-        select: { id: true },
+        select: { id: true, userName: true },
       });
 
       const createdPosts = [];
@@ -141,7 +142,7 @@ export class TestingRepository {
         createdPosts.push(createdPost);
       }
 
-      users.push({ id: user.id, Posts: createdPosts });
+      users.push({ id: user.id, userName: user.userName, Posts: createdPosts });
     }
 
     return users;
@@ -155,7 +156,7 @@ export class TestingRepository {
             id: postId,
           },
         },
-        deleteAt: Date.now().toString(),
+        deleteAt: (Date.now() - settings.timeLife.deletedPost).toString(),
         deleteBy: Role.ADMIN,
       },
     });
@@ -174,7 +175,15 @@ export class TestingRepository {
   }
 
   async getPostCount() {
-    return await this.prisma.posts.count({});
+    return await this.prisma.posts.count();
+  }
+
+  async deletedPostInfoCount() {
+    return await this.prisma.deletedPosts.count();
+  }
+
+  async postPhotoCount() {
+    return await this.prisma.photos.count();
   }
 
   async getUser(userId: string): Promise<FullUser> {
@@ -237,12 +246,12 @@ export class TestingRepository {
     const expiredCode = (
       Number(confirmationCode) - settings.timeLife.PASSWORD_RECOVERY_CODE
     ).toString();
-    await this.prisma.emailConfirmation.upsert({
+    await this.prisma.passwordRecovery.upsert({
       where: { userId },
-      update: { confirmationCode: expiredCode },
+      update: { passwordRecoveryCode: expiredCode },
       create: {
         userId,
-        confirmationCode,
+        passwordRecoveryCode: expiredCode,
       },
     });
 

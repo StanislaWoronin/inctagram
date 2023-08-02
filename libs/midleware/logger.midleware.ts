@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction } from 'express';
 import { randomUUID } from 'crypto';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 
 export interface ILoggerParams {
   id: string;
@@ -26,7 +26,7 @@ export interface ILoggerParams {
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
-  use(req: Request, next: NextFunction) {
+  use(req: Request, res: Response, next: NextFunction) {
     const loggerParams = {
       id: randomUUID(),
       method: req.method,
