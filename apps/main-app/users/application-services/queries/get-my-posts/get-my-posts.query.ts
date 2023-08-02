@@ -3,7 +3,7 @@ import { MyPostsView } from '../../../view-model/my-posts.view-model';
 import { UserQueryRepository } from '../../../db.providers/users/user.query-repository';
 import { UserIdWith } from '../../../dto/id-with.dto';
 import { MyPostQuery } from '../../../dto/my-post.query';
-import {PostQueryRepository} from "../../../db.providers/images/post.query-repository";
+import { PostQueryRepository } from '../../../db.providers/images/post.query-repository';
 
 export class GetMyPostsCommand {
   constructor(public readonly dto: UserIdWith<MyPostQuery>) {}

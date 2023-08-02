@@ -50,6 +50,7 @@ export const settings = {
     TOKEN_TIME: 15 * 21 * 60 * 60 * 1000, // milliseconds
     ACCESS_TOKEN: '15 minutes',
     REFRESH_TOKEN: '15 day',
+    deletedPost: 24 * 60 * 60 * 1000, // milliseconds
   },
   pagination: {
     pageSize: 9,

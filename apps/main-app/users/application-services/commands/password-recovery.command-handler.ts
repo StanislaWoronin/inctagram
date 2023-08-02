@@ -3,7 +3,7 @@ import { UserQueryRepository } from '../../db.providers/users/user.query-reposit
 import { UserRepository } from '../../db.providers/users/user.repository';
 import { EmailManager } from '../../../../../libs/adapters/email.adapter';
 import { PasswordRecovery } from '../../entities/password-recovery.entity';
-import {ProfileRepository} from "../../db.providers/profile/profile.repository";
+import { ProfileRepository } from '../../db.providers/profile/profile.repository';
 
 export class PasswordRecoveryCommand {
   constructor(public readonly email: string) {}

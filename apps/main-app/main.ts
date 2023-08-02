@@ -7,15 +7,21 @@ import { swaggerConfig } from '../../libs/documentation/swagger/swagger.config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './users/user.module';
 import { createApp } from './create-app';
+import { Config } from '../../libs/config/config';
+
+export let config;
 
 async function bootstrap() {
   const rawApp = await NestFactory.create(AppModule);
   const app = createApp(rawApp);
 
+  // TODO test
+  // const configS = app.get(Config);
+  // config = configS.configInit();
+
   const configService = app.get(ConfigService);
   const port = configService.get<number>('MAIN_APP');
   const serverUrl = configService.get<string>('SERVER_URL');
-
   const usersDocument = SwaggerModule.createDocument(app, swaggerConfig(), {
     operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
     include: [AppModule, AuthModule, UserModule],

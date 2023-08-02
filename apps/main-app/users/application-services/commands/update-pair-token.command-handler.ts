@@ -7,8 +7,8 @@ import { TokensFactory } from '../../../../../libs/shared/tokens.factory';
 import { PairTokenDto } from '../../../auth/dto/pair-token.dto';
 import { SessionIdDto, WithClientMeta } from '../../../auth/dto/session-id.dto';
 import { Device } from '../../entities/device.entity';
-import {ProfileRepository} from "../../db.providers/profile/profile.repository";
-import {ProfileQueryRepository} from "../../db.providers/profile/profile.query-repository";
+import { ProfileRepository } from '../../db.providers/profile/profile.repository';
+import { ProfileQueryRepository } from '../../db.providers/profile/profile.query-repository';
 
 export class UpdatePairTokenCommand {
   constructor(public readonly dto: WithClientMeta<SessionIdDto>) {}
@@ -35,7 +35,9 @@ export class UpdatePairTokenCommandHandler
     const titleIsDifferent = device.title !== title;
     if (ipIsDifferent && titleIsDifferent) {
       const device = Device.create({ userId, ipAddress, title });
-      const createdDevice = await this.profileRepository.createUserDevice(device);
+      const createdDevice = await this.profileRepository.createUserDevice(
+        device,
+      );
       deviceId = createdDevice.deviceId;
     }
 

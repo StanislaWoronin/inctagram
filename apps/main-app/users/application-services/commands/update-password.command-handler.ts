@@ -4,7 +4,7 @@ import { UserQueryRepository } from '../../db.providers/users/user.query-reposit
 import bcrypt from 'bcrypt';
 import { BadRequestException } from '@nestjs/common';
 import { NewPasswordDto } from '../../../auth/dto/new-password.dto';
-import {ProfileQueryRepository} from "../../db.providers/profile/profile.query-repository";
+import { ProfileQueryRepository } from '../../db.providers/profile/profile.query-repository';
 
 export class UpdatePasswordCommand {
   constructor(public readonly dto: NewPasswordDto) {}

@@ -149,7 +149,8 @@ export function ApiUploadAvatar() {
   return applyDecorators(
     ApiTags('User'),
     ApiOperation({
-      summary: 'Upload users avatar .png or .jpg (.jpeg) file (max size is 1mb)',
+      summary:
+        'Upload users avatar .png or .jpg (.jpeg) file (max size is 1mb)',
     }),
     ApiBearerAuth(),
     ApiConsumes('multipart/form-data'),

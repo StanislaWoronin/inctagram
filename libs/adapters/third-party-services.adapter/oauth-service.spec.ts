@@ -1,6 +1,6 @@
-import { OAuthService } from './third-party-services.adapter/oauth.service';
+import { OAuthService } from './oauth.service';
 import { faker } from '@faker-js/faker';
-import { ViewUser } from '../../apps/main-app/users/view-model/user.view-model';
+import { ViewUser } from '../../../apps/main-app/users/view-model/user.view-model';
 import { randomUUID } from 'crypto';
 import { BadRequestException } from '@nestjs/common';
 

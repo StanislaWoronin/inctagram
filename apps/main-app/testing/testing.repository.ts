@@ -5,7 +5,7 @@ import { Tokens } from '../../../libs/shared/enums/tokens.enum';
 import { settings } from '../../../libs/shared/settings';
 import { FullUser } from '../../../test/types/full-user.type';
 import { decodeBirthday } from '../../../libs/shared/helpers';
-import { Prisma } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
 
 @Injectable()
 export class TestingRepository {
@@ -36,46 +36,129 @@ export class TestingRepository {
     });
   }
 
-  async createTestingPost(dto, postCount = 1) {
-    const user = await this.prisma.user.create({
+  async createUserWithConfirmationCode(dto) {
+    return await this.prisma.user.create({
       data: {
         userName: dto.userName,
         email: dto.email,
         createdAt: dto.createdAt,
-        isConfirmed: true,
+        isConfirmed: dto.isConfirmed,
+        EmailConfirmation: {
+          create: {
+            confirmationCode: dto.code + settings.timeLife.CONFIRMATION_CODE,
+          },
+        },
+        PasswordRecovery: {
+          create: {
+            passwordRecoveryCode:
+              dto.code + settings.timeLife.CONFIRMATION_CODE,
+          },
+        },
       },
-      select: { id: true },
     });
+  }
 
-    const createdPosts = [];
+  // async createTestingPost(dto, userCount = 1, postCount = 1) {
+  //   const user = await this.prisma.user.create({
+  //     data: {
+  //       userName: dto.userName,
+  //       email: dto.email,
+  //       createdAt: dto.createdAt,
+  //       isConfirmed: true,
+  //     },
+  //     select: { id: true },
+  //   });
+  //
+  //   const createdPosts = [];
+  //
+  //   for (let i = 0; i < postCount; i++) {
+  //     const createdPost = await this.prisma.posts.create({
+  //       data: {
+  //         user: { connect: { id: user.id } },
+  //         description: dto.description,
+  //         createdAt: new Date().toISOString(),
+  //         Photos: {
+  //           create: dto.postImagesLink.map((photoLink) => ({
+  //             photoLink,
+  //           })),
+  //         },
+  //       },
+  //       select: {
+  //         id: true,
+  //         description: true,
+  //         Photos: {
+  //           select: {
+  //             photoLink: true,
+  //           },
+  //         },
+  //       },
+  //     });
+  //
+  //     createdPosts.push(createdPost);
+  //   }
+  //
+  //   return { id: user.id, Posts: createdPosts };
+  // }
 
-    for (let i = 0; i < postCount; i++) {
-      const createdPost = await this.prisma.posts.create({
+  async createTestingPost(dto, userCount = 1, postCount = 1) {
+    const users = [];
+    for (let i = 0; i < userCount; i++) {
+      const user = await this.prisma.user.create({
         data: {
-          user: { connect: { id: user.id } },
-          description: dto.description,
-          createdAt: new Date().toISOString(),
-          Photos: {
-            create: dto.postImagesLink.map((photoLink) => ({
-              photoLink,
-            })),
-          },
+          userName: `${i}${dto.userName}`,
+          email: `${i}${dto.email}`,
+          createdAt: dto.createdAt,
+          isConfirmed: true,
         },
-        select: {
-          id: true,
-          description: true,
-          Photos: {
-            select: {
-              photoLink: true,
-            },
-          },
-        },
+        select: { id: true },
       });
 
-      createdPosts.push(createdPost);
+      const createdPosts = [];
+
+      for (let j = 0; j < postCount; j++) {
+        const createdPost = await this.prisma.posts.create({
+          data: {
+            user: { connect: { id: user.id } },
+            description: dto.description,
+            createdAt: new Date().toISOString(),
+            Photos: {
+              create: dto.postImagesLink.map((photoLink) => ({
+                photoLink,
+              })),
+            },
+          },
+          select: {
+            id: true,
+            description: true,
+            Photos: {
+              select: {
+                photoLink: true,
+              },
+            },
+          },
+        });
+
+        createdPosts.push(createdPost);
+      }
+
+      users.push({ id: user.id, Posts: createdPosts });
     }
 
-    return { id: user.id, Posts: createdPosts };
+    return users;
+  }
+
+  async createExpiredReasonDeletingPost(postId: string) {
+    return await this.prisma.deletedPosts.create({
+      data: {
+        posts: {
+          connect: {
+            id: postId,
+          },
+        },
+        deleteAt: Date.now().toString(),
+        deleteBy: Role.ADMIN,
+      },
+    });
   }
 
   async getPost(postId) {
@@ -88,6 +171,10 @@ export class TestingRepository {
         DeletedPosts: true,
       },
     });
+  }
+
+  async getPostCount() {
+    return await this.prisma.posts.count({});
   }
 
   async getUser(userId: string): Promise<FullUser> {
@@ -113,6 +200,18 @@ export class TestingRepository {
     };
   }
 
+  async getUsers() {
+    return await this.prisma.user.findMany({});
+  }
+
+  async getEmailConfirmationsCount() {
+    return await this.prisma.emailConfirmation.count({});
+  }
+
+  async getPasswordRecoveryCodeCount() {
+    return await this.prisma.passwordRecovery.count({});
+  }
+
   async makeEmailConfirmationExpired(
     userId: string,
     confirmationCode: string,
@@ -120,9 +219,13 @@ export class TestingRepository {
     const expiredCode = (
       Number(confirmationCode) - settings.timeLife.CONFIRMATION_CODE
     ).toString();
-    await this.prisma.emailConfirmation.update({
+    await this.prisma.emailConfirmation.upsert({
       where: { userId },
-      data: { confirmationCode: expiredCode },
+      update: { confirmationCode: expiredCode },
+      create: {
+        userId,
+        confirmationCode,
+      },
     });
     return expiredCode;
   }
@@ -134,9 +237,13 @@ export class TestingRepository {
     const expiredCode = (
       Number(confirmationCode) - settings.timeLife.PASSWORD_RECOVERY_CODE
     ).toString();
-    await this.prisma.emailConfirmation.update({
+    await this.prisma.emailConfirmation.upsert({
       where: { userId },
-      data: { confirmationCode: expiredCode },
+      update: { confirmationCode: expiredCode },
+      create: {
+        userId,
+        confirmationCode,
+      },
     });
 
     return expiredCode;
@@ -156,25 +263,4 @@ export class TestingRepository {
       },
     );
   }
-
-  // async createImage(photoType: PhotoType, color: string, format: keyof FormatEnum | AvailableFormatInfo) {
-  //   const imagePath = join(
-  //       __dirname,
-  //       '..',
-  //       'images',
-  //       photoType,
-  //       new Date().toLocaleString()
-  //   );
-  //
-  //   return await sharp({
-  //     create: {
-  //       width: 600,
-  //       height: 600,
-  //       channels: 3,
-  //       background: color,
-  //     }
-  //   })
-  //       .toFormat(format)
-  //       .toFile(imagePath);
-  // }
 }

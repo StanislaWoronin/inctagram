@@ -6,7 +6,7 @@ import { LoginDto } from '../../../auth/dto/login.dto';
 import { WithClientMeta } from '../../../auth/dto/session-id.dto';
 import { Device } from '../../entities/device.entity';
 import { UserIdWith } from '../../dto/id-with.dto';
-import {ProfileRepository} from "../../db.providers/profile/profile.repository";
+import { ProfileRepository } from '../../db.providers/profile/profile.repository';
 
 export class LoginUserCommand {
   constructor(public readonly dto: WithClientMeta<UserIdWith<LoginDto>>) {}

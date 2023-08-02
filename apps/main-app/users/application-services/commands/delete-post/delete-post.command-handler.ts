@@ -1,12 +1,10 @@
 import { PostIdWith } from '../../../dto/id-with.dto';
 import { DeletePostDto } from '../../../dto/delete-post.dto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../../db.providers/users/user.repository';
 import { Role } from '@prisma/client';
-import { UserQueryRepository } from '../../../db.providers/users/user.query-repository';
 import { NotFoundException } from '@nestjs/common';
-import {PostRepository} from "../../../db.providers/images/post.repository";
-import {PostQueryRepository} from "../../../db.providers/images/post.query-repository";
+import { PostRepository } from '../../../db.providers/images/post.repository';
+import { PostQueryRepository } from '../../../db.providers/images/post.query-repository';
 
 export class DeletePostCommand {
   constructor(public readonly dto: PostIdWith<DeletePostDto>) {}

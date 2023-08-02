@@ -32,7 +32,7 @@ describe('Delete post.', () => {
 
   it('Should delete post.', async () => {
     await testingRepository.deleteAll();
-    const createdData = await testingRepository.createTestingPost(testData);
+    const [createdData] = await testingRepository.createTestingPost(testData);
     const postId = createdData.Posts[0].id;
 
     const dto = {

@@ -1,8 +1,8 @@
-import {Injectable} from '@nestjs/common';
-import {PrismaService} from '../../../../../libs/providers/prisma/prisma.service';
-import {TExtendsViewUser, ViewUser} from '../../view-model/user.view-model';
-import {settings} from '../../../../../libs/shared/settings';
-import {FullUser} from '../../../../../test/types/full-user.type';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../../../../../libs/providers/prisma/prisma.service';
+import { TExtendsViewUser, ViewUser } from '../../view-model/user.view-model';
+import { settings } from '../../../../../libs/shared/settings';
+import { FullUser } from '../../../../../test/types/full-user.type';
 
 @Injectable()
 export class UserQueryRepository {

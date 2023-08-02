@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { UserQueryRepository } from '../../db.providers/users/user.query-repository';
-import {ProfileQueryRepository} from "../../db.providers/profile/profile.query-repository";
+import { ProfileQueryRepository } from '../../db.providers/profile/profile.query-repository';
 
 export class GetUserByRecoveryCodeCommand {
   constructor(public readonly code: string) {}

@@ -25,10 +25,10 @@ import { AvatarRepository } from './db.providers/images/avatar.repository';
 import { GitHubAdapter } from '../../../libs/adapters/third-party-services.adapter/git-hub.adapter';
 import { GoogleAdapter } from '../../../libs/adapters/third-party-services.adapter/google.adapter';
 import { OAuthService } from '../../../libs/adapters/third-party-services.adapter/oauth.service';
-import {PostQueryRepository} from "./db.providers/images/post.query-repository";
-import {PostRepository} from "./db.providers/images/post.repository";
-import {ProfileQueryRepository} from "./db.providers/profile/profile.query-repository";
-import {ProfileRepository} from "./db.providers/profile/profile.repository";
+import { PostQueryRepository } from './db.providers/images/post.query-repository';
+import { PostRepository } from './db.providers/images/post.repository';
+import { ProfileQueryRepository } from './db.providers/profile/profile.query-repository';
+import { ProfileRepository } from './db.providers/profile/profile.repository';
 
 @Module({
   imports: [
@@ -60,7 +60,7 @@ import {ProfileRepository} from "./db.providers/profile/profile.repository";
     UserQueryRepository,
     IsConfirmationCodeExistConstraint,
     IsUserNameExistConstraint,
-    TokensFactory
+    TokensFactory,
   ],
   exports: [UserFacade, UserModule],
 })

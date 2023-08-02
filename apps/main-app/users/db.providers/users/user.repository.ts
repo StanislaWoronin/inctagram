@@ -1,10 +1,10 @@
-import {Injectable} from '@nestjs/common';
-import {EmailConfirmation, Prisma, User} from '@prisma/client';
-import {PrismaService} from '../../../../../libs/providers/prisma/prisma.service';
-import {UpdateUserProfileDto} from '../../dto/update-user.dto';
-import {UserIdWith} from '../../dto/id-with.dto';
-import {WithClientMeta} from '../../../auth/dto/session-id.dto';
-import {EmailDto} from '../../../auth/dto/email.dto';
+import { Injectable } from '@nestjs/common';
+import { EmailConfirmation, Prisma, User } from '@prisma/client';
+import { PrismaService } from '../../../../../libs/providers/prisma/prisma.service';
+import { UpdateUserProfileDto } from '../../dto/update-user.dto';
+import { UserIdWith } from '../../dto/id-with.dto';
+import { WithClientMeta } from '../../../auth/dto/session-id.dto';
+import { EmailDto } from '../../../auth/dto/email.dto';
 
 @Injectable()
 export class UserRepository {
@@ -120,10 +120,10 @@ export class UserRepository {
 
   async deleteUser(id: string): Promise<boolean> {
     try {
-      const result = await this.prisma.user.delete({where: {id}});
+      const result = await this.prisma.user.delete({ where: { id } });
       return typeof result !== null;
     } catch (e) {
-      return false
+      return false;
     }
   }
 }

@@ -3,7 +3,7 @@ import { UserQueryRepository } from '../../db.providers/users/user.query-reposit
 import { UserRepository } from '../../db.providers/users/user.repository';
 import { BadRequestException } from '@nestjs/common';
 import { RegistrationConfirmationResponse } from '../../../auth/view-model/registration-confirmation.response';
-import {ProfileQueryRepository} from "../../db.providers/profile/profile.query-repository";
+import { ProfileQueryRepository } from '../../db.providers/profile/profile.query-repository';
 
 export class RegistrationConfirmationCommand {
   constructor(public readonly confirmationCode: string) {}

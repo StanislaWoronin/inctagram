@@ -28,7 +28,7 @@ describe('Update post.', () => {
 
   it('Should update post and set new description', async () => {
     await testingRepository.deleteAll();
-    const createdData = await testingRepository.createTestingPost(testData);
+    const [createdData] = await testingRepository.createTestingPost(testData);
     const postId = createdData.Posts[0].id;
 
     const dto: UserIdWith<UpdatePostDto> = {

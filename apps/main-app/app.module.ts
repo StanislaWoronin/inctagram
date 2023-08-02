@@ -12,6 +12,8 @@ import { Microservices } from '../../libs/shared/enums/microservices-name.enum';
 import { UserModule } from './users/user.module';
 import { JwtService } from '@nestjs/jwt';
 import { LoggerMiddleware } from '../../libs/midleware/logger.midleware';
+import { Config } from '../../libs/config/config';
+import { TestingService } from './testing/testing.service';
 
 @Module({
   imports: [
@@ -25,7 +27,13 @@ import { LoggerMiddleware } from '../../libs/midleware/logger.midleware';
     }),
   ],
   controllers: [TestingController],
-  providers: [TestingRepository, PrismaService, JwtService],
+  providers: [
+    TestingService,
+    TestingRepository,
+    PrismaService,
+    JwtService,
+    Config,
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

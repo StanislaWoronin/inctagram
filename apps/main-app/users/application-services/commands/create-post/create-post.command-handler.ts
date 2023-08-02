@@ -8,7 +8,7 @@ import { Commands } from '../../../../../../libs/shared/enums/pattern-commands-n
 import { lastValueFrom, map } from 'rxjs';
 import { UserIdWith } from '../../../dto/id-with.dto';
 import { PostImagesDto } from '../../../dto/post-images.dto';
-import {PostRepository} from "../../../db.providers/images/post.repository";
+import { PostRepository } from '../../../db.providers/images/post.repository';
 
 export class CreatePostCommand {
   constructor(public readonly dto: UserIdWith<PostImagesDto>) {}

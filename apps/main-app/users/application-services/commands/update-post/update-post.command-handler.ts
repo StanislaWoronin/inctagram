@@ -2,7 +2,7 @@ import { UserIdWith } from '../../../dto/id-with.dto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UserRepository } from '../../../db.providers/users/user.repository';
 import { UpdatePostDto } from '../../../dto/update-post.dto';
-import {PostRepository} from "../../../db.providers/images/post.repository";
+import { PostRepository } from '../../../db.providers/images/post.repository';
 
 export class UpdatePostCommand {
   constructor(public readonly dto: UserIdWith<UpdatePostDto>) {}

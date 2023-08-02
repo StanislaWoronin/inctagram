@@ -1,8 +1,8 @@
-import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
-import {UserQueryRepository} from '../../db.providers/users/user.query-repository';
-import {EmailManager} from '../../../../../libs/adapters/email.adapter';
-import {settings} from '../../../../../libs/shared/settings';
-import {ProfileRepository} from "../../db.providers/profile/profile.repository";
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { UserQueryRepository } from '../../db.providers/users/user.query-repository';
+import { EmailManager } from '../../../../../libs/adapters/email.adapter';
+import { settings } from '../../../../../libs/shared/settings';
+import { ProfileRepository } from '../../db.providers/profile/profile.repository';
 
 export class ConfirmationCodeResendingCommand {
   constructor(public readonly email: string) {}

@@ -7,7 +7,7 @@ import {
   checkSortingOrder,
   countPageElements,
 } from '../../../../../../test/helpers';
-import {PostQueryRepository} from "../../../db.providers/images/post.query-repository";
+import { PostQueryRepository } from '../../../db.providers/images/post.query-repository';
 
 const testData = {
   userName: 'UserName',
@@ -32,7 +32,7 @@ describe('Get my posts.', () => {
   const postCount = 12;
   it('Return fist page with users posts.', async () => {
     await testingRepository.deleteAll();
-    const createdData = await testingRepository.createTestingPost(
+    const [createdData] = await testingRepository.createTestingPost(
       testData,
       postCount,
     );
