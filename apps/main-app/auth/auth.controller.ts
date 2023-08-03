@@ -147,7 +147,6 @@ export class AuthController {
   @ApiRegistration()
   async registration(
     @Body() dto: RegistrationDto,
-    @Metadata() meta: IMetadata,
   ): Promise<TCreateUserResponse | null> {
     return await this.userFacade.commands.registrationUser(dto);
   }

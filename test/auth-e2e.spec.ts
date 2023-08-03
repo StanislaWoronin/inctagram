@@ -221,7 +221,6 @@ describe('Test auth controller.', () => {
     it(`Status ${HttpStatus.OK}.
       Should return access and refresh JWT tokens. `, async () => {
       const response = await requests.auth().loginUser(preparedLoginData.valid);
-      console.log(response.accessToken);
       expect(response.status).toBe(HttpStatus.OK);
       expect(response.accessToken).toBeTruthy();
       expect(response.refreshToken).toBeTruthy();

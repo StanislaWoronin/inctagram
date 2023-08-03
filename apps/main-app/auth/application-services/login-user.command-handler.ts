@@ -1,5 +1,4 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../users/db.providers/users/user.repository';
 import { TokensFactory } from '../../../../libs/shared/tokens.factory';
 import { PairTokenDto } from '../dto/pair-token.dto';
 import { LoginDto } from '../dto/login.dto';

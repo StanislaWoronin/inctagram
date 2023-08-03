@@ -1,6 +1,3 @@
-import { PrismaService } from '../providers/prisma/prisma.service';
-import { PrismaClient } from '@prisma/client/extension';
-
 export type TConfig = {
   adapters: {
     cloud: TCloud;
@@ -12,9 +9,6 @@ export type TConfig = {
     rmqUrl: string;
   };
   appUrl: string;
-  // db: {
-  //   prisma: PrismaClient;
-  // };
   jwtTokens: {
     secretAT: string;
     secretRT: string;
