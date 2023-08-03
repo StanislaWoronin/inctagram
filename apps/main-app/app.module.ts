@@ -12,8 +12,11 @@ import { Microservices } from '../../libs/shared/enums/microservices-name.enum';
 import { UserModule } from './users/user.module';
 import { JwtService } from '@nestjs/jwt';
 import { LoggerMiddleware } from '../../libs/midleware/logger.midleware';
-import { Config } from '../../libs/config/config';
+import { Config } from '../../libs/configs/config';
 import { TestingService } from './testing/testing.service';
+import { TaskService } from '../../libs/task-scheduling/task.service';
+import { TaskRepository } from '../../libs/task-scheduling/task.repository';
+import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 
 @Module({
   imports: [
@@ -25,9 +28,12 @@ import { TestingService } from './testing/testing.service';
       rootPath: join(__dirname, '..', 'swagger-static'),
       serveRoot: process.env.NODE_ENV === 'development' ? '/' : '/swagger',
     }),
+    SubscriptionsModule,
   ],
   controllers: [TestingController],
   providers: [
+    TaskService,
+    TaskRepository,
     TestingService,
     TestingRepository,
     PrismaService,

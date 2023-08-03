@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { TaskRepository } from './task.repository';
+import { config } from '../../apps/main-app/main';
 
 @Injectable()
 export class TaskService {
@@ -17,7 +18,7 @@ export class TaskService {
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-  async deleteDepricatedPost() {
-    return await this.taskRepository.deleteDepricatedPost();
+  async deleteDeprecatedPost() {
+    return await this.taskRepository.deleteDeprecatedPost();
   }
 }

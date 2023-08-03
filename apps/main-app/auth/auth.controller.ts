@@ -36,7 +36,7 @@ import { EmailDto } from './dto/email.dto';
 import { NewPasswordDto } from './dto/new-password.dto';
 import { ViewUser } from '../users/view-model/user.view-model';
 import { TokenResponseView } from './view-model/token-response.view';
-import { TCreateUserResponse } from '../users/application-services/commands/create-user.command-handler';
+import { TCreateUserResponse } from './application-services/create-user.command-handler';
 import { authEndpoints } from '../../../libs/shared/endpoints/auth.endpoints';
 import { ConfigService } from '@nestjs/config';
 import { RegistrationConfirmationResponse } from './view-model/registration-confirmation.response';

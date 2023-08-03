@@ -17,12 +17,10 @@ import { UpdateUserProfileDto } from '../../../apps/main-app/users/dto/update-us
 import { ErrorResponse } from '../../shared/errors.response';
 import { ViewUserWithInfo } from '../../../apps/main-app/users/view-model/user-with-info.view-model';
 import { CreatedPostView } from '../../../apps/main-app/users/view-model/created-post.view-model';
-import { fileStorageConstants } from '../../../apps/file-storage/image-validator/file-storage.constants';
 import { PostDto } from '../../../apps/main-app/users/dto/post.dto';
 import { MyPostsView } from '../../../apps/main-app/users/view-model/my-posts.view-model';
 import { DeletePostDto } from '../../../apps/main-app/users/dto/delete-post.dto';
 import { CreatePostDto } from '../../../apps/main-app/users/dto/create-post.dto';
-import { settings } from '../../shared/settings';
 
 export function ApiCreatePost() {
   return applyDecorators(

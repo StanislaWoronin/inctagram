@@ -24,7 +24,7 @@ export class TaskRepository {
     return;
   }
 
-  async deleteDepricatedPost() {
+  async deleteDeprecatedPost() {
     const deleteDate = Date.now() - settings.timeLife.deletedPost;
     const deprecatedPosts = await this.prisma.posts.findMany({
       where: {

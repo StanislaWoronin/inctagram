@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { LoginUserCommand } from './commands/login-user.command-handler';
-import { ConfirmationCodeResendingCommand } from './commands/confirmation-code-resending-command.handler';
-import { RegistrationConfirmationCommand } from './commands/registration-confirmation.command-handler';
-import { PasswordRecoveryCommand } from './commands/password-recovery.command-handler';
+import { LoginUserCommand } from '../../auth/application-services/login-user.command-handler';
+import { ConfirmationCodeResendingCommand } from '../../auth/application-services/confirmation-code-resending-command.handler';
+import { RegistrationConfirmationCommand } from '../../auth/application-services/registration-confirmation.command-handler';
+import { PasswordRecoveryCommand } from '../../auth/application-services/password-recovery.command-handler';
 import {
   CreateUserCommand,
   TCreateUserResponse,
-} from './commands/create-user.command-handler';
-import { UpdatePairTokenCommand } from './commands/update-pair-token.command-handler';
-import { UpdatePasswordCommand } from './commands/update-password.command-handler';
-import { LogoutCommand } from './commands/logout-command-handler';
+} from '../../auth/application-services/create-user.command-handler';
+import { UpdatePairTokenCommand } from '../../auth/application-services/update-pair-token.command-handler';
+import { UpdatePasswordCommand } from '../../auth/application-services/update-password.command-handler';
+import { LogoutCommand } from '../../auth/application-services/logout-command-handler';
 import { GetUserByIdOrUserNameOrEmailCommand } from './queries/get-user-by-id-userName-or-email.query';
 import { GetUserByConfirmationCodeCommand } from './queries/get-user-by-confirmation-code.query';
 import { GetUserByRecoveryCodeCommand } from './queries/get-user-by-recovery-code.query';
-import { DeleteUserByIdCommand } from './commands/delete-user-by-id.command-handler';
+import { DeleteUserByIdCommand } from '../../auth/application-services/delete-user-by-id.command-handler';
 import { SessionIdDto, WithClientMeta } from '../../auth/dto/session-id.dto';
 import { LoginDto } from '../../auth/dto/login.dto';
 import { EmailDto } from '../../auth/dto/email.dto';
@@ -32,23 +32,25 @@ import { ViewUserWithInfo } from '../view-model/user-with-info.view-model';
 import { UploadUserAvatarCommand } from './commands/upload-user-avatar.command-handler';
 import { AvatarDto } from '../dto/avatar.dto';
 import { CreatedPostView } from '../view-model/created-post.view-model';
-import { CreatePostCommand } from './commands/create-post/create-post.command-handler';
+import { CreatePostCommand } from '../../posts/application-services/create-post/create-post.command-handler';
 import { MyPostsView } from '../view-model/my-posts.view-model';
 import { PostIdWith, UserIdWith } from '../dto/id-with.dto';
 import { MyPostQuery } from '../dto/my-post.query';
 import { GetMyPostsCommand } from './queries/get-my-posts/get-my-posts.query';
-import { UpdatePostCommand } from './commands/update-post/update-post.command-handler';
+import { UpdatePostCommand } from '../../posts/application-services/update-post/update-post.command-handler';
 import { PostImagesDto } from '../dto/post-images.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { DeletePostDto } from '../dto/delete-post.dto';
-import { DeletePostCommand } from './commands/delete-post/delete-post.command-handler';
+import { DeletePostCommand } from '../../posts/application-services/delete-post/delete-post.command-handler';
 import {
   RegistrationViaThirdPartyServicesDto,
   TRegistrationViaThirdPartyServices,
 } from '../../auth/dto/registration-via-third-party-services.dto';
-import { RegistrationViaGitHubCommand } from './commands/registration-via-git-hub.command-handler';
-import { RegistrationViaGoogleCommand } from './commands/registration-via-google.command-handler';
+import { RegistrationViaGitHubCommand } from '../../auth/application-services/registration-via-git-hub.command-handler';
+import { RegistrationViaGoogleCommand } from '../../auth/application-services/registration-via-google.command-handler';
 import { TLoginView } from '../../auth/view-model/login.view-model';
+import { SubscribeDto } from '../../subscriptions/dto/subscribe.dto';
+import { SubscriptionCommand } from '../../../payments/application-services/subscription.command-handler';
 
 @Injectable()
 export class UserFacade {
@@ -58,8 +60,11 @@ export class UserFacade {
   ) {}
 
   commands = {
+    confirmationCodeResending: (dto: EmailDto) =>
+      this.confirmationCodeResending(dto),
     createPost: (dto: UserIdWith<PostImagesDto>) => this.createPost(dto),
     deletePost: (dto: PostIdWith<DeletePostDto>) => this.deletePost(dto),
+    deleteUserById: (userId: string) => this.deleteUserById(userId),
     loginUser: (dto: WithClientMeta<UserIdWith<LoginDto>>) =>
       this.loginUser(dto),
     logout: (deviceId: string) => this.logout(deviceId),
@@ -72,20 +77,19 @@ export class UserFacade {
     registrationViaGoogle: (
       dto: WithClientMeta<RegistrationViaThirdPartyServicesDto>,
     ) => this.registrationViaGoogle(dto),
-    updatePairToken: (dto: WithClientMeta<SessionIdDto>) =>
-      this.updatePairToken(dto),
-    updatePassword: (data: NewPasswordDto) => this.updatePassword(data),
-    confirmationCodeResending: (dto: EmailDto) =>
-      this.confirmationCodeResending(dto),
+    subscribe: (dto: UserIdWith<SubscribeDto>) => this.subscribe(dto),
     registrationConfirmation: (dto: RegistrationConfirmationDto) =>
       this.registrationConfirmation(dto),
     updatePost: (dto: UserIdWith<UpdatePostDto>) => this.updatePost(dto),
     updateUserProfile: (dto: UserIdWith<UpdateUserProfileDto>) =>
       this.updateUserProfile(dto),
+    updatePairToken: (dto: WithClientMeta<SessionIdDto>) =>
+      this.updatePairToken(dto),
+    updatePassword: (data: NewPasswordDto) => this.updatePassword(data),
     uploadUserAvatar: (dto: UserIdWith<AvatarDto>) =>
       this.uploadUserAvatar(dto),
-    deleteUserById: (userId: string) => this.deleteUserById(userId),
   };
+
   queries = {
     getMyPosts: (dto: UserIdWith<MyPostQuery>) => this.getMyPosts(dto),
     getUserByIdOrUserNameOrEmail: (loginOrEmail: string) =>
@@ -162,6 +166,11 @@ export class UserFacade {
     dto: WithClientMeta<RegistrationViaThirdPartyServicesDto>,
   ): Promise<TRegistrationViaThirdPartyServices | null> {
     const command = new RegistrationViaGoogleCommand(dto);
+    return await this.commandBus.execute(command);
+  }
+
+  private async subscribe(dto: UserIdWith<SubscribeDto>): Promise<boolean> {
+    const command = new SubscriptionCommand(dto);
     return await this.commandBus.execute(command);
   }
 

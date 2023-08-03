@@ -33,7 +33,10 @@ import { ProfileRepository } from './db.providers/profile/profile.repository';
 @Module({
   imports: [
     CqrsModule,
-    ClientsModule.register([getProviderOptions(Microservices.FileStorage)]),
+    ClientsModule.register([
+      getProviderOptions(Microservices.FileStorage),
+      getProviderOptions(Microservices.Payments),
+    ]),
   ],
   controllers: [UserController],
   providers: [

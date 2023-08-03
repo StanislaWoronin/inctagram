@@ -1,14 +1,20 @@
 import { Transport } from '@nestjs/microservices';
 import * as dotenv from 'dotenv';
 import { CloudName } from './enums/cloud-name.enum';
+import * as process from 'process';
 dotenv.config();
 
 export const settings = {
   environment: process.env.NODE_ENV,
   clientName: 'Client',
+  mail: {
+    EMAIL_ADDRESS: process.env.EMAIL_ADDRESS,
+    EMAIL_PASS: process.env.EMAIL_PASS,
+  },
   port: {
     MAIN_APP: Number(process.env.MAIN_APP),
     FILE_STORAGE: Number(process.env.FILE_STORAGE),
+    PAYMENTS: Number(process.env.PAYMENTS),
   },
   // OAuth settings
   oauth: {
@@ -34,7 +40,7 @@ export const settings = {
     },
   },
   // transport settings
-  transportName: Transport.RMQ,
+  transportName: Transport.TCP,
   rmqUrl: process.env.RMQ_URL,
   host: {
     localHost: '0.0.0.0',

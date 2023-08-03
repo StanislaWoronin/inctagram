@@ -5,6 +5,7 @@ import { TestingRepository } from '../../apps/main-app/testing/testing.repositor
 import { PostRepository } from '../../apps/main-app/users/db.providers/images/post.repository';
 import { TaskRepository } from './task.repository';
 import { JwtService } from '@nestjs/jwt';
+import { Test } from '@nestjs/testing';
 
 describe('Test task service.', () => {
   // let postRepository: PostRepository;
@@ -72,8 +73,8 @@ describe('Test task service.', () => {
     });
   });
 
-  describe('Test delete depricated post.', () => {
-    it('Should delete depricated post.', async () => {
+  describe('Test delete deprecated post.', () => {
+    it('Should delete deprecated post.', async () => {
       await testingRepository.deleteAll();
 
       const testData = {
@@ -104,7 +105,7 @@ describe('Test task service.', () => {
         }
       }
 
-      await taskService.deleteDepricatedPost();
+      await taskService.deleteDeprecatedPost();
       const postCountAfterClear = await testingRepository.getPostCount();
       expect(postCountAfterClear).toBe((userCount * postCount) / 2);
       const deletedPostInfoCountAfterClear =
