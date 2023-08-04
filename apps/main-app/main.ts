@@ -10,6 +10,7 @@ import { MainAppConfig } from './config/main-app.config';
 import { TMainAppConfig } from './config/main-app-config.type';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { Microservices } from '../../libs/shared/enums/microservices-name.enum';
+import { UserModule } from './users/user.module';
 
 export let mainAppConfig: TMainAppConfig;
 
@@ -25,7 +26,7 @@ async function bootstrap() {
   const appUrl = mainAppConfig.appUrl;
   const document = SwaggerModule.createDocument(app, swaggerConfig(), {
     operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
-    include: [AppModule, AuthModule, SubscriptionsModule],
+    include: [AppModule, AuthModule, SubscriptionsModule, UserModule],
   });
   SwaggerModule.setup('swagger', app, document);
 

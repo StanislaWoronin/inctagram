@@ -5,6 +5,7 @@ import { ApiSubscribe } from '../../../libs/documentation/swagger/subscribe.docu
 import { SubscribeDto } from './dto/subscribe.dto';
 import { UserId } from '../../../libs/decorators/user-id.decorator';
 import { SubscriptionsFacade } from './application-services/subscriptions.facade';
+import { UpdateSubscriptionTypeDto } from './dto/update-subscription-type.dto';
 
 @Controller(subscriptionsEndpoints.default())
 @UseGuards(AuthBearerGuard)
@@ -21,5 +22,13 @@ export class SubscriptionsController {
       userId,
       ...dto,
     });
+  }
+
+  @Post()
+  async updateSubsciptionType(
+    @Body() dto: UpdateSubscriptionTypeDto,
+  ): Promise<boolean> {
+    console.log(dto);
+    return true;
   }
 }

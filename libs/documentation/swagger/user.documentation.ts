@@ -28,11 +28,22 @@ export function ApiCreatePost() {
     ApiOperation({ summary: 'Create new post by current users.' }),
     ApiBearerAuth(),
     ApiConsumes('multipart/form-data'),
-    // ApiImplicitFile({
-    //   name: fileStorageConstants.post.name,
-    //   description: `Нou can upload up to ${settings.uploadFile.maxPostCount} photos`,
-    // }),
-    ApiBody({ type: CreatePostDto }),
+    ApiBody({
+      schema: {
+        type: 'object',
+        properties: {
+          description: { type: 'string' },
+          posts: {
+            type: 'array',
+            items: {
+              type: 'string',
+              format: 'binary',
+            },
+          },
+        },
+      },
+    }),
+    // ApiBody({ type: CreatePostDto }),
     ApiCreatedResponse({
       description: 'Return created post.',
       type: CreatedPostView,
@@ -152,7 +163,20 @@ export function ApiUploadAvatar() {
     }),
     ApiBearerAuth(),
     ApiConsumes('multipart/form-data'),
-    // ApiImplicitFile({ name: fileStorageConstants.avatar.name }),
+    ApiBody({
+      schema: {
+        type: 'object',
+        properties: {
+          avatar: {
+            type: 'Express.Multer.File',
+            items: {
+              type: 'string',
+              format: 'binary',
+            },
+          },
+        },
+      },
+    }),
     ApiNoContentResponse({
       description: 'If data is valid and data is accepted',
     }),
