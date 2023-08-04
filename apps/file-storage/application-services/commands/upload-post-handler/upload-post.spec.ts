@@ -1,4 +1,4 @@
-import { S3StorageAdapter } from '../../../../../libs/adapters/file-storage.adapter/file.storage.adapter';
+import { S3StorageAdapter } from '../../../../../libs/adapters/file-storage-adapter/file.storage.adapter';
 import { UploadPostImagesCommandHandler } from './upload-post-image.command-handler';
 import { join } from 'path';
 import { images } from '../../../../../test/images/images';

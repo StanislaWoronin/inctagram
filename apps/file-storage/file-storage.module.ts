@@ -10,7 +10,8 @@ import {
   FILE_STORAGE_QUERIES_HANDLERS,
   FileStorageFacade,
 } from './application-services';
-import { S3StorageAdapter } from '../../libs/adapters/file-storage.adapter/file.storage.adapter';
+import { S3StorageAdapter } from '../../libs/adapters/file-storage-adapter/file.storage.adapter';
+import { FileStorageConfig } from './config/file-storage.config';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { S3StorageAdapter } from '../../libs/adapters/file-storage.adapter/file.
     ...FILE_STORAGE_COMMANDS_HANDLERS,
     ...FILE_STORAGE_QUERIES_HANDLERS,
     S3StorageAdapter,
+    FileStorageConfig,
   ],
   exports: [],
 })

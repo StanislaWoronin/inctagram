@@ -1,5 +1,5 @@
 export enum Microservices {
-  ApiGetaway = 'API_GATEWAY',
+  MainApp = 'API_GATEWAY',
   FileStorage = 'FILE_STORAGE',
   Payments = 'PAYMENTS',
 }

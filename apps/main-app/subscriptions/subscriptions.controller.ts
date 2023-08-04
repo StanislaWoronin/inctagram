@@ -1,21 +1,25 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { subscriptionsEndpoints } from '../../../libs/shared/endpoints/subscriptions.endpoints';
 import { AuthBearerGuard } from '../../../libs/guards/auth-bearer.guard';
-import { UserFacade } from '../users/application-services';
 import { ApiSubscribe } from '../../../libs/documentation/swagger/subscribe.documentation';
 import { SubscribeDto } from './dto/subscribe.dto';
 import { UserId } from '../../../libs/decorators/user-id.decorator';
-import { config } from '../main';
+import { SubscriptionsFacade } from './application-services/subscriptions.facade';
 
 @Controller(subscriptionsEndpoints.default())
 @UseGuards(AuthBearerGuard)
 export class SubscriptionsController {
-  constructor() {}
+  constructor(private readonly subscriptionsFacade: SubscriptionsFacade) {}
 
   @Post()
   @ApiSubscribe()
-  async subscribe(@Body() dto: SubscribeDto, @UserId() userId: string) {
-    //const result = await this.userFacade.commands.subscribe({ userId, ...dto });
-    return;
+  async subscribe(
+    @Body() dto: SubscribeDto,
+    @UserId() userId: string,
+  ): Promise<boolean> {
+    return await this.subscriptionsFacade.commands.subscribe({
+      userId,
+      ...dto,
+    });
   }
 }

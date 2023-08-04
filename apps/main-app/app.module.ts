@@ -12,7 +12,7 @@ import { Microservices } from '../../libs/shared/enums/microservices-name.enum';
 import { UserModule } from './users/user.module';
 import { JwtService } from '@nestjs/jwt';
 import { LoggerMiddleware } from '../../libs/midleware/logger.midleware';
-import { Config } from '../../libs/configs/config';
+import { MainAppConfig } from './config/main-app.config';
 import { TestingService } from './testing/testing.service';
 import { TaskService } from '../../libs/task-scheduling/task.service';
 import { TaskRepository } from '../../libs/task-scheduling/task.repository';
@@ -38,7 +38,7 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
     TestingRepository,
     PrismaService,
     JwtService,
-    Config,
+    MainAppConfig,
   ],
 })
 export class AppModule {

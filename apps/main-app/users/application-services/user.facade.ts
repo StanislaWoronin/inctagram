@@ -48,9 +48,6 @@ import {
 } from '../../auth/dto/registration-via-third-party-services.dto';
 import { RegistrationViaGitHubCommand } from '../../auth/application-services/registration-via-git-hub.command-handler';
 import { RegistrationViaGoogleCommand } from '../../auth/application-services/registration-via-google.command-handler';
-import { TLoginView } from '../../auth/view-model/login.view-model';
-import { SubscribeDto } from '../../subscriptions/dto/subscribe.dto';
-import { SubscriptionCommand } from '../../../payments/application-services/subscription.command-handler';
 
 @Injectable()
 export class UserFacade {
@@ -77,7 +74,6 @@ export class UserFacade {
     registrationViaGoogle: (
       dto: WithClientMeta<RegistrationViaThirdPartyServicesDto>,
     ) => this.registrationViaGoogle(dto),
-    subscribe: (dto: UserIdWith<SubscribeDto>) => this.subscribe(dto),
     registrationConfirmation: (dto: RegistrationConfirmationDto) =>
       this.registrationConfirmation(dto),
     updatePost: (dto: UserIdWith<UpdatePostDto>) => this.updatePost(dto),
@@ -166,11 +162,6 @@ export class UserFacade {
     dto: WithClientMeta<RegistrationViaThirdPartyServicesDto>,
   ): Promise<TRegistrationViaThirdPartyServices | null> {
     const command = new RegistrationViaGoogleCommand(dto);
-    return await this.commandBus.execute(command);
-  }
-
-  private async subscribe(dto: UserIdWith<SubscribeDto>): Promise<boolean> {
-    const command = new SubscriptionCommand(dto);
     return await this.commandBus.execute(command);
   }
 

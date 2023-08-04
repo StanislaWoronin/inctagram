@@ -17,7 +17,7 @@ import { UserQueryRepository } from '../users/db.providers/users/user.query-repo
 import { UserRepository } from '../users/db.providers/users/user.repository';
 import { IsValidBirthdayFormatConstraint } from '../../../libs/decorators/birthday-format.decorator';
 import { IsDifferentPasswordConstraint } from '../../../libs/decorators/different-password.decorator';
-import { RecaptchaAdapter } from '../../../libs/adapters/recaptcha.adapter/recaptcha.adapter';
+import { RecaptchaAdapter } from '../../../libs/adapters/recaptcha-adapter/recaptcha.adapter';
 import { IsValidCaptchaConstraint } from '../../../libs/decorators/is-valid-captcha.decorator';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { SetCookiesInterceptor } from '../../../libs/interceptos/set-cookies.interceptor';

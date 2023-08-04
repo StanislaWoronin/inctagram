@@ -1,5 +1,5 @@
 import { UpdateAvatarCommandHandler } from './update-avatar-command.handler';
-import { S3StorageAdapter } from '../../../../../libs/adapters/file-storage.adapter/file.storage.adapter';
+import { S3StorageAdapter } from '../../../../../libs/adapters/file-storage-adapter/file.storage.adapter';
 import { randomUUID } from 'crypto';
 import { UserIdWith } from '../../../../main-app/users/dto/id-with.dto';
 import { AvatarDto } from '../../../../main-app/users/dto/avatar.dto';

@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { S3StorageAdapter } from '../../../../../libs/adapters/file-storage.adapter/file.storage.adapter';
+import { S3StorageAdapter } from '../../../../../libs/adapters/file-storage-adapter/file.storage.adapter';
 import sharp from 'sharp';
 import { fileStorageConstants } from '../../../image-validator/file-storage.constants';
 import { PostImagesDto } from '../../../../main-app/users/dto/post-images.dto';

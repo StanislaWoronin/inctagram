@@ -4,9 +4,9 @@ import {
 } from '../dto/registration-via-third-party-services.dto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { RegistrationViaGitHubCommand } from './registration-via-git-hub.command-handler';
-import { GoogleAdapter } from '../../../../libs/adapters/third-party-services.adapter/google.adapter';
+import { GoogleAdapter } from '../../../../libs/adapters/third-party-services-adapter/google.adapter';
 import { EmailManager } from '../../../../libs/adapters/email.adapter';
-import { OAuthService } from '../../../../libs/adapters/third-party-services.adapter/oauth.service';
+import { OAuthService } from '../../../../libs/adapters/third-party-services-adapter/oauth.service';
 import { WithClientMeta } from '../dto/session-id.dto';
 
 export class RegistrationViaGoogleCommand {

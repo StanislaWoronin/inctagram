@@ -1,5 +1,5 @@
 export enum PaymentMethod {
   PayPall = 'PayPall',
-  SPB = 'SPB',
+  Sbp = 'SBP',
   Stripe = 'Stripe',
 }

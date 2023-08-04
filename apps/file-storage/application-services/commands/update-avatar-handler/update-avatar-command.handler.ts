@@ -1,9 +1,9 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { AvatarDto } from '../../../../main-app/users/dto/avatar.dto';
-import { S3StorageAdapter } from '../../../../../libs/adapters/file-storage.adapter/file.storage.adapter';
+import { S3StorageAdapter } from '../../../../../libs/adapters/file-storage-adapter/file.storage.adapter';
 import sharp from 'sharp';
 import { fileStorageConstants } from '../../../image-validator/file-storage.constants';
-import { cloudSwitcher } from '../../../../../libs/adapters/file-storage.adapter/cloud.switcher';
+import { cloudSwitcher } from '../../../../../libs/adapters/file-storage-adapter/cloud.switcher';
 import { UserIdWith } from '../../../../main-app/users/dto/id-with.dto';
 
 export class UpdateAvatarCommand {

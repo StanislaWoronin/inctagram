@@ -5,7 +5,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { RecaptchaAdapter } from '../adapters/recaptcha.adapter/recaptcha.adapter';
+import { RecaptchaAdapter } from '../adapters/recaptcha-adapter/recaptcha.adapter';
 
 @ValidatorConstraint({ name: 'IsValidCaptcha', async: true })
 @Injectable()

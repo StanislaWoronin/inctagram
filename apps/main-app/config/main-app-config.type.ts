@@ -1,6 +1,5 @@
-export type TConfig = {
+export type TMainAppConfig = {
   adapters: {
-    cloud: TCloud;
     mail: {
       mailService: string;
       mailAddress: string;
@@ -27,17 +26,10 @@ export type TConfig = {
   ports: {
     mainAppPort: number;
     fileStoragePort: number;
+    paymentsPort: number;
   };
   recaptcha: {
     url: string;
     secret: string;
   };
-};
-
-export type TCloud = {
-  region: string;
-  baseUrl: string;
-  bucketName: string;
-  accessKey: string;
-  secretKey: string;
 };

@@ -1,4 +1,4 @@
-import { cloudSwitcher } from '../adapters/file-storage.adapter/cloud.switcher';
+import { cloudSwitcher } from '../adapters/file-storage-adapter/cloud.switcher';
 import { settings } from './settings';
 
 export const encodeBirthday = (value: string): string => {

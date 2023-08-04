@@ -1,11 +1,11 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { GitHubAdapter } from '../../../../libs/adapters/third-party-services.adapter/git-hub.adapter';
+import { GitHubAdapter } from '../../../../libs/adapters/third-party-services-adapter/git-hub.adapter';
 import {
   RegistrationViaThirdPartyServicesDto,
   TRegistrationViaThirdPartyServices,
 } from '../dto/registration-via-third-party-services.dto';
 import { EmailManager } from '../../../../libs/adapters/email.adapter';
-import { OAuthService } from '../../../../libs/adapters/third-party-services.adapter/oauth.service';
+import { OAuthService } from '../../../../libs/adapters/third-party-services-adapter/oauth.service';
 import { WithClientMeta } from '../dto/session-id.dto';
 
 export class RegistrationViaGitHubCommand {
