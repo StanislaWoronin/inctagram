@@ -1,14 +1,15 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { SubscribeCommand } from './subscribe.command';
-import { StripeAdapter } from '../../../../libs/adapters/payments-adapters/stripe.adapter';
+import { PaymentManager } from '../../service/payment.manager';
 
 @CommandHandler(SubscribeCommand)
 export class SubscribeViaStripeCommandHandler
   implements ICommandHandler<SubscribeCommand, boolean>
 {
-  constructor(private stripeAdapter: StripeAdapter) {}
+  constructor(private paymentManager: PaymentManager) {}
 
   async execute({ dto }: SubscribeCommand): Promise<boolean> {
+    const paymentResult = await this.paymentManager.createPayment(dto);
     return true;
   }
 }

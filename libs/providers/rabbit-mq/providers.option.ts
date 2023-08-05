@@ -21,7 +21,7 @@ export const getProviderOptions = (
         transport: Transport.RMQ,
         options: {
           urls: [settings.rmqUrl],
-          queue: serverName,
+          queue: `${serverName}_QUEUE`,
           queueOptions: {
             durable: true,
           },

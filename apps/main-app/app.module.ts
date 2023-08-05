@@ -22,7 +22,10 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
   imports: [
     SharedModule,
     AuthModule,
-    ClientsModule.register([getProviderOptions(Microservices.FileStorage)]),
+    ClientsModule.register([
+      getProviderOptions(Microservices.FileStorage),
+      getProviderOptions(Microservices.Payments),
+    ]),
     UserModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'swagger-static'),

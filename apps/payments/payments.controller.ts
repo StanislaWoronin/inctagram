@@ -9,8 +9,9 @@ import { SubscribeDto } from '../main-app/subscriptions/dto/subscribe.dto';
 export class PaymentsController {
   constructor(private readonly paymentsFacade: PaymentsFacade) {}
 
-  @MessagePattern({ cmd: Commands.SubscribePayPall })
+  @MessagePattern({ cmd: Commands.SubscribeStripe })
   async subscribeViaPayPall(dto: UserIdWith<SubscribeDto>): Promise<boolean> {
+    console.log({ dto });
     return await this.paymentsFacade.commands.subscribeViaPayPall(dto);
   }
 

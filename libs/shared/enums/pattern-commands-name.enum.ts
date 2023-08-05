@@ -5,7 +5,7 @@ export enum Commands {
   UploadPostImages = 'upload-post-images',
 
   // Payments
-  SubscribePayPall = 'subscribe-PayPall',
-  SubscribeSBP = 'subscribe-SBP',
-  SubscribeStripe = 'subscribe-Stripe',
+  SubscribePayPall = 'subscribe-paypall',
+  SubscribeSBP = 'subscribe-sbp',
+  SubscribeStripe = 'subscribe-stripe',
 }

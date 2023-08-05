@@ -26,5 +26,7 @@ async function bootstrap() {
     `${Microservices.Payments} microservice listen.`,
     'Payments.Main',
   );
+
+  app.listen();
 }
 bootstrap();

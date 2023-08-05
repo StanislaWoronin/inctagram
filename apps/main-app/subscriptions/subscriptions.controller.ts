@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { subscriptionsEndpoints } from '../../../libs/shared/endpoints/subscriptions.endpoints';
 import { AuthBearerGuard } from '../../../libs/guards/auth-bearer.guard';
 import { ApiSubscribe } from '../../../libs/documentation/swagger/subscribe.documentation';
@@ -6,18 +6,31 @@ import { SubscribeDto } from './dto/subscribe.dto';
 import { UserId } from '../../../libs/decorators/user-id.decorator';
 import { SubscriptionsFacade } from './application-services/subscriptions.facade';
 import { UpdateSubscriptionTypeDto } from './dto/update-subscription-type.dto';
+import { randomUUID } from 'crypto';
 
 @Controller(subscriptionsEndpoints.default())
-@UseGuards(AuthBearerGuard)
+// @UseGuards(AuthBearerGuard)
 export class SubscriptionsController {
   constructor(private readonly subscriptionsFacade: SubscriptionsFacade) {}
+
+  @Get('success')
+  success(): string {
+    return 'Great. You bought product!';
+  }
+
+  @Get('error')
+  error(): string {
+    return 'Something went wrong.';
+  }
 
   @Post()
   @ApiSubscribe()
   async subscribe(
     @Body() dto: SubscribeDto,
-    @UserId() userId: string,
+    //@UserId() userId: string,
   ): Promise<boolean> {
+    console.log({ dto });
+    const userId = randomUUID();
     return await this.subscriptionsFacade.commands.subscribe({
       userId,
       ...dto,
@@ -25,7 +38,7 @@ export class SubscriptionsController {
   }
 
   @Post()
-  async updateSubsciptionType(
+  async updateSubscriptionType(
     @Body() dto: UpdateSubscriptionTypeDto,
   ): Promise<boolean> {
     console.log(dto);

@@ -14,9 +14,18 @@ export class PaymentsConfig {
     const stripeSecret = configService.get(EnvironmentName.StripeSecret);
     if (!stripeSecret) this.logger.warn('Stripe secret not found!');
 
+    /** Subscription price is for one day */
+    const subscriptionPrice = {
+      /** 20c */
+      personalSubscribe: 0 * 20,
+      /** 1$ 50c */
+      businessSubscribe: 1 * 50,
+    };
+
     return {
       stripeKey,
       stripeSecret,
+      subscriptionPrice,
     };
   }
 }

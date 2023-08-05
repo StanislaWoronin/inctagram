@@ -10,9 +10,17 @@ import { paymentsFacadeFactory } from './application-services/payments-facade.fa
 import { StripeAdapter } from '../../libs/adapters/payments-adapters/stripe.adapter';
 import { ConfigService } from '@nestjs/config';
 import { PaymentsConfig } from './config/payments.config';
+import { PaymentManager } from './service/payment.manager';
+import { ClientsModule } from '@nestjs/microservices';
+import { getProviderOptions } from '../../libs/providers/rabbit-mq/providers.option';
+import { Microservices } from '../../libs/shared/enums/microservices-name.enum';
+import { PayPallAdapter } from '../../libs/adapters/payments-adapters/pay-pall.adapter';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [
+    CqrsModule,
+    //ClientsModule.register([getProviderOptions(Microservices.Payments)]), // TODO test
+  ],
   controllers: [PaymentsController],
   providers: [
     ...PAYMENTS_COMMAND_HANDLER,
@@ -22,9 +30,11 @@ import { PaymentsConfig } from './config/payments.config';
       inject: [CommandBus, QueryBus],
       useFactory: paymentsFacadeFactory,
     },
+    PayPallAdapter,
     StripeAdapter,
     ConfigService,
     PaymentsConfig,
+    PaymentManager,
   ],
   exports: [],
 })

@@ -23,7 +23,9 @@ export class SubscriptionCommandHandler
   ) {}
 
   async execute({ dto }: SubscriptionCommand): Promise<boolean> {
-    const pattern = getPatternViaPaymentMethod(dto.paymentMethod);
+    // const pattern = getPatternViaPaymentMethod(dto.paymentMethod);
+    // console.log(pattern);
+    const pattern = { cmd: Commands.SubscribeStripe };
     return await lastValueFrom<boolean>(
       this.paymentsProxyClient.send(pattern, dto).pipe(map((result) => result)),
     );

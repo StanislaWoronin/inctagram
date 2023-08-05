@@ -1,4 +1,4 @@
-export enum Subscription {
+export enum SubscriptionType {
   Personal = 'Personal',
   Business = 'Business',
 }

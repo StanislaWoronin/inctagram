@@ -26,5 +26,7 @@ async function bootstrap() {
     `${Microservices.FileStorage} microservice listen`,
     'FileStorage.Main',
   );
+
+  app.listen();
 }
 bootstrap();
