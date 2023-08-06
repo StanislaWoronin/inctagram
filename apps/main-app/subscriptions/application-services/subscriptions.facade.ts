@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { UserIdWith } from '../../users/dto/id-with.dto';
+import { UserDataWith, UserIdWith } from '../../users/dto/id-with.dto';
 import { SubscribeDto } from '../dto/subscribe.dto';
 import { SubscriptionCommand } from './command/subscribe/subscription.command-handler';
 
@@ -12,12 +12,12 @@ export class SubscriptionsFacade {
   ) {}
 
   commands = {
-    subscribe: (dto: UserIdWith<SubscribeDto>) => this.subscribe(dto),
+    subscribe: (dto: UserDataWith<SubscribeDto>) => this.subscribe(dto),
   };
 
   queries = {};
 
-  private async subscribe(dto: UserIdWith<SubscribeDto>): Promise<boolean> {
+  private async subscribe(dto: UserDataWith<SubscribeDto>): Promise<boolean> {
     const command = new SubscriptionCommand(dto);
     return await this.commandBus.execute(command);
   }

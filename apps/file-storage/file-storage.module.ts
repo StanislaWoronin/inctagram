@@ -14,11 +14,7 @@ import { S3StorageAdapter } from '../../libs/adapters/file-storage-adapter/file.
 import { FileStorageConfig } from './config/file-storage.config';
 
 @Module({
-  imports: [
-    CqrsModule,
-    SharedModule,
-    ClientsModule.register([getProviderOptions(Microservices.FileStorage)]), // TODO test
-  ],
+  imports: [CqrsModule, SharedModule],
   controllers: [FileStorageController],
   providers: [
     FileStorageFacade,

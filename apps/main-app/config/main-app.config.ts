@@ -4,6 +4,7 @@ import { userEndpoints } from '../../../libs/shared/endpoints/user.endpoints';
 import { TMainAppConfig } from './main-app-config.type';
 import { EnvironmentName } from '../../../libs/shared/enums/environment-name.enum';
 import { Environment } from '../../../libs/shared/enums/environment.enum';
+import { PrismaClient } from '@prisma/client/extension';
 
 @Injectable()
 export class MainAppConfig {
@@ -16,9 +17,10 @@ export class MainAppConfig {
 
     const postgresUri =
       environment === Environment.Production
-        ? configService.get(EnvironmentName.ProdDbUri)
-        : configService.get(EnvironmentName.LocalPgUri);
+        ? configService.get(EnvironmentName.ProdUserDbUri)
+        : configService.get(EnvironmentName.LocalUserDbUri);
     if (!postgresUri) this.logger.warn('Date base URL not found!');
+    process.env[EnvironmentName.ProdUserDbUri] = postgresUri;
 
     // Ports
     const mainAppPort = configService.get(EnvironmentName.MainAppPort);

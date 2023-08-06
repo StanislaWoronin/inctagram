@@ -4,9 +4,13 @@ export enum EnvironmentName {
 
   // Data base URI
   /** Local data base URI */
-  LocalPgUri = 'POSTGRES_URI',
+  LocalUserDbUri = 'LOCAL_USER_DB',
   /** Production data base URI */
-  ProdDbUri = 'DATABASE_URL',
+  ProdUserDbUri = 'USER_DB',
+  /** Local data base URI */
+  LocalPaymentsDbUri = 'LOCAL_PAYMENTS_DB',
+  /** Production data base URI */
+  ProdPaymentsDbUri = 'PAYMENTS_DB',
 
   // URL of the deployed server
   /** App URL */

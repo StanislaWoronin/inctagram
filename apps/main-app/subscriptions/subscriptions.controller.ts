@@ -3,13 +3,12 @@ import { subscriptionsEndpoints } from '../../../libs/shared/endpoints/subscript
 import { AuthBearerGuard } from '../../../libs/guards/auth-bearer.guard';
 import { ApiSubscribe } from '../../../libs/documentation/swagger/subscribe.documentation';
 import { SubscribeDto } from './dto/subscribe.dto';
-import { UserId } from '../../../libs/decorators/user-id.decorator';
 import { SubscriptionsFacade } from './application-services/subscriptions.facade';
 import { UpdateSubscriptionTypeDto } from './dto/update-subscription-type.dto';
 import { randomUUID } from 'crypto';
 
 @Controller(subscriptionsEndpoints.default())
-// @UseGuards(AuthBearerGuard)
+@UseGuards(AuthBearerGuard)
 export class SubscriptionsController {
   constructor(private readonly subscriptionsFacade: SubscriptionsFacade) {}
 
@@ -27,12 +26,15 @@ export class SubscriptionsController {
   @ApiSubscribe()
   async subscribe(
     @Body() dto: SubscribeDto,
-    //@UserId() userId: string,
+    // @UserData() userData: TUserData,
   ): Promise<boolean> {
-    console.log({ dto });
-    const userId = randomUUID();
+    const userData = {
+      userId: randomUUID(),
+      userName: 'UserName',
+      userEmail: 'somemail@gmail.com',
+    };
     return await this.subscriptionsFacade.commands.subscribe({
-      userId,
+      ...userData,
       ...dto,
     });
   }

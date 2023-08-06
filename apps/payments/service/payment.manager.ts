@@ -3,7 +3,7 @@ import { PayPallAdapter } from '../../../libs/adapters/payments-adapters/pay-pal
 import { SubscribeDto } from '../../main-app/subscriptions/dto/subscribe.dto';
 import { IPayment } from '../../../libs/adapters/payments-adapters/payment.interface';
 import { PaymentMethod } from '../../../libs/shared/enums/payment-method.enum';
-import { UserIdWith } from '../../main-app/users/dto/id-with.dto';
+import { UserDataWith, UserIdWith } from '../../main-app/users/dto/id-with.dto';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class PaymentManager {
     this.adapters[PaymentMethod.Stripe] = stripeAdapter;
   }
 
-  async createPayment(dto: UserIdWith<SubscribeDto>) {
+  async createPayment(dto: UserDataWith<SubscribeDto>) {
     return await this.adapters[dto.paymentMethod].createPayment(dto);
   }
 }

@@ -1,4 +1,4 @@
-import { UserIdWith } from '../../../../users/dto/id-with.dto';
+import { UserDataWith, UserIdWith } from '../../../../users/dto/id-with.dto';
 import { SubscribeDto } from '../../../dto/subscribe.dto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ImATeapotException, Inject } from '@nestjs/common';
@@ -10,7 +10,7 @@ import { lastValueFrom, map } from 'rxjs';
 import { getPatternViaPaymentMethod } from '../../../utils/utils';
 
 export class SubscriptionCommand {
-  constructor(public readonly dto: UserIdWith<SubscribeDto>) {}
+  constructor(public readonly dto: UserDataWith<SubscribeDto>) {}
 }
 
 @CommandHandler(SubscriptionCommand)
