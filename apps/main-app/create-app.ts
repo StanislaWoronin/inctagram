@@ -32,6 +32,7 @@ export const createApp = (app: INestApplication): INestApplication => {
       'http://localhost:3000',
       'http://localhost:5000',
       'http://localhost:63342',
+      'https://inctagram-neon.vercel.app'
     ],
   });
   app.use(cookieParser());
