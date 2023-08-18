@@ -4,9 +4,9 @@ export enum EnvironmentName {
 
   // Data base URI
   /** Local data base URI */
-  LocalUserDbUri = 'LOCAL_USER_DB',
+  LocalDb = 'LOCAL_DB',
   /** Production data base URI */
-  ProdUserDbUri = 'USER_DB',
+  ProdDb = 'PROD_DB',
   /** Local data base URI */
   LocalPaymentsDbUri = 'LOCAL_PAYMENTS_DB',
   /** Production data base URI */
