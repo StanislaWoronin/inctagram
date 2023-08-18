@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nest build",
-    "build.dev": "rimraf dist && tsc -p tsconfig.build.json",
+    "build:dev": "rimraf dist && tsc -p tsconfig.build.json",
     "start:app": "concurrently \"nest start file-storage --watch\" \"nest start main-app --watch\" \"nest start payments --watch\"",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
