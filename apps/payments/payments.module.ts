@@ -14,10 +14,6 @@ import { PaymentManager } from './service/payment.manager';
 import { PayPallAdapter } from '../../libs/adapters/payments-adapters/pay-pall.adapter';
 import { PaymentsQueryRepository } from './db.providers/payments-query-repository.service';
 import { PaymentsRepository } from './db.providers/payments-repository.service';
-import { SequelizeModule } from '@nestjs/sequelize';
-import { getOptions } from 'sequelize-typescript';
-import { paymentsConfig } from './main';
-import * as process from 'process';
 import { PrismaService } from '../../libs/providers/prisma/prisma.service';
 
 @Module({

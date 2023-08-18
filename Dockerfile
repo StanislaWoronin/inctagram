@@ -28,7 +28,7 @@ RUN npx prisma generate
 COPY --link . .
 
 # Build application
-RUN yarn run build
+RUN yarn run build:dev
 
 
 # Final stage for app image
