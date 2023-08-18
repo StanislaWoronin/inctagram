@@ -19,7 +19,7 @@ export class MainAppConfig {
         ? configService.get(EnvironmentName.ProdDb)
         : configService.get(EnvironmentName.LocalDb);
     if (!postgresUri) this.logger.warn('Date base URL not found!');
-    process.env[EnvironmentName.ProdDb] = postgresUri;
+    //process.env[EnvironmentName.ProdDb] = postgresUri;
 
     // Ports
     const mainAppPort = configService.get(EnvironmentName.MainAppPort);
