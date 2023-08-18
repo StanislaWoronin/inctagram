@@ -2,7 +2,7 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/main-app",
   "monorepo": true,
-  "root": "inctagram/apps/main-app",
+  "root": "apps/main-app",
   "compilerOptions": {
     "webpack": true,
     "tsConfigPath": "apps/main-app/tsconfig.app.json"
