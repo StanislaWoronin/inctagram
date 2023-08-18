@@ -4,7 +4,6 @@ import { userEndpoints } from '../../../libs/shared/endpoints/user.endpoints';
 import { TMainAppConfig } from './main-app-config.type';
 import { EnvironmentName } from '../../../libs/shared/enums/environment-name.enum';
 import { Environment } from '../../../libs/shared/enums/environment.enum';
-import { PrismaClient } from '@prisma/client/extension';
 
 @Injectable()
 export class MainAppConfig {

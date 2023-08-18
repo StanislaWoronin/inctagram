@@ -16,11 +16,14 @@ export class PaymentManager {
     readonly payPallAdapter: PayPallAdapter,
     readonly stripeAdapter: StripeAdapter,
   ) {
-    this.adapters[PaymentMethod.PayPall] = payPallAdapter;
+    //this.adapters[PaymentMethod.PayPall] = payPallAdapter;
     this.adapters[PaymentMethod.Stripe] = stripeAdapter;
   }
 
-  async createPayment(dto: UserDataWith<SubscribeDto>) {
-    return await this.adapters[dto.paymentMethod].createPayment(dto);
+  async createPayment(dto: UserDataWith<SubscribeDto>, customerId: string) {
+    return await this.adapters[dto.paymentMethod].createPayment(
+      dto,
+      customerId,
+    );
   }
 }

@@ -1,4 +1,5 @@
 export type TPaymentConfig = {
+  // postgresUri: string;
   stripeKey: string;
   stripeSecret: string;
   subscriptionPrice: SubscriptionPrice;

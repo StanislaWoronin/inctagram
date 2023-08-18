@@ -11,13 +11,6 @@ export class PaymentsConfig {
   configInit(configService: ConfigService): TPaymentConfig {
     let environment = configService.get(EnvironmentName.NodeEnv);
     if (!environment) environment = Environment.Production;
-    console.log(environment);
-    const postgresUri =
-      environment === Environment.Production
-        ? configService.get(EnvironmentName.ProdPaymentsDbUri)
-        : configService.get(EnvironmentName.LocalPaymentsDbUri);
-    if (!postgresUri) this.logger.warn('Date base URL not found!');
-    process.env[EnvironmentName.ProdPaymentsDbUri] = postgresUri;
 
     const stripeKey = configService.get(EnvironmentName.StripeKey);
     if (!stripeKey) this.logger.warn('Stripe key not found!');
@@ -34,6 +27,7 @@ export class PaymentsConfig {
     };
 
     return {
+      //postgresUri,
       stripeKey,
       stripeSecret,
       subscriptionPrice,

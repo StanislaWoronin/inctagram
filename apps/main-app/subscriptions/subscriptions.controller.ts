@@ -8,7 +8,7 @@ import { UpdateSubscriptionTypeDto } from './dto/update-subscription-type.dto';
 import { randomUUID } from 'crypto';
 
 @Controller(subscriptionsEndpoints.default())
-@UseGuards(AuthBearerGuard)
+//@UseGuards(AuthBearerGuard)
 export class SubscriptionsController {
   constructor(private readonly subscriptionsFacade: SubscriptionsFacade) {}
 
@@ -37,13 +37,5 @@ export class SubscriptionsController {
       ...userData,
       ...dto,
     });
-  }
-
-  @Post()
-  async updateSubscriptionType(
-    @Body() dto: UpdateSubscriptionTypeDto,
-  ): Promise<boolean> {
-    console.log(dto);
-    return true;
   }
 }

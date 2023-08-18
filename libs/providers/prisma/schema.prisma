@@ -39,12 +39,12 @@ model PasswordRecovery {
 }
 
 model Device {
-  deviceId  String @id
+  deviceId  String  @id
   ipAddress String?
   title     String
   createdAt String
   userId    String
-  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Avatar {
@@ -54,12 +54,12 @@ model Avatar {
 }
 
 model Posts {
-  id           String         @id @default(uuid())
+  id           String        @id @default(uuid())
   userId       String
-  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   description  String
   createdAt    String
-  isDeleted    Boolean        @default(false)
+  isDeleted    Boolean       @default(false)
   Photos       Photos[]
   DeletedPosts DeletedPosts?
 }
@@ -82,4 +82,17 @@ model Photos {
   photoLink String
   postId    String
   posts     Posts  @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Payments {
+  id               String  @id @default(uuid())
+  customerId       String
+  email            String
+  paymentMethod    String
+  subscriptionType String
+  autoRenewal      Boolean
+  amount           Int
+  subStreak        Int
+  subscribeAt      String
+  streakAt         String
 }

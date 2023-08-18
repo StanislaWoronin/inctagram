@@ -14,7 +14,7 @@ export let paymentsConfig: TPaymentConfig;
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     PaymentsModule,
-    getProviderOptions(Microservices.Payments), // TODO test
+    getProviderOptions(Microservices.Payments),
   );
   app.useGlobalPipes(new ValidationPipe(validationPipeConfig));
 

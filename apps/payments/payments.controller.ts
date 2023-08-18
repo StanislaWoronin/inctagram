@@ -11,7 +11,6 @@ export class PaymentsController {
 
   @MessagePattern({ cmd: Commands.SubscribeStripe })
   async subscribe(dto: UserDataWith<SubscribeDto>): Promise<boolean> {
-    console.log({ dto });
     return await this.paymentsFacade.commands.subscribe(dto);
   }
 

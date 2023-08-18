@@ -35,6 +35,16 @@ services:
     ports:
       - "3001:3001"
 
+  payments:
+    build:
+      context: .
+      dockerfile: ./apps/payments/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq-user
+      - postgres-payments
+
   rabbitmq-user:
     image: rabbitmq
     ports:
@@ -52,6 +62,19 @@ services:
       POSTGRES_DB: inctagram-user
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+#    postgres-payments:
+#      image: postgres:latest
+#      container_name: postgres
+#      restart: unless-stopped
+#      ports:
+#        - "5433:5433"
+#      environment:
+#        POSTGRES_PAYMENTS: postgres
+#        POSTGRES_PASSWORD: admin
+#        POSTGRES_DB: inctagram-payments
+#      volumes:
+#        - pgdata:/var/lib/postgresql/data
 
 volumes:
   pgdata:

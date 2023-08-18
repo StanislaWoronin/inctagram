@@ -3,8 +3,8 @@ import { PaymentManager } from '../../service/payment.manager';
 
 import { UserDataWith } from '../../../main-app/users/dto/id-with.dto';
 import { SubscribeDto } from '../../../main-app/subscriptions/dto/subscribe.dto';
-import { SubscriptionRepository } from '../../db.providers/subscription,repository';
-import { SubscriptionQueryRepository } from '../../db.providers/subscription.query-repository';
+import { PaymentsRepository } from '../../db.providers/payments-repository.service';
+import { PaymentsQueryRepository } from '../../db.providers/payments-query-repository.service';
 
 export class SubscribeCommand {
   constructor(public readonly dto: UserDataWith<SubscribeDto>) {}
@@ -16,15 +16,20 @@ export class SubscribeCommandHandler
 {
   constructor(
     private paymentManager: PaymentManager,
-    private subscriptionRepository: SubscriptionRepository,
-    private subscriptionQueryRepository: SubscriptionQueryRepository,
+    private paymentsRepository: PaymentsRepository,
+    private paymentsQueryRepository: PaymentsQueryRepository,
   ) {}
 
   async execute({ dto }: SubscribeCommand): Promise<boolean> {
-    const customerExists = await this.subscriptionQueryRepository.getCustomer(
+    const customer = await this.paymentsQueryRepository.getCustomer(
       dto.userEmail,
     );
-    const paymentResult = await this.paymentManager.createPayment(dto);
+
+    const paymentResult = await this.paymentManager.createPayment(
+      dto,
+      customer?.customerId,
+    );
+    console.log(paymentResult);
     return true;
   }
 }

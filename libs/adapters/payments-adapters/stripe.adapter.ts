@@ -14,15 +14,20 @@ import { RpcException } from '@nestjs/microservices';
 export class StripeAdapter implements IPayment {
   async createPayment(
     dto: UserDataWith<SubscribeDto>,
+    customerId: string | null,
   ): Promise<Stripe.Response<Stripe.Checkout.Session>> {
     const stripe = this.stripeInit();
 
+    if (!customerId) {
+      //create customer
+      const customer = await stripe.customers.create({
+        name: dto.userName,
+        email: dto.userEmail,
+      });
+      dto['customer'] = customer.id;
+    }
+
     const prices = await stripe.prices.list();
-    console.dir(prices.data, { depth: null });
-    const price =
-      dto.subscriptionType === SubscriptionType.Personal
-        ? paymentsConfig.subscriptionPrice.personalSubscribe
-        : paymentsConfig.subscriptionPrice.businessSubscribe;
 
     const sessionParameters = {
       mode: 'subscription',
@@ -40,12 +45,11 @@ export class StripeAdapter implements IPayment {
     } as Stripe.Checkout.SessionCreateParams;
 
     try {
-      const a = await stripe.checkout.sessions.create(sessionParameters);
-      console.log(a, '<-----');
-      return a;
+      const session = await stripe.checkout.sessions.create(sessionParameters);
+      return session;
     } catch (e) {
       console.log(e);
-      throw new RpcException(new Error());
+      throw new RpcException(new Error('Payment failed!'));
     }
   }
 

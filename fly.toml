@@ -9,6 +9,7 @@ primary_region = "waw"
 [processes]
   main-app = "node dist/apps/main-app/main"
   file-storage = "node dist/apps/file-storage/main"
+  payments = "node dist/apps/payments/main"
 
 [[services]]
   protocol = "tcp"

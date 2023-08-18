@@ -52,17 +52,15 @@
     "cookie-parser": "^1.4.6",
     "date-fns": "^2.30.0",
     "nodemailer": "^6.9.4",
+    "pg": "^8.11.2",
     "prisma": "^4.16.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "sequelize": "^6.32.1",
-    "sequelize-typescript": "^2.1.5",
     "sharp": "^0.32.1",
     "stripe": "^12.17.0",
     "webpack": "^5.88.0"
   },
   "devDependencies": {
-    "@types/sequelize": "^4.28.15",
     "@faker-js/faker": "^8.0.2",
     "@flydotio/dockerfile": "^0.2.16",
     "@nestjs/cli": "^10.0.5",

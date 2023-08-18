@@ -12,14 +12,16 @@ import { ConfigService } from '@nestjs/config';
 import { PaymentsConfig } from './config/payments.config';
 import { PaymentManager } from './service/payment.manager';
 import { PayPallAdapter } from '../../libs/adapters/payments-adapters/pay-pall.adapter';
-import { SubscriptionQueryRepository } from './db.providers/subscription.query-repository';
-import { SubscriptionRepository } from './db.providers/subscription,repository';
+import { PaymentsQueryRepository } from './db.providers/payments-query-repository.service';
+import { PaymentsRepository } from './db.providers/payments-repository.service';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { getOptions } from "sequelize-typescript";
-import { paymentsConfig } from "./main";
+import { getOptions } from 'sequelize-typescript';
+import { paymentsConfig } from './main';
+import * as process from 'process';
+import { PrismaService } from '../../libs/providers/prisma/prisma.service';
 
 @Module({
-  imports: [CqrsModule, SequelizeModule.forRoot({uri: paymentsConfig.})],
+  imports: [CqrsModule],
   controllers: [PaymentsController],
   providers: [
     ...PAYMENTS_COMMAND_HANDLER,
@@ -34,8 +36,9 @@ import { paymentsConfig } from "./main";
     ConfigService,
     PaymentsConfig,
     PaymentManager,
-    SubscriptionRepository,
-    SubscriptionQueryRepository,
+    PaymentsRepository,
+    PaymentsQueryRepository,
+    PrismaService,
   ],
   exports: [],
 })
