@@ -14,7 +14,7 @@ import {
   EmailManager,
 } from '../../../libs/adapters/email.adapter';
 import { IsConfirmationCodeExistConstraint } from '../../../libs/decorators/confirmation-code.decorator';
-import { IsUserNameExistConstraint } from '../../../libs/decorators/user-name.decorator';
+import { IsUserNameExistConstraint } from '../../../libs/decorators/user-name-exists.decorator';
 import { TokensFactory } from '../../../libs/shared/tokens.factory';
 import { PrismaService } from '../../../libs/providers/prisma/prisma.service';
 import { UserController } from './user.controller';

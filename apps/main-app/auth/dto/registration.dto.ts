@@ -3,7 +3,7 @@ import { userConstants } from '../../users/user.constants';
 import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { IsEmailExistForRegistration } from '../../../../libs/decorators/email.decorator';
-import { IsUserNameExist } from '../../../../libs/decorators/user-name.decorator';
+import { IsUserNameExist } from '../../../../libs/decorators/user-name-exists.decorator';
 import { TUser } from '../../users/entities/new-user.entity';
 import { IsDifferentPassword } from '../../../../libs/decorators/different-password.decorator';
 

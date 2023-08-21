@@ -1,4 +1,4 @@
-import { TUserData } from '../../../../libs/decorators/user-name.secorator';
+import { TUserData } from '../../../../libs/decorators/user-name.decorator';
 
 export type UserIdWith<T> = { userId: string } & Partial<T>;
 

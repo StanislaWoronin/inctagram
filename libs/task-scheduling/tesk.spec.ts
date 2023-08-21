@@ -5,8 +5,6 @@ import { TestingRepository } from '../../apps/main-app/testing/testing.repositor
 import { PostRepository } from '../../apps/main-app/users/db.providers/images/post.repository';
 import { TaskRepository } from './task.repository';
 import { JwtService } from '@nestjs/jwt';
-import { Test } from '@nestjs/testing';
-
 describe('Test task service.', () => {
   // let postRepository: PostRepository;
   // let taskService: TaskService;

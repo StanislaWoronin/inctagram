@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 import { userConstants } from '../user.constants';
 import { User } from '@prisma/client';
-import { IsUserNameExist } from '../../../../libs/decorators/user-name.decorator';
+import { IsUserNameExist } from '../../../../libs/decorators/user-name-exists.decorator';
 import { IsValidBirthdayFormat } from '../../../../libs/decorators/birthday-format.decorator';
 
 type TUpdateUserProfileDto = Pick<

@@ -1,38 +1,20 @@
-import {
-  registerDecorator,
-  ValidationArguments,
-  ValidationOptions,
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-} from 'class-validator';
-import { Injectable } from '@nestjs/common';
-import { UserFacade } from '../../apps/main-app/users/application-services';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
-@ValidatorConstraint({ name: 'IsUserNameExist', async: true })
-@Injectable()
-export class IsUserNameExistConstraint implements ValidatorConstraintInterface {
-  constructor(private readonly userFacade: UserFacade) {}
+export const UserData = createParamDecorator(
+  (data: string, ctx: ExecutionContext): string | null => {
+    const request = ctx.switchToHttp().getRequest();
+    if (request.userName) {
+      request.userData.userName = request.userName;
+    }
+    if (request.email) {
+      request.userData.userName = request.userName;
+    }
 
-  async validate(value: string) {
-    const user = await this.userFacade.queries.getUserByIdOrUserNameOrEmail(
-      value,
-    );
+    return request.userData;
+  },
+);
 
-    return !user;
-  }
-  defaultMessage(args: ValidationArguments) {
-    return `${args.property} already exists.`;
-  }
-}
-
-export function IsUserNameExist(validationOptions?: ValidationOptions) {
-  return function (object: any, propertyName: string) {
-    registerDecorator({
-      target: object.constructor,
-      propertyName: propertyName,
-      options: validationOptions,
-      constraints: [],
-      validator: IsUserNameExistConstraint,
-    });
-  };
-}
+export type TUserData = {
+  userName: string;
+  userEmail: string;
+};

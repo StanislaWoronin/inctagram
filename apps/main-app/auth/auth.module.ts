@@ -4,7 +4,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '../users/user.module';
 import { IsConfirmationCodeExistConstraint } from '../../../libs/decorators/confirmation-code.decorator';
-import { IsUserNameExistConstraint } from '../../../libs/decorators/user-name.decorator';
+import { IsUserNameExistConstraint } from '../../../libs/decorators/user-name-exists.decorator';
 import {
   IsEmailExistConstraint,
   IsEmailExistForRegistrationConstraint,
