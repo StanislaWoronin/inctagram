@@ -13,7 +13,6 @@ import { decodeBirthday, encodeBirthday } from '../shared/helpers';
  * error: invalid binary data format.
  * It is necessary to bring the string in this format to the format YYYY.MM .
  */
-
 @ValidatorConstraint({ name: 'IsValidBirthdayFormat', async: false })
 @Injectable()
 export class IsValidBirthdayFormatConstraint
@@ -25,7 +24,7 @@ export class IsValidBirthdayFormatConstraint
     if (!regex.test(value)) return false;
 
     const currentDate = new Date();
-    if (new Date(decodeBirthday(value)) >= currentDate) return false;
+    if (new Date(encodeBirthday(value)) >= currentDate) return false;
 
     const formattedDate = encodeBirthday(value);
     args.object[args.property] = new Date(formattedDate);

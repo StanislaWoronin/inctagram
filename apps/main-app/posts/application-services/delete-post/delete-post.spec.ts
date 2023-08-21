@@ -1,8 +1,6 @@
 import { PrismaService } from '../../../../../libs/providers/prisma/prisma.service';
-import { UserRepository } from '../../../users/db.providers/users/user.repository';
 import { DeletePostCommandHandler } from './delete-post.command-handler';
 import { TestingRepository } from '../../../testing/testing.repository';
-import { UserQueryRepository } from '../../../users/db.providers/users/user.query-repository';
 import { PostRepository } from '../../../users/db.providers/images/post.repository';
 import { PostQueryRepository } from '../../../users/db.providers/images/post.query-repository';
 

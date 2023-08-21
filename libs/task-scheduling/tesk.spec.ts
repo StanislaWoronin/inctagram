@@ -6,6 +6,7 @@ import { PostRepository } from '../../apps/main-app/users/db.providers/images/po
 import { TaskRepository } from './task.repository';
 import { JwtService } from '@nestjs/jwt';
 describe('Test task service.', () => {
+  jest.setTimeout(15000);
   // let postRepository: PostRepository;
   // let taskService: TaskService;
   // let testingService: TestingService;

@@ -6,7 +6,7 @@ export const encodeBirthday = (value: string): string => {
 };
 
 export const decodeBirthday = (value: Date | string): string => {
-  return new Date(value).toLocaleDateString().split('.').join('.');
+  return new Date(value).toLocaleDateString();
 };
 
 export const toViewPhotoLink = (value: string): string => {
