@@ -36,8 +36,9 @@ export class RegistrationViaGitHubCommandHandler
 
     return await this.oauthService.registerUser({
       ...user,
-      ipAddress: dto.ipAddress,
-      title: dto.title,
+      ipAddress: dto.clientMeta.ipAddress,
+      title: dto.clientMeta.title,
+      language: dto.language,
     });
   }
 }

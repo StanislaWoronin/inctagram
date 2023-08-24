@@ -24,13 +24,14 @@ export class OAuthService {
     avatarUrl,
     ipAddress,
     title,
+    language,
   }): Promise<TRegistrationViaThirdPartyServices | null> {
     const user = await this.userQueryRepository.getUserByField(email);
     if (user) {
       if (user.isConfirmed) {
         throw new BadRequestException('email:This email already confirmed.');
       }
-      this.emailManager.sendRefinementEmail(user.email);
+      this.emailManager.sendRefinementEmail(user.email, language);
       return null;
     }
 

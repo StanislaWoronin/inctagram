@@ -25,16 +25,20 @@ export class UpdatePairTokenCommandHandler
   ) {}
 
   async execute({ dto }: UpdatePairTokenCommand): Promise<PairTokenDto> {
-    let { userId, deviceId, ipAddress, title } = dto;
+    let { userId, deviceId, clientMeta, language } = dto;
     const device = await this.profileQueryRepository.getUserDevice(
       userId,
       deviceId,
     );
 
-    const ipIsDifferent = device.ipAddress !== ipAddress;
-    const titleIsDifferent = device.title !== title;
+    const ipIsDifferent = device.ipAddress !== clientMeta.ipAddress;
+    const titleIsDifferent = device.title !== clientMeta.title;
     if (ipIsDifferent && titleIsDifferent) {
-      const device = Device.create({ userId, ipAddress, title });
+      const device = Device.create({
+        userId,
+        ipAddress: clientMeta.ipAddress,
+        title: clientMeta.title,
+      });
       const createdDevice = await this.profileRepository.createUserDevice(
         device,
       );

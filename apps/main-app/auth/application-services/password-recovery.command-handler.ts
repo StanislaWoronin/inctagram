@@ -4,9 +4,11 @@ import { UserRepository } from '../../users/db.providers/users/user.repository';
 import { EmailManager } from '../../../../libs/adapters/email.adapter';
 import { PasswordRecovery } from '../../users/entities/password-recovery.entity';
 import { ProfileRepository } from '../../users/db.providers/profile/profile.repository';
+import { WithClientMeta } from '../dto/session-id.dto';
+import { EmailDto } from '../dto/email.dto';
 
 export class PasswordRecoveryCommand {
-  constructor(public readonly email: string) {}
+  constructor(public readonly dto: WithClientMeta<EmailDto>) {}
 }
 
 @CommandHandler(PasswordRecoveryCommand)
@@ -19,8 +21,8 @@ export class PasswordRecoveryCommandHandler
     private emailManger: EmailManager,
   ) {}
 
-  async execute({ email }: PasswordRecoveryCommand): Promise<boolean> {
-    const user = await this.userQueryRepository.getUserByField(email);
+  async execute({ dto }: PasswordRecoveryCommand): Promise<boolean> {
+    const user = await this.userQueryRepository.getUserByField(dto.email);
     if (user) {
       const passwordRecovery = PasswordRecovery.create(user.id);
       const isSuccess = await this.profileRepository.setPasswordRecovery(
@@ -28,8 +30,9 @@ export class PasswordRecoveryCommandHandler
       );
       if (isSuccess)
         await this.emailManger.sendPasswordRecoveryEmail(
-          email,
+          dto.email,
           passwordRecovery.passwordRecoveryCode,
+          dto.language,
         );
     }
     return true;

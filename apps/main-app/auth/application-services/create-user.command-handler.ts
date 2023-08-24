@@ -6,9 +6,10 @@ import { RegistrationDto } from '../dto/registration.dto';
 import { EmailConfirmation } from '../../users/entities/email-confirmation.entity';
 import { ViewUser } from '../../users/view-model/user.view-model';
 import { NewUser } from '../../users/entities/new-user.entity';
+import { WithClientMeta } from '../dto/session-id.dto';
 
 export class CreateUserCommand {
-  constructor(public readonly dto: RegistrationDto) {}
+  constructor(public readonly dto: WithClientMeta<RegistrationDto>) {}
 }
 
 export type TCreateUserResponse = ViewUser | RegistrationDto;
@@ -19,7 +20,6 @@ export class CreateUserCommandHandler
 {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly userQueryRepository: UserQueryRepository,
     private readonly emailManager: EmailManager,
   ) {}
 
@@ -35,6 +35,7 @@ export class CreateUserCommandHandler
     this.emailManager.sendConfirmationEmail(
       createdUser.email,
       emailConfirmation.confirmationCode,
+      dto.language,
     );
     return await ViewUser.toView(createdUser);
   }

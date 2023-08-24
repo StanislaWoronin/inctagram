@@ -3,9 +3,11 @@ import { UserQueryRepository } from '../../users/db.providers/users/user.query-r
 import { EmailManager } from '../../../../libs/adapters/email.adapter';
 import { settings } from '../../../../libs/shared/settings';
 import { ProfileRepository } from '../../users/db.providers/profile/profile.repository';
+import { WithClientMeta } from '../dto/session-id.dto';
+import { EmailDto } from '../dto/email.dto';
 
 export class ConfirmationCodeResendingCommand {
-  constructor(public readonly email: string) {}
+  constructor(public readonly dto: WithClientMeta<EmailDto>) {}
 }
 
 @CommandHandler(ConfirmationCodeResendingCommand)
@@ -18,8 +20,8 @@ export class ConfirmationCodeResendingCommandHandler
     private emailManger: EmailManager,
   ) {}
 
-  async execute(command: ConfirmationCodeResendingCommand): Promise<boolean> {
-    const user = await this.userQueryRepository.getUserByField(command.email);
+  async execute({ dto }: ConfirmationCodeResendingCommand): Promise<boolean> {
+    const user = await this.userQueryRepository.getUserByField(dto.email);
     const newEmailConfirmationCode = (
       Date.now() + settings.timeLife.CONFIRMATION_CODE
     ).toString();
@@ -29,8 +31,9 @@ export class ConfirmationCodeResendingCommandHandler
     );
 
     await this.emailManger.sendConfirmationEmail(
-      command.email,
+      dto.email,
       newEmailConfirmationCode,
+      dto.language,
     );
     return true;
   }

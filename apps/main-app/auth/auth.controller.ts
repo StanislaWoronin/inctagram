@@ -69,7 +69,10 @@ export class AuthController {
     @Body() dto: EmailDto,
     @Metadata() meta: IMetadata,
   ): Promise<boolean> {
-    return await this.userFacade.commands.confirmationCodeResending(dto);
+    return await this.userFacade.commands.confirmationCodeResending({
+      ...dto,
+      ...meta,
+    });
   }
 
   // Log in
@@ -85,7 +88,7 @@ export class AuthController {
     const dto = {
       userId: user.id,
       ...body,
-      ...meta.clientMeta,
+      ...meta,
     };
     const tokens = await this.userFacade.commands.loginUser(dto);
 
@@ -123,7 +126,7 @@ export class AuthController {
     @Body() dto: PasswordRecoveryDto,
     @Metadata() meta: IMetadata,
   ): Promise<boolean> {
-    return await this.userFacade.commands.passwordRecovery(dto);
+    return await this.userFacade.commands.passwordRecovery({ ...dto, ...meta });
   }
 
   // Generate new pair tokens
@@ -139,7 +142,7 @@ export class AuthController {
     const dto = {
       userId,
       deviceId,
-      ...meta.clientMeta,
+      ...meta,
     };
     return await this.userFacade.commands.updatePairToken(dto);
   }
@@ -149,8 +152,9 @@ export class AuthController {
   @ApiRegistration()
   async registration(
     @Body() dto: RegistrationDto,
+    @Metadata() meta: IMetadata,
   ): Promise<TCreateUserResponse | null> {
-    return await this.userFacade.commands.registrationUser(dto);
+    return await this.userFacade.commands.registrationUser({ ...dto, ...meta });
   }
 
   // Registration in the system via GitHub and return pair tokens
@@ -162,7 +166,7 @@ export class AuthController {
     @Res() response: Response,
   ): Promise<LoginView> {
     const dto = {
-      ...meta.clientMeta,
+      ...meta,
       ...query,
     };
     const result = await this.userFacade.commands.registrationViaGitHub(dto);
@@ -188,7 +192,7 @@ export class AuthController {
     @Res() response: Response,
   ): Promise<TLoginView> {
     const dto = {
-      ...meta.clientMeta,
+      ...meta,
       ...query,
     };
     const result = await this.userFacade.commands.registrationViaGoogle(dto);
@@ -234,13 +238,13 @@ export class AuthController {
   @Put(authEndpoints.mergeProfile())
   @ApiMergeProfile()
   async mergeProfile(
-    @Body() dto: EmailDto,
+    @Body() body: EmailDto,
     @Metadata() meta: IMetadata,
   ): Promise<TLoginView | null> {
-    const dtoPlus = {
-      ...dto,
-      ...meta.clientMeta,
+    const dto = {
+      ...body,
+      ...meta,
     };
-    return await this.userFacade.commands.mergeProfile(dtoPlus);
+    return await this.userFacade.commands.mergeProfile(dto);
   }
 }

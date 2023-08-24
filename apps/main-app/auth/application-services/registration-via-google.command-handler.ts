@@ -44,8 +44,9 @@ export class RegistrationViaGoogleCommandHandler
       name: googleUser.name,
       email: googleUser.email,
       avatarUrl: googleUser.picture,
-      ipAddress: dto.ipAddress,
-      title: dto.title,
+      ipAddress: dto.clientMeta.ipAddress,
+      title: dto.clientMeta.title,
+      language: dto.language,
     });
   }
 }

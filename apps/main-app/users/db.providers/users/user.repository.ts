@@ -71,8 +71,8 @@ export class UserRepository {
         Device: {
           create: {
             deviceId,
-            ipAddress: dto.ipAddress,
-            title: dto.title,
+            ipAddress: dto.clientMeta.ipAddress,
+            title: dto.clientMeta.title,
             createdAt: new Date().toISOString(),
           },
         },

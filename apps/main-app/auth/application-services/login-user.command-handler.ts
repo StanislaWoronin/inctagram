@@ -21,9 +21,13 @@ export class LoginUserCommandHandler
   ) {}
 
   async execute({ dto }: LoginUserCommand): Promise<PairTokenDto> {
-    const { userId, ipAddress, title } = dto;
+    const { userId, clientMeta } = dto;
 
-    const device = await Device.create({ userId, ipAddress, title });
+    const device = await Device.create({
+      userId,
+      ipAddress: clientMeta.ipAddress,
+      title: clientMeta.title,
+    });
     await this.profileRepository.createUserDevice(device);
 
     return await this.factory.getPairTokens(userId, device.deviceId);

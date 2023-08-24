@@ -57,7 +57,7 @@ export class UserFacade {
   ) {}
 
   commands = {
-    confirmationCodeResending: (dto: EmailDto) =>
+    confirmationCodeResending: (dto: WithClientMeta<EmailDto>) =>
       this.confirmationCodeResending(dto),
     createPost: (dto: UserIdWith<PostImagesDto>) => this.createPost(dto),
     deletePost: (dto: PostIdWith<DeletePostDto>) => this.deletePost(dto),
@@ -66,8 +66,10 @@ export class UserFacade {
       this.loginUser(dto),
     logout: (deviceId: string) => this.logout(deviceId),
     mergeProfile: (dto: WithClientMeta<EmailDto>) => this.mergeProfile(dto),
-    passwordRecovery: (dto: EmailDto) => this.passwordRecovery(dto),
-    registrationUser: (dto: RegistrationDto) => this.registrationUser(dto),
+    passwordRecovery: (dto: WithClientMeta<EmailDto>) =>
+      this.passwordRecovery(dto),
+    registrationUser: (dto: WithClientMeta<RegistrationDto>) =>
+      this.registrationUser(dto),
     registrationViaGitHub: (
       dto: WithClientMeta<RegistrationViaThirdPartyServicesDto>,
     ) => this.registrationViaGitHub(dto),
@@ -127,8 +129,10 @@ export class UserFacade {
     return await this.commandBus.execute(command);
   }
 
-  private async confirmationCodeResending(dto: EmailDto): Promise<boolean> {
-    const command = new ConfirmationCodeResendingCommand(dto.email);
+  private async confirmationCodeResending(
+    dto: WithClientMeta<EmailDto>,
+  ): Promise<boolean> {
+    const command = new ConfirmationCodeResendingCommand(dto);
     return await this.commandBus.execute(command);
   }
 
@@ -139,13 +143,15 @@ export class UserFacade {
     return await this.commandBus.execute(command);
   }
 
-  private async passwordRecovery(dto: EmailDto): Promise<boolean> {
-    const command = new PasswordRecoveryCommand(dto.email);
+  private async passwordRecovery(
+    dto: WithClientMeta<EmailDto>,
+  ): Promise<boolean> {
+    const command = new PasswordRecoveryCommand(dto);
     return await this.commandBus.execute(command);
   }
 
   private async registrationUser(
-    dto: RegistrationDto,
+    dto: WithClientMeta<RegistrationDto>,
   ): Promise<TCreateUserResponse | null> {
     const command = new CreateUserCommand(dto);
     return await this.commandBus.execute(command);
