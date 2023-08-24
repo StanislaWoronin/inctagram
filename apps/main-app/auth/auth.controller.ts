@@ -50,6 +50,8 @@ import {
   IMetadata,
   Metadata,
 } from '../../../libs/decorators/metadata.decorator';
+import { mainAppConfig } from '../main';
+import { settings } from '../../../libs/shared/settings';
 
 @Controller(authEndpoints.default())
 @UseInterceptors(SetCookiesInterceptor)
@@ -157,12 +159,24 @@ export class AuthController {
   async registrationViaGitHub(
     @Metadata() meta: IMetadata,
     @Query() query: RegistrationViaThirdPartyServicesDto,
+    @Res() response: Response,
   ): Promise<LoginView> {
     const dto = {
       ...meta.clientMeta,
       ...query,
     };
-    return await this.userFacade.commands.registrationViaGitHub(dto);
+    const result = await this.userFacade.commands.registrationViaGitHub(dto);
+    if (result)
+      response
+        .cookie('refreshToken', result.refreshToken, {
+          httpOnly: true,
+          secure: true,
+          maxAge: settings.timeLife.TOKEN_TIME,
+        })
+        .send({ accessToken: result.accessToken, user: result.user })
+        .redirect(`${mainAppConfig.clientUrl}/`);
+
+    return result;
   }
 
   // Registration in the system via Google and return pair tokens
@@ -171,12 +185,24 @@ export class AuthController {
   async registrationViaGoogle(
     @Metadata() meta: IMetadata,
     @Query() query: RegistrationViaThirdPartyServicesDto,
+    @Res() response: Response,
   ): Promise<TLoginView> {
     const dto = {
       ...meta.clientMeta,
       ...query,
     };
-    return await this.userFacade.commands.registrationViaGoogle(dto);
+    const result = await this.userFacade.commands.registrationViaGoogle(dto);
+    if (result)
+      response
+        .cookie('refreshToken', result.refreshToken, {
+          httpOnly: true,
+          secure: true,
+          maxAge: settings.timeLife.TOKEN_TIME,
+        })
+        .send({ accessToken: result.accessToken, user: result.user })
+        .redirect(`${mainAppConfig.clientUrl}/`);
+
+    return result;
   }
 
   // Confirmation email vie code from email
@@ -191,17 +217,14 @@ export class AuthController {
     const isSuccess = await this.userFacade.commands.registrationConfirmation(
       dto,
     );
-    const clientUrl = this.configService.get('CLIENT_URI');
+    // const clientUrl = mainAppConfig.clientUrl;
+    const clientUrl = 'http://localhost:3000';
     const { Success, Confirm } = RegistrationConfirmationResponse;
 
     if (isSuccess === Success || isSuccess === Confirm) {
-      response.redirect(
-        `${clientUrl}/ru/congratulation?status=${isSuccess}/${meta.language}`,
-      );
+      response.redirect(`${clientUrl}/ru/congratulation?status=${isSuccess}`);
     } else {
-      response.redirect(
-        `${clientUrl}/ru/resendLink?email=${isSuccess}/${meta.language}`,
-      );
+      response.redirect(`${clientUrl}/ru/resendLink?email=${isSuccess}`);
     }
 
     return;

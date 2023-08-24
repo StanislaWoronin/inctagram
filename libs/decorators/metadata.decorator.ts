@@ -16,7 +16,7 @@ export const Metadata = createParamDecorator(
         ipAddress: request.ip,
         title: request.headers['user-agent'],
       },
-      language: request.headers['Accept-Language'],
+      language: request.headers['Accept-Language'] ?? 'ru',
       logger: request.loggerParams,
     };
   },

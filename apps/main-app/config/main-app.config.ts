@@ -38,6 +38,9 @@ export class MainAppConfig {
         ? configService.get(EnvironmentName.ServerUrl)
         : `http://localhost:${mainAppPort}`;
 
+    const clientUrl = configService.get(EnvironmentName.ClientUrl);
+    if (!clientUrl) this.logger.warn('Client URL not found!');
+
     // Adapters
     const rmqUrl = configService.get(EnvironmentName.RmqUrl);
     if (!rmqUrl) this.logger.warn('RabbitMQ URL not found!');
@@ -122,6 +125,7 @@ export class MainAppConfig {
         },
       },
       appUrl,
+      clientUrl,
     };
   }
 }

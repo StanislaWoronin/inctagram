@@ -8,6 +8,7 @@ export type TMainAppConfig = {
     rmqUrl: string;
   };
   appUrl: string;
+  clientUrl: string;
   jwtTokens: {
     secretAT: string;
     secretRT: string;
