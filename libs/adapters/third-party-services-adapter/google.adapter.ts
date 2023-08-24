@@ -60,6 +60,4 @@ export class GoogleAdapter {
       throw new UnauthorizedException();
     }
   }
-
-  async;
 }
