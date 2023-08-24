@@ -56,7 +56,7 @@ export class GoogleAdapter {
 
       return response.data;
     } catch (e) {
-      console.log({ e });
+      console.log(e);
       throw new UnauthorizedException();
     }
   }
