@@ -1,12 +1,8 @@
 import { SubscribeDto } from '../../../apps/main-app/subscriptions/dto/subscribe.dto';
-import {
-  UserDataWith,
-  UserIdWith,
-} from '../../../apps/main-app/users/dto/id-with.dto';
+import { UserDataWith } from '../../../apps/main-app/users/dto/id-with.dto';
 import { IPayment } from './payment.interface';
 import { paymentsConfig } from '../../../apps/payments/main';
 import { Stripe } from 'stripe';
-import { SubscriptionType } from '../../shared/enums/subscription.enum';
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 

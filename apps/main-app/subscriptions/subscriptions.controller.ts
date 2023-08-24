@@ -1,11 +1,10 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { subscriptionsEndpoints } from '../../../libs/shared/endpoints/subscriptions.endpoints';
-import { AuthBearerGuard } from '../../../libs/guards/auth-bearer.guard';
 import { ApiSubscribe } from '../../../libs/documentation/swagger/subscribe.documentation';
 import { SubscribeDto } from './dto/subscribe.dto';
 import { SubscriptionsFacade } from './application-services/subscriptions.facade';
-import { UpdateSubscriptionTypeDto } from './dto/update-subscription-type.dto';
 import { randomUUID } from 'crypto';
+import { UserData } from '../../../libs/decorators/user-name.decorator';
 
 @Controller(subscriptionsEndpoints.default())
 //@UseGuards(AuthBearerGuard)
