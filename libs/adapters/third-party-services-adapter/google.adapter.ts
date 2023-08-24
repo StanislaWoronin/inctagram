@@ -6,6 +6,8 @@ import axios from 'axios';
 import * as queryString from 'querystring';
 import { IGoogleTokens } from './types/google-tokens.interface';
 import { GoogleUserDto } from '../../../apps/main-app/auth/dto/google-user.dto';
+import { mainAppConfig } from '../../../apps/main-app/main';
+import { authEndpoints } from '../../shared/endpoints/auth.endpoints';
 
 @Injectable()
 export class GoogleAdapter {
@@ -22,7 +24,9 @@ export class GoogleAdapter {
       code,
       client_id: this.clientId,
       client_secret: this.clientSecret,
-      redirect_uri: 'http://localhost:5000/auth/google-registration',
+      redirect_uri: `${
+        mainAppConfig.appUrl
+      }/${authEndpoints.default()}/${authEndpoints.registrationViaGoogle()}`,
       grant_type: 'authorization_code',
     };
 
