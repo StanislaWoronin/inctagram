@@ -5,6 +5,7 @@ import { ClientMeta } from '../../apps/main-app/auth/dto/session-id.dto';
 export interface IMetadata {
   clientMeta: ClientMeta;
   logger: ILoggerParams;
+  language: 'ru' | 'en';
 }
 
 export const Metadata = createParamDecorator(
@@ -15,6 +16,7 @@ export const Metadata = createParamDecorator(
         ipAddress: request.ip,
         title: request.headers['user-agent'],
       },
+      language: request.headers['Accept-Language'],
       logger: request.loggerParams,
     };
   },

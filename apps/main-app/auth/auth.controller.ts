@@ -195,9 +195,13 @@ export class AuthController {
     const { Success, Confirm } = RegistrationConfirmationResponse;
 
     if (isSuccess === Success || isSuccess === Confirm) {
-      response.redirect(`${clientUrl}/ru/congratulation?status=${isSuccess}`);
+      response.redirect(
+        `${clientUrl}/ru/congratulation?status=${isSuccess}/${meta.language}`,
+      );
     } else {
-      response.redirect(`${clientUrl}/ru/resendLink?email=${isSuccess}`);
+      response.redirect(
+        `${clientUrl}/ru/resendLink?email=${isSuccess}/${meta.language}`,
+      );
     }
 
     return;
