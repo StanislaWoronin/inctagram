@@ -99,4 +99,8 @@ export enum EnvironmentName {
   StripeKey = 'STRIPE_KEY',
   /** Secret for authorisation in Stripe */
   StripeSecret = 'STRIPE_SECRET',
+  /** Personal Stripe ID of the subscription of the tariff plan "Personal" */
+  PersonalSubscriptionId = 'PERSONAL_SUBSCRIPTION_ID',
+  /** Personal Stripe ID of the subscription of the tariff plan "Business" */
+  BusinessSubscriptionId = 'BUSINESS_SUBSCRIPTION_ID',
 }

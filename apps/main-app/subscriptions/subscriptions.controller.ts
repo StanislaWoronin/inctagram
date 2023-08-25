@@ -26,7 +26,7 @@ export class SubscriptionsController {
   async subscribe(
     @Body() dto: SubscribeDto,
     // @UserData() userData: TUserData,
-  ): Promise<boolean> {
+  ): Promise<string | boolean> {
     const userData = {
       userId: randomUUID(),
       userName: 'UserName',

@@ -18,19 +18,23 @@ export class PaymentsConfig {
     const stripeSecret = configService.get(EnvironmentName.StripeSecret);
     if (!stripeSecret) this.logger.warn('Stripe secret not found!');
 
-    /** Subscription price is for one day */
-    const subscriptionPrice = {
-      /** 20c */
-      personalSubscribe: 0 * 20,
-      /** 1$ 50c */
-      businessSubscribe: 1 * 50,
-    };
+    const personalSubscriptionId = configService.get(
+      EnvironmentName.PersonalSubscriptionId,
+    );
+    if (!personalSubscriptionId)
+      this.logger.warn('Personal subscription ID secret not found!');
+
+    const businessSubscriptionId = configService.get(
+      EnvironmentName.BusinessSubscriptionId,
+    );
+    if (!businessSubscriptionId)
+      this.logger.warn('Business subscription ID secret not found!');
 
     return {
-      //postgresUri,
       stripeKey,
       stripeSecret,
-      subscriptionPrice,
+      personalSubscriptionId,
+      businessSubscriptionId,
     };
   }
 }

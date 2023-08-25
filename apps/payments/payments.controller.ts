@@ -10,7 +10,7 @@ export class PaymentsController {
   constructor(private readonly paymentsFacade: PaymentsFacade) {}
 
   @MessagePattern({ cmd: Commands.Subscribe })
-  async subscribe(dto: UserDataWith<SubscribeDto>): Promise<boolean> {
+  async subscribe(dto: UserDataWith<SubscribeDto>): Promise<string | boolean> {
     return await this.paymentsFacade.commands.subscribe(dto);
   }
 }

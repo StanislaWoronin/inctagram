@@ -5,6 +5,7 @@ import { paymentsConfig } from '../../../apps/payments/main';
 import { Stripe } from 'stripe';
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
+import { SubscriptionType } from '../../shared/enums/subscription.enum';
 
 @Injectable()
 export class StripeAdapter implements IPayment {
@@ -15,7 +16,6 @@ export class StripeAdapter implements IPayment {
     const stripe = this.stripeInit();
 
     if (!customerId) {
-      //create customer
       const customer = await stripe.customers.create({
         name: dto.userName,
         email: dto.userEmail,
@@ -23,7 +23,7 @@ export class StripeAdapter implements IPayment {
       dto['customer'] = customer.id;
     }
 
-    const prices = await stripe.prices.list();
+    const priceId = this.getPriceId(dto.subscriptionType);
 
     const sessionParameters = {
       mode: 'subscription',
@@ -34,7 +34,7 @@ export class StripeAdapter implements IPayment {
       expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
       line_items: [
         {
-          price: prices.data[0].id,
+          price: priceId,
           quantity: dto.amount,
         },
       ],
@@ -54,5 +54,11 @@ export class StripeAdapter implements IPayment {
     const stripe = new Stripe(stripeKey, { apiVersion: '2022-11-15' });
 
     return stripe;
+  }
+
+  private getPriceId(subscriptionType: string): string {
+    return subscriptionType === SubscriptionType.Business
+      ? paymentsConfig.businessSubscriptionId
+      : paymentsConfig.personalSubscriptionId;
   }
 }
