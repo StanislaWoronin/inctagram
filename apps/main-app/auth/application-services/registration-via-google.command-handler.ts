@@ -24,7 +24,7 @@ export class RegistrationViaGoogleCommandHandler
     >
 {
   constructor(
-    private readonly emailManager: EmailManager,
+    // private readonly emailManager: EmailManager,
     private googleAdapter: GoogleAdapter,
     private oauthService: OAuthService,
   ) {}

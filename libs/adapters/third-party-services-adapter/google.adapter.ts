@@ -36,7 +36,7 @@ export class GoogleAdapter {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-
+      console.log('1 - google-adapter: 39', response);
       return response.data;
     } catch (e) {
       console.log(e);
@@ -53,7 +53,7 @@ export class GoogleAdapter {
           Authorization: `Bearer ${id_token}`,
         },
       });
-
+      console.log('2 - google-adapter: 56', response);
       return response.data;
     } catch (e) {
       console.log(e);
