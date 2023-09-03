@@ -38,7 +38,10 @@ export class MainAppConfig {
         ? configService.get(EnvironmentName.ServerUrl)
         : `http://localhost:${mainAppPort}`;
 
-    const clientUrl = configService.get(EnvironmentName.ClientUrl);
+    const clientUrl =
+      environment === Environment.Production
+        ? configService.get(EnvironmentName.ClientUrl)
+        : configService.get(EnvironmentName.ClientLocalUrl);
     if (!clientUrl) this.logger.warn('Client URL not found!');
 
     // Adapters
