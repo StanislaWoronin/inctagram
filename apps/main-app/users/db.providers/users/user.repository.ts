@@ -5,6 +5,7 @@ import { UpdateUserProfileDto } from '../../dto/update-user.dto';
 import { UserIdWith } from '../../dto/id-with.dto';
 import { WithClientMeta } from '../../../auth/dto/session-id.dto';
 import { EmailDto } from '../../../auth/dto/email.dto';
+import { GoogleUserDto } from '../../../auth/dto/google-user.dto';
 
 @Injectable()
 export class UserRepository {
@@ -30,33 +31,38 @@ export class UserRepository {
   }
 
   async createUserViaThirdPartyServices({
+    id,
     user,
     photoLink,
     deviceId,
-    ipAddress,
-    title,
+    clientMeta,
   }): Promise<User> {
-    return await this.prisma.user.create({
-      data: {
-        userName: user.userName,
-        email: user.email,
-        createdAt: user.createdAt,
-        isConfirmed: user.isConfirmed,
-        Avatar: {
-          create: {
-            photoLink,
+    try {
+      return await this.prisma.user.create({
+        data: {
+          id,
+          userName: user.userName,
+          email: user.email,
+          createdAt: user.createdAt,
+          isConfirmed: user.isConfirmed,
+          Avatar: {
+            create: {
+              photoLink,
+            },
+          },
+          Device: {
+            create: {
+              deviceId,
+              ipAddress: clientMeta.ipAddress,
+              title: clientMeta.ipAddress,
+              createdAt: new Date().toISOString(),
+            },
           },
         },
-        Device: {
-          create: {
-            deviceId,
-            ipAddress,
-            title,
-            createdAt: new Date().toISOString(),
-          },
-        },
-      },
-    });
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async mergeUserProfile(

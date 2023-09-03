@@ -2,6 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { GitHubAdapter } from '../../../../libs/adapters/third-party-services-adapter/git-hub.adapter';
 import {
   RegistrationViaThirdPartyServicesDto,
+  TLoginUserViaThirdPartyServices,
   TRegistrationViaThirdPartyServices,
 } from '../dto/registration-via-third-party-services.dto';
 import { EmailManager } from '../../../../libs/adapters/email.adapter';
@@ -19,7 +20,7 @@ export class RegistrationViaGitHubCommandHandler
   implements
     ICommandHandler<
       RegistrationViaGitHubCommand,
-      TRegistrationViaThirdPartyServices | null
+      TRegistrationViaThirdPartyServices | TLoginUserViaThirdPartyServices
     >
 {
   constructor(
@@ -30,14 +31,18 @@ export class RegistrationViaGitHubCommandHandler
 
   async execute({
     dto,
-  }: RegistrationViaGitHubCommand): Promise<TRegistrationViaThirdPartyServices | null> {
+  }: RegistrationViaGitHubCommand): Promise<
+    TRegistrationViaThirdPartyServices | TLoginUserViaThirdPartyServices
+  > {
     const accessToken = await this.gitHubAdapter.validate(dto.code);
-    const user = await this.gitHubAdapter.getUserByToken(accessToken);
-
+    const gitHubUser = await this.gitHubAdapter.getUserByToken(accessToken);
+    console.log({ gitHubUser });
     return await this.oauthService.registerUser({
-      ...user,
-      ipAddress: dto.clientMeta.ipAddress,
-      title: dto.clientMeta.title,
+      id: gitHubUser.id,
+      name: gitHubUser.name,
+      email: gitHubUser.email,
+      picture: gitHubUser.avatarUrl,
+      clientMeta: dto.clientMeta,
       language: dto.language,
     });
   }

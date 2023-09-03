@@ -15,3 +15,9 @@ export class RegistrationViaThirdPartyServicesDto {
 export type TRegistrationViaThirdPartyServices = PairTokenDto & {
   user: ViewUser;
 };
+
+export type TLoginUserViaThirdPartyServices = PairTokenDto & { isAuth: true };
+
+export type TAuthorizationViaThirdPartyServices =
+  | TRegistrationViaThirdPartyServices
+  | TLoginUserViaThirdPartyServices;

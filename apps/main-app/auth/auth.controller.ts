@@ -169,6 +169,16 @@ export class AuthController {
       ...meta,
       ...query,
     };
+    return await this.userFacade.commands.registrationViaGitHub(dto);
+    // if (result)
+    //   response
+    //     .cookie('refreshToken', result.refreshToken, {
+    //       httpOnly: true,
+    //       secure: true,
+    //       maxAge: settings.timeLife.TOKEN_TIME,
+    //     })
+    //     .send({ accessToken: result.accessToken, user: result.user })
+    //     .redirect(`${mainAppConfig.clientUrl}/`);
     // const result = await this.userFacade.commands.registrationViaGitHub(dto);
     // if (result)
     //   response
@@ -189,7 +199,7 @@ export class AuthController {
   async registrationViaGoogle(
     @Metadata() meta: IMetadata,
     @Query() query: RegistrationViaThirdPartyServicesDto,
-    //@Res() response: Response,
+    @Res() response: Response,
   ): Promise<TLoginView> {
     const dto = {
       ...meta,

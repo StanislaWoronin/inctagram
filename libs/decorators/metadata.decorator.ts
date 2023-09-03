@@ -11,12 +11,13 @@ export interface IMetadata {
 export const Metadata = createParamDecorator(
   (data: string, ctx: ExecutionContext): IMetadata => {
     const request = ctx.switchToHttp().getRequest();
+
     return {
       clientMeta: {
         ipAddress: request.ip,
         title: request.headers['user-agent'],
       },
-      language: request.headers['Accept-Language'] ?? 'ru',
+      language: request.headers['accept-language'],
       logger: request.loggerParams,
     };
   },

@@ -44,6 +44,7 @@ export class GitHubAdapter {
     const { email } = emailRes.data.find((emailObj: any) => emailObj.primary);
 
     return {
+      id: String(user.id),
       avatarUrl: user.avatar_url,
       name: user.login,
       email,
