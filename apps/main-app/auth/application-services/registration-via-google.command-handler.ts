@@ -1,5 +1,7 @@
 import {
+  TAuthorizationViaThirdPartyServices,
   RegistrationViaThirdPartyServicesDto,
+  TLoginUserViaThirdPartyServices,
   TRegistrationViaThirdPartyServices,
 } from '../dto/registration-via-third-party-services.dto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
@@ -20,20 +22,20 @@ export class RegistrationViaGoogleCommandHandler
   implements
     ICommandHandler<
       RegistrationViaGoogleCommand,
-      TRegistrationViaThirdPartyServices | null
+      TRegistrationViaThirdPartyServices | TLoginUserViaThirdPartyServices
     >
 {
   constructor(
-    private readonly emailManager: EmailManager,
+    // private readonly emailManager: EmailManager,
     private googleAdapter: GoogleAdapter,
     private oauthService: OAuthService,
   ) {}
 
   async execute({
     dto,
-  }: RegistrationViaGitHubCommand): Promise<TRegistrationViaThirdPartyServices | null> {
+  }: RegistrationViaGitHubCommand): Promise<TAuthorizationViaThirdPartyServices> {
     const { id_token, access_token } =
-      await this.googleAdapter.getGoogleOAuthTokens(dto.code);
+      await this.googleAdapter.getGoogleOAuthTokens(dto.code, dto.language);
 
     const googleUser = await this.googleAdapter.getGoogleUser({
       id_token,
@@ -41,11 +43,11 @@ export class RegistrationViaGoogleCommandHandler
     });
 
     return await this.oauthService.registerUser({
+      id: String(googleUser.id),
       name: googleUser.name,
       email: googleUser.email,
-      avatarUrl: googleUser.picture,
-      ipAddress: dto.clientMeta.ipAddress,
-      title: dto.clientMeta.title,
+      picture: googleUser.picture,
+      clientMeta: dto.clientMeta,
       language: dto.language,
     });
   }

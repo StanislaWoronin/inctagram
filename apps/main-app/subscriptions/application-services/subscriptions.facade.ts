@@ -17,7 +17,9 @@ export class SubscriptionsFacade {
 
   queries = {};
 
-  private async subscribe(dto: UserDataWith<SubscribeDto>): Promise<boolean> {
+  private async subscribe(
+    dto: UserDataWith<SubscribeDto>,
+  ): Promise<string | boolean> {
     const command = new SubscriptionCommand(dto);
     return await this.commandBus.execute(command);
   }

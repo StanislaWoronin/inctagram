@@ -163,24 +163,34 @@ export class AuthController {
   async registrationViaGitHub(
     @Metadata() meta: IMetadata,
     @Query() query: RegistrationViaThirdPartyServicesDto,
-    @Res() response: Response,
+    //@Res() response: Response,
   ): Promise<LoginView> {
     const dto = {
       ...meta,
       ...query,
     };
-    const result = await this.userFacade.commands.registrationViaGitHub(dto);
-    if (result)
-      response
-        .cookie('refreshToken', result.refreshToken, {
-          httpOnly: true,
-          secure: true,
-          maxAge: settings.timeLife.TOKEN_TIME,
-        })
-        .send({ accessToken: result.accessToken, user: result.user })
-        .redirect(`${mainAppConfig.clientUrl}/`);
+    return await this.userFacade.commands.registrationViaGitHub(dto);
+    // if (result)
+    //   response
+    //     .cookie('refreshToken', result.refreshToken, {
+    //       httpOnly: true,
+    //       secure: true,
+    //       maxAge: settings.timeLife.TOKEN_TIME,
+    //     })
+    //     .send({ accessToken: result.accessToken, user: result.user })
+    //     .redirect(`${mainAppConfig.clientUrl}/`);
+    // const result = await this.userFacade.commands.registrationViaGitHub(dto);
+    // if (result)
+    //   response
+    //     .cookie('refreshToken', result.refreshToken, {
+    //       httpOnly: true,
+    //       secure: true,
+    //       maxAge: settings.timeLife.TOKEN_TIME,
+    //     })
+    //     .send({ accessToken: result.accessToken, user: result.user })
+    //     .redirect(`${mainAppConfig.clientUrl}/`);
 
-    return result;
+    return await this.userFacade.commands.registrationViaGitHub(dto);
   }
 
   // Registration in the system via Google and return pair tokens
@@ -195,18 +205,18 @@ export class AuthController {
       ...meta,
       ...query,
     };
-    const result = await this.userFacade.commands.registrationViaGoogle(dto);
-    if (result)
-      response
-        .cookie('refreshToken', result.refreshToken, {
-          httpOnly: true,
-          secure: true,
-          maxAge: settings.timeLife.TOKEN_TIME,
-        })
-        .send({ accessToken: result.accessToken, user: result.user })
-        .redirect(`${mainAppConfig.clientUrl}/`);
+    // const result = await this.userFacade.commands.registrationViaGoogle(dto);
+    // if (result)
+    //   response
+    //     .cookie('refreshToken', result.refreshToken, {
+    //       httpOnly: true,
+    //       secure: true,
+    //       maxAge: settings.timeLife.TOKEN_TIME,
+    //     })
+    //     .send({ accessToken: result.accessToken, user: result.user })
+    //     .redirect(`${mainAppConfig.clientUrl}/`);
 
-    return result;
+    return await this.userFacade.commands.registrationViaGoogle(dto);
   }
 
   // Confirmation email vie code from email

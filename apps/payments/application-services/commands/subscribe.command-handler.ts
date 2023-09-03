@@ -12,7 +12,7 @@ export class SubscribeCommand {
 
 @CommandHandler(SubscribeCommand)
 export class SubscribeCommandHandler
-  implements ICommandHandler<SubscribeCommand, boolean>
+  implements ICommandHandler<SubscribeCommand, string | boolean>
 {
   constructor(
     private paymentManager: PaymentManager,
@@ -20,7 +20,7 @@ export class SubscribeCommandHandler
     private paymentsQueryRepository: PaymentsQueryRepository,
   ) {}
 
-  async execute({ dto }: SubscribeCommand): Promise<boolean> {
+  async execute({ dto }: SubscribeCommand): Promise<string | boolean> {
     const customer = await this.paymentsQueryRepository.getCustomer(
       dto.userEmail,
     );
@@ -29,7 +29,20 @@ export class SubscribeCommandHandler
       dto,
       customer?.customerId,
     );
-    console.log(paymentResult);
-    return true;
+    console.log({ paymentResult });
+    if (paymentResult) {
+      const result = {
+        paymentId: paymentResult.id,
+        totalPrice: paymentResult.amount_total,
+        autoRenewal: paymentResult.automatic_tax.enabled,
+        currency: paymentResult.currency,
+      };
+      console.log({ result });
+      //await this.paymentsRepository.savePaymentResult(result);
+
+      return paymentResult.url;
+    }
+
+    return false;
   }
 }

@@ -15,29 +15,32 @@ export class GoogleAdapter {
 
   private clientId = this.configService.get('GOOGLE_CLIENT_ID');
   private clientSecret = this.configService.get('GOOGLE_CLIENT_SECRET');
-  private redirectUrl = switchRedirectUrl();
 
-  async getGoogleOAuthTokens(code: string): Promise<IGoogleTokens> {
+  async getGoogleOAuthTokens(
+    code: string,
+    language: string,
+  ): Promise<IGoogleTokens> {
     const url = 'https://oauth2.googleapis.com/token';
 
     const values = {
       code,
       client_id: this.clientId,
       client_secret: this.clientSecret,
-      redirect_uri: `${
-        mainAppConfig.appUrl
-      }/${authEndpoints.default()}/${authEndpoints.registrationViaGoogle()}`,
+      // redirect_uri: `${
+      //   mainAppConfig.appUrl
+      // }/${authEndpoints.default()}/${authEndpoints.registrationViaGoogle()}`,
+      redirect_uri: `http://localhost:3000/${language}/auth/oauth-google-client`,
       grant_type: 'authorization_code',
     };
 
     try {
-      const response = await axios.post(url, queryString.stringify(values), {
+      const { data } = await axios.post(url, queryString.stringify(values), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-
-      return response.data;
+      //console.log('1 - google-adapter: 39', data);
+      return data;
     } catch (e) {
       console.log(e);
       throw new UnauthorizedException();
@@ -53,7 +56,7 @@ export class GoogleAdapter {
           Authorization: `Bearer ${id_token}`,
         },
       });
-
+      //console.log('2 - google-adapter: 56', response);
       return response.data;
     } catch (e) {
       console.log(e);
