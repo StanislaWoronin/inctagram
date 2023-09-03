@@ -1,13 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GitHubUserDto } from '../../../apps/main-app/auth/dto/git-hub-user.dto';
-import { switchRedirectUrl } from './switch-redirect-url';
 import axios from 'axios';
 import * as queryString from 'querystring';
 import { IGoogleTokens } from './types/google-tokens.interface';
 import { GoogleUserDto } from '../../../apps/main-app/auth/dto/google-user.dto';
 import { mainAppConfig } from '../../../apps/main-app/main';
-import { authEndpoints } from '../../shared/endpoints/auth.endpoints';
 
 @Injectable()
 export class GoogleAdapter {
@@ -26,10 +23,7 @@ export class GoogleAdapter {
       code,
       client_id: this.clientId,
       client_secret: this.clientSecret,
-      // redirect_uri: `${
-      //   mainAppConfig.appUrl
-      // }/${authEndpoints.default()}/${authEndpoints.registrationViaGoogle()}`,
-      redirect_uri: `http://localhost:3000/${language}/auth/oauth-google-client`,
+      redirect_uri: `${mainAppConfig.clientUrl}/${language}/auth/oauth-google-client`,
       grant_type: 'authorization_code',
     };
 

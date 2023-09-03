@@ -50,8 +50,6 @@ import {
   IMetadata,
   Metadata,
 } from '../../../libs/decorators/metadata.decorator';
-import { mainAppConfig } from '../main';
-import { settings } from '../../../libs/shared/settings';
 
 @Controller(authEndpoints.default())
 @UseInterceptors(SetCookiesInterceptor)
@@ -169,7 +167,8 @@ export class AuthController {
       ...meta,
       ...query,
     };
-    return await this.userFacade.commands.registrationViaGitHub(dto);
+
+    // return await this.userFacade.commands.registrationViaGitHub(dto);
     // if (result)
     //   response
     //     .cookie('refreshToken', result.refreshToken, {
@@ -199,7 +198,6 @@ export class AuthController {
   async registrationViaGoogle(
     @Metadata() meta: IMetadata,
     @Query() query: RegistrationViaThirdPartyServicesDto,
-    @Res() response: Response,
   ): Promise<TLoginView> {
     const dto = {
       ...meta,

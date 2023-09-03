@@ -16,6 +16,7 @@ export enum EnvironmentName {
   /** App URL */
   ServerUrl = 'SERVER_URL',
   ClientUrl = 'CLIENT_URI',
+  ClientLocalUrl = 'CLIENT_LOCAL_URI',
 
   // Message broker
   /** RabbitMq URI */
