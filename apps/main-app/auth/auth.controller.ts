@@ -54,10 +54,7 @@ import {
 @Controller(authEndpoints.default())
 @UseInterceptors(SetCookiesInterceptor)
 export class AuthController {
-  constructor(
-    private readonly userFacade: UserFacade,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly userFacade: UserFacade) {}
 
   // Confirmation email vie confirmation code from email
   @Post(authEndpoints.confirmationEmailResending())
@@ -234,9 +231,13 @@ export class AuthController {
     const { Success, Confirm } = RegistrationConfirmationResponse;
 
     if (isSuccess === Success || isSuccess === Confirm) {
-      response.redirect(`${clientUrl}/ru/congratulation?status=${isSuccess}`);
+      response.redirect(
+        `${clientUrl}/${meta.language}/congratulation?status=${isSuccess}`,
+      );
     } else {
-      response.redirect(`${clientUrl}/ru/resendLink?email=${isSuccess}`);
+      response.redirect(
+        `${clientUrl}/${meta.language}/resendLink?email=${isSuccess}`,
+      );
     }
 
     return;

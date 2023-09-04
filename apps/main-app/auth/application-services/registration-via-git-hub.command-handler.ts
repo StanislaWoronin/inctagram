@@ -5,7 +5,6 @@ import {
   TLoginUserViaThirdPartyServices,
   TRegistrationViaThirdPartyServices,
 } from '../dto/registration-via-third-party-services.dto';
-import { EmailManager } from '../../../../libs/adapters/email.adapter';
 import { OAuthService } from '../../../../libs/adapters/third-party-services-adapter/oauth.service';
 import { WithClientMeta } from '../dto/session-id.dto';
 
@@ -24,7 +23,6 @@ export class RegistrationViaGitHubCommandHandler
     >
 {
   constructor(
-    private readonly emailManager: EmailManager,
     private gitHubAdapter: GitHubAdapter,
     private oauthService: OAuthService,
   ) {}
@@ -36,7 +34,7 @@ export class RegistrationViaGitHubCommandHandler
   > {
     const accessToken = await this.gitHubAdapter.validate(dto.code);
     const gitHubUser = await this.gitHubAdapter.getUserByToken(accessToken);
-    console.log({ gitHubUser });
+
     return await this.oauthService.registerUser({
       id: gitHubUser.id,
       name: gitHubUser.name,
