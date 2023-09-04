@@ -23,7 +23,8 @@ export class GoogleAdapter {
       code,
       client_id: this.clientId,
       client_secret: this.clientSecret,
-      redirect_uri: `${mainAppConfig.clientUrl}/${language}/auth/oauth-google-client`,
+      // redirect_uri: `${mainAppConfig.clientUrl}/${language}/auth/oauth-google-client`,
+      redirect_uri: `http://localhost:3000/${language}/auth/oauth-google-client`,
       grant_type: 'authorization_code',
     };
 
