@@ -7,13 +7,9 @@ import { UserRepository } from '../../../apps/main-app/users/db.providers/users/
 import { UserQueryRepository } from '../../../apps/main-app/users/db.providers/users/user.query-repository';
 import { TokensFactory } from '../../shared/tokens.factory';
 import { randomUUID } from 'crypto';
-import {
-  TAuthorizationViaThirdPartyServices,
-  TLoginUserViaThirdPartyServices,
-  TRegistrationViaThirdPartyServices,
-} from '../../../apps/main-app/auth/dto/registration-via-third-party-services.dto';
 import { WithClientMeta } from '../../../apps/main-app/auth/dto/session-id.dto';
 import { GoogleUserDto } from '../../../apps/main-app/auth/dto/google-user.dto';
+import { TLoginUserViaThirdPartyServices } from '../../../apps/main-app/auth/dto/registration-via-third-party-services.dto';
 
 @Injectable()
 export class OAuthService {
@@ -33,18 +29,20 @@ export class OAuthService {
     language,
   }: Partial<
     WithClientMeta<GoogleUserDto>
-  >): Promise<TAuthorizationViaThirdPartyServices> {
-    const userExists = await this.userQueryRepository.getUserByField(id);
+  >): Promise<TLoginUserViaThirdPartyServices> {
+    let user = await this.userQueryRepository.getUserByField(id);
 
     const deviceId = randomUUID();
     const tokens = await this.factory.getPairTokens(id, deviceId);
-    if (!userExists) {
-      const user = await this.userQueryRepository.getUserByField(email);
-      if (user) {
-        if (user.isConfirmed) {
+    let isAuth = true;
+    if (!user) {
+      isAuth = false;
+      const userExists = await this.userQueryRepository.getUserByField(email);
+      if (userExists) {
+        if (userExists.isConfirmed) {
           throw new BadRequestException('email:This email already confirmed.');
         }
-        this.emailManager.sendRefinementEmail(user.email, language);
+        this.emailManager.sendRefinementEmail(userExists.email, language);
         return null;
       }
 
@@ -52,21 +50,17 @@ export class OAuthService {
       const newUser = NewUser.createViaThirdPartyServices({ name, email });
       newUser.userName = getClientName(lastClientName);
 
-      const createdUser =
-        await this.userRepository.createUserViaThirdPartyServices({
-          id,
-          user: newUser,
-          photoLink: picture,
-          deviceId,
-          clientMeta,
-        });
+      user = await this.userRepository.createUserViaThirdPartyServices({
+        id,
+        user: newUser,
+        photoLink: picture,
+        deviceId,
+        clientMeta,
+      });
 
-      this.emailManager.sendCongratulationWithAuthEmail(createdUser.email);
-      const viewUser = await ViewUser.toView(createdUser);
-
-      return { user: viewUser, ...tokens };
+      this.emailManager.sendCongratulationWithAuthEmail(user.email);
     }
-
-    return { ...tokens, isAuth: true };
+    const viewUser = await ViewUser.toView(user);
+    return { user: viewUser, ...tokens, isAuth };
   }
 }
