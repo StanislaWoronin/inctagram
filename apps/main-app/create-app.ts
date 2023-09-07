@@ -40,9 +40,8 @@ export const createApp = (app: INestApplication): INestApplication => {
   app.use(cookieParser());
   app.use(function (res, next) {
     res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', '*');
     res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
   }),
     app.useGlobalPipes(new ValidationPipe(validationPipeSettings));

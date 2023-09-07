@@ -18,7 +18,10 @@ export class SetCookiesInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       tap(() => {
-        response.header('Access-Control-Allow-Credentials', '*');
+        response.setHeader(
+          'Access-Control-Allow-Credentials',
+          JSON.stringify(true),
+        );
       }),
     );
   }
