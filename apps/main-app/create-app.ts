@@ -41,7 +41,7 @@ export const createApp = (app: INestApplication): INestApplication => {
   app.use(cookieParser());
   app.use(function (res, next) {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Request-Method', 'POST, GET, PUT, DELETE');
+    // res.header('Access-Control-Request-Method', 'POST, GET, PUT, DELETE');
     res.header('Access-Control-Allow-Headers', '*');
     res.header('Access-Control-Allow-Credentials', true);
     next();
