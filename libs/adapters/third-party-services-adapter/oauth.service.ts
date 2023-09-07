@@ -60,6 +60,7 @@ export class OAuthService {
 
       this.emailManager.sendCongratulationWithAuthEmail(user.email);
     }
+
     const viewUser = await ViewUser.toView(user);
     return { user: viewUser, ...tokens, isAuth };
   }

@@ -7,7 +7,6 @@ import { ViewUser } from '../../users/view-model/user.view-model';
 export class RegistrationViaThirdPartyServicesDto {
   @ApiProperty({ description: 'Some code from client.' })
   @IsString()
-  @Transform(({ value }) => value?.trim())
   @IsNotEmpty()
   code: string;
 }

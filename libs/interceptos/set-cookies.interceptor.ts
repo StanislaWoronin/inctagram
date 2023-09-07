@@ -16,7 +16,7 @@ export class SetCookiesInterceptor implements NestInterceptor {
     next: CallHandler,
   ): Observable<TLoginView> {
     const response = context.switchToHttp().getResponse<Response>();
-
+    console.log(context.switchToHttp().getRequest());
     return next.handle().pipe(
       tap((result) => {
         if (result && result.refreshToken) {
