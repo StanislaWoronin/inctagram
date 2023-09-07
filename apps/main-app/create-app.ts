@@ -34,7 +34,7 @@ export const createApp = (app: INestApplication): INestApplication => {
       'http://localhost:63342',
       'https://inctagram-neon.vercel.app',
     ],
-    allowedHeaders: 'Content-Type, Accept',
+    allowedHeaders: 'Content-Type, Access-Control-Allow-Credentials',
   });
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe(validationPipeSettings));
