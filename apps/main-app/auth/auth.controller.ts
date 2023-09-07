@@ -179,7 +179,6 @@ export class AuthController {
       ...meta,
       ...query,
     };
-
     return await this.userFacade.commands.registrationViaGoogle(dto);
   }
 
