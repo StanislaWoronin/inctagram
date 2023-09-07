@@ -165,27 +165,6 @@ export class AuthController {
       ...query,
     };
 
-    // return await this.userFacade.commands.registrationViaGitHub(dto);
-    // if (result)
-    //   response
-    //     .cookie('refreshToken', result.refreshToken, {
-    //       httpOnly: true,
-    //       secure: true,
-    //       maxAge: settings.timeLife.TOKEN_TIME,
-    //     })
-    //     .send({ accessToken: result.accessToken, user: result.user })
-    //     .redirect(`${mainAppConfig.clientUrl}/`);
-    // const result = await this.userFacade.commands.registrationViaGitHub(dto);
-    // if (result)
-    //   response
-    //     .cookie('refreshToken', result.refreshToken, {
-    //       httpOnly: true,
-    //       secure: true,
-    //       maxAge: settings.timeLife.TOKEN_TIME,
-    //     })
-    //     .send({ accessToken: result.accessToken, user: result.user })
-    //     .redirect(`${mainAppConfig.clientUrl}/`);
-
     return await this.userFacade.commands.registrationViaGitHub(dto);
   }
 
@@ -200,16 +179,6 @@ export class AuthController {
       ...meta,
       ...query,
     };
-    // const result = await this.userFacade.commands.registrationViaGoogle(dto);
-    // if (result)
-    //   response
-    //     .cookie('refreshToken', result.refreshToken, {
-    //       httpOnly: true,
-    //       secure: true,
-    //       maxAge: settings.timeLife.TOKEN_TIME,
-    //     })
-    //     .send({ accessToken: result.accessToken, user: result.user })
-    //     .redirect(`${mainAppConfig.clientUrl}/`);
 
     return await this.userFacade.commands.registrationViaGoogle(dto);
   }
