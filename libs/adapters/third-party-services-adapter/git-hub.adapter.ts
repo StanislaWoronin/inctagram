@@ -2,6 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { GitHubUserDto } from '../../../apps/main-app/auth/dto/git-hub-user.dto';
+import { mainAppConfig } from '../../../apps/main-app/main';
+import { Language } from '../../decorators/metadata.decorator';
 
 @Injectable()
 export class GitHubAdapter {
@@ -11,11 +13,12 @@ export class GitHubAdapter {
   private clientId = this.configService.get('GITHUB_CLIENT_ID');
   private clientSecret = this.configService.get('GITHUB_CLIENT_SECRET');
 
-  async validate(code: string) {
+  async validate(code: string, language: Language) {
     const requestData = {
       code,
       client_id: this.clientId,
       client_secret: this.clientSecret,
+      redirect_uri: `${mainAppConfig.clientUrl}/${language}/auth/oauth-github-client`,
     };
 
     const response = await axios.post(this.gitHubAT, requestData, {

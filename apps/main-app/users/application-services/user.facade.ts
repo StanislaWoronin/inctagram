@@ -48,6 +48,7 @@ import {
 } from '../../auth/dto/registration-via-third-party-services.dto';
 import { RegistrationViaGitHubCommand } from '../../auth/application-services/registration-via-git-hub.command-handler';
 import { RegistrationViaGoogleCommand } from '../../auth/application-services/registration-via-google.command-handler';
+import { RegistrationConfirmationView } from '../../auth/view-model/registration-confirmation.response';
 
 @Injectable()
 export class UserFacade {
@@ -138,7 +139,7 @@ export class UserFacade {
 
   private async registrationConfirmation(
     dto: RegistrationConfirmationDto,
-  ): Promise<string> {
+  ): Promise<RegistrationConfirmationView> {
     const command = new RegistrationConfirmationCommand(dto.confirmationCode);
     return await this.commandBus.execute(command);
   }

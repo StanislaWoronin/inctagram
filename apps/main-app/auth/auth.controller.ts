@@ -39,7 +39,10 @@ import { TokenResponseView } from './view-model/token-response.view';
 import { TCreateUserResponse } from './application-services/create-user.command-handler';
 import { authEndpoints } from '../../../libs/shared/endpoints/auth.endpoints';
 import { ConfigService } from '@nestjs/config';
-import { RegistrationConfirmationResponse } from './view-model/registration-confirmation.response';
+import {
+  RegistrationConfirmationResponse,
+  RegistrationConfirmationView,
+} from './view-model/registration-confirmation.response';
 import { PasswordRecoveryDto } from './dto/password-recovery.dto';
 import { UserId } from '../../../libs/decorators/user-id.decorator';
 import { LoginView, TLoginView } from './view-model/login.view-model';
@@ -50,6 +53,7 @@ import {
   IMetadata,
   Metadata,
 } from '../../../libs/decorators/metadata.decorator';
+import { mainAppConfig } from '../main';
 
 @Controller(authEndpoints.default())
 @UseInterceptors(SetCookiesInterceptor)
@@ -189,26 +193,8 @@ export class AuthController {
   async registrationConfirmation(
     @Metadata() meta: IMetadata,
     @Query() dto: RegistrationConfirmationDto,
-    @Res() response: Response,
-  ): Promise<void> {
-    const isSuccess = await this.userFacade.commands.registrationConfirmation(
-      dto,
-    );
-    // const clientUrl = mainAppConfig.clientUrl;
-    const clientUrl = 'http://localhost:3000';
-    const { Success, Confirm } = RegistrationConfirmationResponse;
-
-    if (isSuccess === Success || isSuccess === Confirm) {
-      response.redirect(
-        `${clientUrl}/${meta.language}/congratulation?status=${isSuccess}`,
-      );
-    } else {
-      response.redirect(
-        `${clientUrl}/${meta.language}/resendLink?email=${isSuccess}`,
-      );
-    }
-
-    return;
+  ): Promise<RegistrationConfirmationView> {
+    return this.userFacade.commands.registrationConfirmation(dto);
   }
 
   // Merge profile if users with this email already exists but email is not confirmed
