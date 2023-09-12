@@ -32,7 +32,10 @@ export class RegistrationViaGitHubCommandHandler
   }: RegistrationViaGitHubCommand): Promise<
     TRegistrationViaThirdPartyServices | TLoginUserViaThirdPartyServices
   > {
-    const accessToken = await this.gitHubAdapter.validate(dto.code);
+    const accessToken = await this.gitHubAdapter.validate(
+      dto.code,
+      dto.language,
+    );
     const gitHubUser = await this.gitHubAdapter.getUserByToken(accessToken);
 
     return await this.oauthService.registerUser({

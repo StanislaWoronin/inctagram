@@ -5,7 +5,12 @@ import { ClientMeta } from '../../apps/main-app/auth/dto/session-id.dto';
 export interface IMetadata {
   clientMeta: ClientMeta;
   logger: ILoggerParams;
-  language: 'ru' | 'en';
+  language: Language;
+}
+
+export enum Language {
+  RU = 'ru',
+  EN = 'en',
 }
 
 export const Metadata = createParamDecorator(
