@@ -14,7 +14,7 @@ export class EmailManager {
     language: Language,
   ): Promise<void> {
     const subject = 'Confirm your email';
-    const link = `${mainAppConfig.clientUrl}/${language}/auth/registration/confirmation?confirmationCode=${confirmationCode}`;
+    const link = `${mainAppConfig.clientUrl}/${language}/auth/registration/confirmation-code?confirmationCode=${confirmationCode}`;
     const message = `
       <h1>Thank for your registration</h1>
       <p>To finish registration please follow the link below:

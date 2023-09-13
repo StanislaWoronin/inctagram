@@ -7,7 +7,6 @@ import {
   Post,
   Put,
   Query,
-  Res,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -26,7 +25,6 @@ import {
   ApiRegistrationEmailResending,
 } from '../../../libs/documentation/swagger/auth.documentation';
 import { RefreshTokenValidationGuard } from '../../../libs/guards/refresh-token-validation.guard';
-import { Response } from 'express';
 import { RegistrationDto } from './dto/registration.dto';
 import { CurrentUser } from '../../../libs/decorators/current-user.decorator';
 import { CurrentDeviceId } from '../../../libs/decorators/device-id.decorator';
@@ -38,22 +36,21 @@ import { ViewUser } from '../users/view-model/user.view-model';
 import { TokenResponseView } from './view-model/token-response.view';
 import { TCreateUserResponse } from './application-services/create-user.command-handler';
 import { authEndpoints } from '../../../libs/shared/endpoints/auth.endpoints';
-import { ConfigService } from '@nestjs/config';
-import {
-  RegistrationConfirmationResponse,
-  RegistrationConfirmationView,
-} from './view-model/registration-confirmation.response';
+import { RegistrationConfirmationView } from './view-model/registration-confirmation.response';
 import { PasswordRecoveryDto } from './dto/password-recovery.dto';
 import { UserId } from '../../../libs/decorators/user-id.decorator';
 import { LoginView, TLoginView } from './view-model/login.view-model';
 import { CheckCredentialGuard } from '../../../libs/guards/check-credential.guard';
-import { RegistrationViaThirdPartyServicesDto } from './dto/registration-via-third-party-services.dto';
+import {
+  RegistrationViaThirdPartyServicesDto,
+  TLoginUserViaThirdPartyServices,
+} from './dto/registration-via-third-party-services.dto';
 import { SetCookiesInterceptor } from '../../../libs/interceptos/set-cookies.interceptor';
 import {
   IMetadata,
   Metadata,
 } from '../../../libs/decorators/metadata.decorator';
-import { mainAppConfig } from '../main';
+import { ViewUserWithInfo } from '../users/view-model/user-with-info.view-model';
 
 @Controller(authEndpoints.default())
 @UseInterceptors(SetCookiesInterceptor)
@@ -81,7 +78,7 @@ export class AuthController {
   @ApiLogin()
   async login(
     @Body() body: LoginDto,
-    @CurrentUser() user: ViewUser,
+    @CurrentUser() user: ViewUserWithInfo,
     @Metadata() meta: IMetadata,
   ): Promise<LoginView> {
     const dto = {
@@ -90,7 +87,7 @@ export class AuthController {
       ...meta,
     };
     const tokens = await this.userFacade.commands.loginUser(dto);
-
+    console.log({ user });
     return { ...tokens, user };
   }
 
@@ -163,7 +160,7 @@ export class AuthController {
     @Metadata() meta: IMetadata,
     @Query() query: RegistrationViaThirdPartyServicesDto,
     //@Res() response: Response,
-  ): Promise<LoginView> {
+  ): Promise<TLoginUserViaThirdPartyServices> {
     const dto = {
       ...meta,
       ...query,
