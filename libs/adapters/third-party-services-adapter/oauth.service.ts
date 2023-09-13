@@ -10,6 +10,7 @@ import { randomUUID } from 'crypto';
 import { WithClientMeta } from '../../../apps/main-app/auth/dto/session-id.dto';
 import { GoogleUserDto } from '../../../apps/main-app/auth/dto/google-user.dto';
 import { TLoginUserViaThirdPartyServices } from '../../../apps/main-app/auth/dto/registration-via-third-party-services.dto';
+import { ViewUserWithInfo } from '../../../apps/main-app/users/view-model/user-with-info.view-model';
 
 @Injectable()
 export class OAuthService {
@@ -43,7 +44,7 @@ export class OAuthService {
           throw new BadRequestException('email:This email already confirmed.');
         }
         this.emailManager.sendRefinementEmail(userExists.email, language);
-        return null;
+        throw new BadRequestException('email:You can merge profile..');
       }
 
       const lastClientName = await this.userQueryRepository.getLastClientName();
@@ -61,7 +62,7 @@ export class OAuthService {
       this.emailManager.sendCongratulationWithAuthEmail(user.email);
     }
 
-    const viewUser = await ViewUser.toView(user);
+    const viewUser = await ViewUserWithInfo.toViewProfile(user);
     return { user: viewUser, ...tokens, isAuth };
   }
 }

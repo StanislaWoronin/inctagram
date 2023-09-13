@@ -19,7 +19,7 @@ export class RegistrationViaGitHubCommandHandler
   implements
     ICommandHandler<
       RegistrationViaGitHubCommand,
-      TRegistrationViaThirdPartyServices | TLoginUserViaThirdPartyServices
+      TLoginUserViaThirdPartyServices
     >
 {
   constructor(
@@ -29,9 +29,7 @@ export class RegistrationViaGitHubCommandHandler
 
   async execute({
     dto,
-  }: RegistrationViaGitHubCommand): Promise<
-    TRegistrationViaThirdPartyServices | TLoginUserViaThirdPartyServices
-  > {
+  }: RegistrationViaGitHubCommand): Promise<TLoginUserViaThirdPartyServices> {
     const accessToken = await this.gitHubAdapter.validate(
       dto.code,
       dto.language,

@@ -45,14 +45,6 @@ export class UserQueryRepository {
     value: string,
   ): Promise<TExtendsViewUser | null> {
     return await this.prisma.user.findFirst({
-      select: {
-        id: true,
-        userName: true,
-        email: true,
-        createdAt: true,
-        passwordHash: true,
-        isConfirmed: true,
-      },
       where: {
         email: value,
       },

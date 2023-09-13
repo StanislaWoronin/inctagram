@@ -24,6 +24,7 @@ export class SetCookiesInterceptor implements NestInterceptor {
             httpOnly: true,
             secure: true,
             maxAge: settings.timeLife.TOKEN_TIME,
+            sameSite: 'none',
           });
           delete result.refreshToken;
         }
