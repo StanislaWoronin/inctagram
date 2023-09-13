@@ -18,7 +18,8 @@ export class GitHubAdapter {
       code,
       client_id: this.clientId,
       client_secret: this.clientSecret,
-      redirect_uri: `${mainAppConfig.clientUrl}/${language}/auth/oauth-github-client`,
+      // redirect_uri: `${mainAppConfig.clientUrl}/${language}/auth/oauth-github-client`,
+      redirect_uri: `https://inctagram-neon.vercel.app/${language}/auth/oauth-google-client`,
     };
 
     const response = await axios.post(this.gitHubAT, requestData, {

@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import * as queryString from 'querystring';
@@ -23,9 +23,13 @@ export class GoogleAdapter {
       code,
       client_id: this.clientId,
       client_secret: this.clientSecret,
-      redirect_uri: `${mainAppConfig.clientUrl}/${language}/auth/oauth-google-client`,
+      // redirect_uri: `${mainAppConfig.clientUrl}/${language}/auth/oauth-google-client`,
+      redirect_uri: `https://inctagram-neon.vercel.app/${language}/auth/oauth-google-client`,
       grant_type: 'authorization_code',
     };
+
+    console.log(values.redirect_uri);
+    Logger.log(values.redirect_uri);
 
     try {
       const { data } = await axios.post(url, queryString.stringify(values), {
