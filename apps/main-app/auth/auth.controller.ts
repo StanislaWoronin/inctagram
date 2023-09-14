@@ -87,7 +87,7 @@ export class AuthController {
       ...meta,
     };
     const tokens = await this.userFacade.commands.loginUser(dto);
-    console.log({ user });
+
     return { ...tokens, user };
   }
 
