@@ -185,7 +185,7 @@ export class AuthController {
 
   // Confirmation email vie code from email
   @Get(authEndpoints.registrationConfirmation())
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   @ApiRegistrationConfirmation()
   async registrationConfirmation(
     @Metadata() meta: IMetadata,
