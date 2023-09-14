@@ -207,7 +207,7 @@ export function ApiRegistrationConfirmation() {
       type: RegistrationConfirmationDto,
       required: true,
     }),
-    ApiFoundResponse({
+    ApiOkResponse({
       description:
         'Email was verified. Account was activated. Redirected to the "congratulations" page.',
     }),
