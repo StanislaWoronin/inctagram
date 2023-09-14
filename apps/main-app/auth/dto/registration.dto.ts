@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { userConstants } from '../../users/user.constants';
-import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  Length,
+  Matches,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 import { IsEmailExistForRegistration } from '../../../../libs/decorators/email.decorator';
 import { IsUserNameExist } from '../../../../libs/decorators/user-name-exists.decorator';
@@ -32,6 +38,7 @@ export class RegistrationDto implements TRegistrationDto {
   })
   @IsNotEmpty()
   @IsString()
+  @Matches('^[0-9A-Za-z_\\-]+$')
   @Transform(({ value }) => value?.trim())
   @Length(userConstants.nameLength.min, userConstants.nameLength.max)
   @IsUserNameExist()
@@ -45,6 +52,9 @@ export class RegistrationDto implements TRegistrationDto {
   })
   @IsNotEmpty()
   @IsString()
+  @Matches(
+    '^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~])',
+  )
   @Transform(({ value }) => value?.trim())
   @Length(userConstants.passwordLength.min, userConstants.passwordLength.max)
   password: string;

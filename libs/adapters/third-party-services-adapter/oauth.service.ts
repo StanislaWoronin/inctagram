@@ -39,6 +39,7 @@ export class OAuthService {
     if (!user) {
       isAuth = false;
       const userExists = await this.userQueryRepository.getUserByField(email);
+
       if (userExists) {
         if (userExists.isConfirmed) {
           throw new BadRequestException('email:This email already confirmed.');

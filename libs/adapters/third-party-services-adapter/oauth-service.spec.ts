@@ -3,13 +3,18 @@ import { faker } from '@faker-js/faker';
 import { ViewUser } from '../../../apps/main-app/users/view-model/user.view-model';
 import { randomUUID } from 'crypto';
 import { BadRequestException } from '@nestjs/common';
+import { Language } from '../../decorators/metadata.decorator';
 
 const dto = {
+  id: '12345',
   name: 'UserName',
-  email: 'somemail@gmail.com',
-  avatarUrl: 'users/avatar.url',
-  ipAddress: faker.internet.ip(),
-  title: faker.internet.userAgent(),
+  email: faker.internet.email(),
+  picture: 'users/avatar.url',
+  clientMeta: {
+    ipAddress: faker.internet.ip(),
+    title: faker.internet.userAgent(),
+  },
+  language: Language.EN,
 };
 
 const viewUser = ViewUser.toView({
@@ -27,7 +32,7 @@ const emailManagerMock: any = {
 const tokenFactoryMock: any = {
   getPairTokens: jest.fn().mockResolvedValue({
     accessToken: 'mockedAccessToken',
-    refreshToken: 'mockedAccessToken',
+    refreshToken: 'mockedRefreshToken',
   }),
 };
 
@@ -70,7 +75,7 @@ describe('Test OAuth service.', () => {
     expect(result).toEqual({
       user: viewUser,
       accessToken: 'mockedAccessToken',
-      refreshToken: 'mockedAccessToken',
+      refreshToken: 'mockedRefreshToken',
     });
   });
 
