@@ -37,7 +37,7 @@ export class SubscribeCommandHandler
         autoRenewal: paymentResult.automatic_tax.enabled,
         currency: paymentResult.currency,
       };
-      console.log({ result });
+      // console.log({ result });
       //await this.paymentsRepository.savePaymentResult(result);
 
       return paymentResult.url;
