@@ -2,7 +2,10 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UserQueryRepository } from '../../users/db.providers/users/user.query-repository';
 import { UserRepository } from '../../users/db.providers/users/user.repository';
 import { BadRequestException } from '@nestjs/common';
-import { RegistrationConfirmationResponse } from '../view-model/registration-confirmation.response';
+import {
+  RegistrationConfirmationResponse,
+  RegistrationConfirmationView,
+} from '../view-model/registration-confirmation.response';
 import { ProfileQueryRepository } from '../../users/db.providers/profile/profile.query-repository';
 
 export class RegistrationConfirmationCommand {
@@ -11,7 +14,11 @@ export class RegistrationConfirmationCommand {
 
 @CommandHandler(RegistrationConfirmationCommand)
 export class RegistrationConfirmationCommandHandler
-  implements ICommandHandler<RegistrationConfirmationCommand, string>
+  implements
+    ICommandHandler<
+      RegistrationConfirmationCommand,
+      RegistrationConfirmationView
+    >
 {
   constructor(
     private userRepository: UserRepository,
@@ -20,7 +27,7 @@ export class RegistrationConfirmationCommandHandler
 
   async execute({
     confirmationCode,
-  }: RegistrationConfirmationCommand): Promise<string> {
+  }: RegistrationConfirmationCommand): Promise<RegistrationConfirmationView> {
     const user = await this.profileQueryRepository.getUserByConfirmationCode(
       confirmationCode,
     );
@@ -28,10 +35,19 @@ export class RegistrationConfirmationCommandHandler
       throw new BadRequestException(
         `confirmationCode:Incorrect confirmationCode.`,
       );
-    if (user.isConfirmed) return RegistrationConfirmationResponse.Confirm;
-    if (Number(confirmationCode) < Date.now()) return user.email;
+    if (user.isConfirmed)
+      return RegistrationConfirmationView.toView(
+        RegistrationConfirmationResponse.Confirm,
+      );
+    if (Number(confirmationCode) < Date.now())
+      return RegistrationConfirmationView.toView(
+        RegistrationConfirmationResponse.Invalid,
+        user.email,
+      );
 
     await this.userRepository.updateUserConfirmationStatus(user.id);
-    return RegistrationConfirmationResponse.Success;
+    return RegistrationConfirmationView.toView(
+      RegistrationConfirmationResponse.Success,
+    );
   }
 }

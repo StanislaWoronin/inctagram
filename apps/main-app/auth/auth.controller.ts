@@ -7,7 +7,6 @@ import {
   Post,
   Put,
   Query,
-  Res,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -26,7 +25,6 @@ import {
   ApiRegistrationEmailResending,
 } from '../../../libs/documentation/swagger/auth.documentation';
 import { RefreshTokenValidationGuard } from '../../../libs/guards/refresh-token-validation.guard';
-import { Response } from 'express';
 import { RegistrationDto } from './dto/registration.dto';
 import { CurrentUser } from '../../../libs/decorators/current-user.decorator';
 import { CurrentDeviceId } from '../../../libs/decorators/device-id.decorator';
@@ -38,28 +36,26 @@ import { ViewUser } from '../users/view-model/user.view-model';
 import { TokenResponseView } from './view-model/token-response.view';
 import { TCreateUserResponse } from './application-services/create-user.command-handler';
 import { authEndpoints } from '../../../libs/shared/endpoints/auth.endpoints';
-import { ConfigService } from '@nestjs/config';
-import { RegistrationConfirmationResponse } from './view-model/registration-confirmation.response';
+import { RegistrationConfirmationView } from './view-model/registration-confirmation.response';
 import { PasswordRecoveryDto } from './dto/password-recovery.dto';
 import { UserId } from '../../../libs/decorators/user-id.decorator';
 import { LoginView, TLoginView } from './view-model/login.view-model';
 import { CheckCredentialGuard } from '../../../libs/guards/check-credential.guard';
-import { RegistrationViaThirdPartyServicesDto } from './dto/registration-via-third-party-services.dto';
+import {
+  RegistrationViaThirdPartyServicesDto,
+  TLoginUserViaThirdPartyServices,
+} from './dto/registration-via-third-party-services.dto';
 import { SetCookiesInterceptor } from '../../../libs/interceptos/set-cookies.interceptor';
 import {
   IMetadata,
   Metadata,
 } from '../../../libs/decorators/metadata.decorator';
-import { mainAppConfig } from '../main';
-import { settings } from '../../../libs/shared/settings';
+import { ViewUserWithInfo } from '../users/view-model/user-with-info.view-model';
 
 @Controller(authEndpoints.default())
 @UseInterceptors(SetCookiesInterceptor)
 export class AuthController {
-  constructor(
-    private readonly userFacade: UserFacade,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly userFacade: UserFacade) {}
 
   // Confirmation email vie confirmation code from email
   @Post(authEndpoints.confirmationEmailResending())
@@ -82,7 +78,7 @@ export class AuthController {
   @ApiLogin()
   async login(
     @Body() body: LoginDto,
-    @CurrentUser() user: ViewUser,
+    @CurrentUser() user: ViewUserWithInfo,
     @Metadata() meta: IMetadata,
   ): Promise<LoginView> {
     const dto = {
@@ -163,24 +159,14 @@ export class AuthController {
   async registrationViaGitHub(
     @Metadata() meta: IMetadata,
     @Query() query: RegistrationViaThirdPartyServicesDto,
-    @Res() response: Response,
-  ): Promise<LoginView> {
+    //@Res() response: Response,
+  ): Promise<TLoginUserViaThirdPartyServices> {
     const dto = {
       ...meta,
       ...query,
     };
-    const result = await this.userFacade.commands.registrationViaGitHub(dto);
-    if (result)
-      response
-        .cookie('refreshToken', result.refreshToken, {
-          httpOnly: true,
-          secure: true,
-          maxAge: settings.timeLife.TOKEN_TIME,
-        })
-        .send({ accessToken: result.accessToken, user: result.user })
-        .redirect(`${mainAppConfig.clientUrl}/`);
 
-    return result;
+    return await this.userFacade.commands.registrationViaGitHub(dto);
   }
 
   // Registration in the system via Google and return pair tokens
@@ -189,49 +175,23 @@ export class AuthController {
   async registrationViaGoogle(
     @Metadata() meta: IMetadata,
     @Query() query: RegistrationViaThirdPartyServicesDto,
-    @Res() response: Response,
   ): Promise<TLoginView> {
     const dto = {
       ...meta,
       ...query,
     };
-    const result = await this.userFacade.commands.registrationViaGoogle(dto);
-    if (result)
-      response
-        .cookie('refreshToken', result.refreshToken, {
-          httpOnly: true,
-          secure: true,
-          maxAge: settings.timeLife.TOKEN_TIME,
-        })
-        .send({ accessToken: result.accessToken, user: result.user })
-        .redirect(`${mainAppConfig.clientUrl}/`);
-
-    return result;
+    return await this.userFacade.commands.registrationViaGoogle(dto);
   }
 
   // Confirmation email vie code from email
   @Get(authEndpoints.registrationConfirmation())
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   @ApiRegistrationConfirmation()
   async registrationConfirmation(
     @Metadata() meta: IMetadata,
     @Query() dto: RegistrationConfirmationDto,
-    @Res() response: Response,
-  ): Promise<void> {
-    const isSuccess = await this.userFacade.commands.registrationConfirmation(
-      dto,
-    );
-    // const clientUrl = mainAppConfig.clientUrl;
-    const clientUrl = 'http://localhost:3000';
-    const { Success, Confirm } = RegistrationConfirmationResponse;
-
-    if (isSuccess === Success || isSuccess === Confirm) {
-      response.redirect(`${clientUrl}/ru/congratulation?status=${isSuccess}`);
-    } else {
-      response.redirect(`${clientUrl}/ru/resendLink?email=${isSuccess}`);
-    }
-
-    return;
+  ): Promise<RegistrationConfirmationView> {
+    return this.userFacade.commands.registrationConfirmation(dto);
   }
 
   // Merge profile if users with this email already exists but email is not confirmed

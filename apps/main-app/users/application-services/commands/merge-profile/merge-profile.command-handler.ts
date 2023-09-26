@@ -6,6 +6,7 @@ import { TRegistrationViaThirdPartyServices } from '../../../../auth/dto/registr
 import { WithClientMeta } from '../../../../auth/dto/session-id.dto';
 import { randomUUID } from 'crypto';
 import { TokensFactory } from '../../../../../../libs/shared/tokens.factory';
+import { ViewUserWithInfo } from '../../../view-model/user-with-info.view-model';
 
 export class MergeProfileCommand {
   constructor(public readonly dto: WithClientMeta<EmailDto>) {}
@@ -31,7 +32,7 @@ export class MergeProfileCommandHandler
     );
 
     const tokens = await this.factory.getPairTokens(createdUser.id, deviceId);
-    const viewUser = await ViewUser.toView(createdUser);
+    const viewUser = await ViewUserWithInfo.toViewProfile(createdUser);
     return { user: viewUser, ...tokens };
   }
 }

@@ -1,4 +1,4 @@
-import { IsString, Length } from 'class-validator';
+import { IsString, Length, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { userConstants } from '../../users/user.constants';
 import { IsRecoveryCodeExist } from '../../../../libs/decorators/recovery-code.decorator';
@@ -25,6 +25,9 @@ export class NewPasswordDto implements TNewPasswordDto {
     example: 'newPassword',
   })
   @IsString()
+  @Matches(
+    '^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~])(?!.*\\s)',
+  )
   @IsDifferentPassword()
   passwordConfirmation: string;
 

@@ -7,6 +7,7 @@ import {
   Param,
 } from '@nestjs/common';
 import {
+  ApiDeleteUser,
   ApiDropDatabase,
   GetUserFromDatabaseTest,
 } from '../../../libs/documentation/swagger/auth.documentation';
@@ -24,6 +25,12 @@ export class TestingController {
     return await this.testingRepository.deleteAll();
   }
 
+  @Delete(testingEndpoints.delete())
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiDeleteUser()
+  async deleteUser(@Param('data') data: string) {
+    return await this.testingRepository.deleteUser(data);
+  }
   @Get(testingEndpoints.getUserTest())
   @HttpCode(HttpStatus.OK)
   @GetUserFromDatabaseTest()

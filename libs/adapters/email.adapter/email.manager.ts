@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EmailAdapters } from './email.adapter';
 import { magicLink } from '../../shared/meme';
 import { mainAppConfig } from '../../../apps/main-app/main';
+import { Language } from '../../decorators/metadata.decorator';
 
 @Injectable()
 export class EmailManager {
@@ -10,10 +11,10 @@ export class EmailManager {
   async sendConfirmationEmail(
     email: string,
     confirmationCode: string,
-    language: string,
+    language: Language,
   ): Promise<void> {
     const subject = 'Confirm your email';
-    const link = `${mainAppConfig.clientUrl}/${language}/auth/registration/confirmation?confirmationCode=${confirmationCode}`;
+    const link = `${mainAppConfig.clientUrl}/${language}/auth/registration/confirmation-code?confirmationCode=${confirmationCode}`;
     const message = `
       <h1>Thank for your registration</h1>
       <p>To finish registration please follow the link below:
@@ -50,7 +51,7 @@ export class EmailManager {
   async sendPasswordRecoveryEmail(
     email: string,
     recoveryCode: string,
-    language: string,
+    language: Language,
   ) {
     const subject = 'Password recovery';
     const link = `${mainAppConfig.clientUrl}/${language}/auth/registration/recovery?recoveryCode=${recoveryCode}`;

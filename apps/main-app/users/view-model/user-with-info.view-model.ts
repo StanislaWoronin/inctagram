@@ -43,11 +43,11 @@ export class ViewUserWithInfo extends ViewUser {
       userName: user.userName,
       email: user.email,
       createdAt: user.createdAt,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      birthday: birthday,
-      city: user.city,
-      aboutMe: user.aboutMe,
+      firstName: user.firstName ?? null,
+      lastName: user.lastName ?? null,
+      birthday: birthday ?? null,
+      city: user.city ?? null,
+      aboutMe: user.aboutMe ?? null,
       avatarLink: toViewPhotoLink(avatarLink),
     };
   }

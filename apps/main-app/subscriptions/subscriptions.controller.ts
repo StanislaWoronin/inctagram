@@ -31,7 +31,7 @@ export class SubscriptionsController {
       userName: 'UserName',
       userEmail: 'somemail@gmail.com',
     };
-    console.log('here');
+
     return await this.subscriptionsFacade.commands.subscribe({
       ...userData,
       ...dto,

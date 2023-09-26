@@ -1,13 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GitHubUserDto } from '../../../apps/main-app/auth/dto/git-hub-user.dto';
-import { switchRedirectUrl } from './switch-redirect-url';
 import axios from 'axios';
 import * as queryString from 'querystring';
 import { IGoogleTokens } from './types/google-tokens.interface';
 import { GoogleUserDto } from '../../../apps/main-app/auth/dto/google-user.dto';
 import { mainAppConfig } from '../../../apps/main-app/main';
-import { authEndpoints } from '../../shared/endpoints/auth.endpoints';
 
 @Injectable()
 export class GoogleAdapter {
@@ -15,29 +12,33 @@ export class GoogleAdapter {
 
   private clientId = this.configService.get('GOOGLE_CLIENT_ID');
   private clientSecret = this.configService.get('GOOGLE_CLIENT_SECRET');
-  private redirectUrl = switchRedirectUrl();
 
-  async getGoogleOAuthTokens(code: string): Promise<IGoogleTokens> {
+  async getGoogleOAuthTokens(
+    code: string,
+    language: string,
+  ): Promise<IGoogleTokens> {
     const url = 'https://oauth2.googleapis.com/token';
 
     const values = {
       code,
       client_id: this.clientId,
       client_secret: this.clientSecret,
-      redirect_uri: `${
-        mainAppConfig.appUrl
-      }/${authEndpoints.default()}/${authEndpoints.registrationViaGoogle()}`,
+      // redirect_uri: `${mainAppConfig.clientUrl}/${language}/auth/oauth-google-client`,
+      redirect_uri: `https://inctagram-neon.vercel.app/${language}/auth/oauth-google-client`,
       grant_type: 'authorization_code',
     };
 
+    console.log(values.redirect_uri);
+    Logger.log(values.redirect_uri);
+
     try {
-      const response = await axios.post(url, queryString.stringify(values), {
+      const { data } = await axios.post(url, queryString.stringify(values), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
 
-      return response.data;
+      return data;
     } catch (e) {
       console.log(e);
       throw new UnauthorizedException();
@@ -53,7 +54,7 @@ export class GoogleAdapter {
           Authorization: `Bearer ${id_token}`,
         },
       });
-
+      //console.log('2 - google-adapter: 56', response);
       return response.data;
     } catch (e) {
       console.log(e);

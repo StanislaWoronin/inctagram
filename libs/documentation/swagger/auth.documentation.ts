@@ -207,7 +207,7 @@ export function ApiRegistrationConfirmation() {
       type: RegistrationConfirmationDto,
       required: true,
     }),
-    ApiFoundResponse({
+    ApiOkResponse({
       description:
         'Email was verified. Account was activated. Redirected to the "congratulations" page.',
     }),
@@ -320,6 +320,18 @@ export function GetUserFromDatabaseTest() {
     }),
     ApiOkResponse({
       description: 'Get users',
+    }),
+  );
+}
+
+export function ApiDeleteUser() {
+  return applyDecorators(
+    ApiTags('Dev endpoints'),
+    ApiOperation({
+      summary: 'Delete user by id/name/email',
+    }),
+    ApiNoContentResponse({
+      description: 'User deleted',
     }),
   );
 }

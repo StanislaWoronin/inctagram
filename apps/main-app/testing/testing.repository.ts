@@ -23,6 +23,14 @@ export class TestingRepository {
     for (const table of tables) await this.prisma[table].deleteMany({});
   }
 
+  async deleteUser(data: string) {
+    return this.prisma.user.deleteMany({
+      where: {
+        OR: [{ id: data }, { email: data }, { userName: data }],
+      },
+    });
+  }
+
   async createTestingUser(dto) {
     return await this.prisma.user.create({
       data: {

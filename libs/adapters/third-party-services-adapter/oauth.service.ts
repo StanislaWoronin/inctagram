@@ -7,7 +7,10 @@ import { UserRepository } from '../../../apps/main-app/users/db.providers/users/
 import { UserQueryRepository } from '../../../apps/main-app/users/db.providers/users/user.query-repository';
 import { TokensFactory } from '../../shared/tokens.factory';
 import { randomUUID } from 'crypto';
-import { TRegistrationViaThirdPartyServices } from '../../../apps/main-app/auth/dto/registration-via-third-party-services.dto';
+import { WithClientMeta } from '../../../apps/main-app/auth/dto/session-id.dto';
+import { GoogleUserDto } from '../../../apps/main-app/auth/dto/google-user.dto';
+import { TLoginUserViaThirdPartyServices } from '../../../apps/main-app/auth/dto/registration-via-third-party-services.dto';
+import { ViewUserWithInfo } from '../../../apps/main-app/users/view-model/user-with-info.view-model';
 
 @Injectable()
 export class OAuthService {
@@ -19,40 +22,48 @@ export class OAuthService {
   ) {}
 
   async registerUser({
+    id,
     name,
     email,
-    avatarUrl,
-    ipAddress,
-    title,
+    picture,
+    clientMeta,
     language,
-  }): Promise<TRegistrationViaThirdPartyServices | null> {
-    const user = await this.userQueryRepository.getUserByField(email);
-    if (user) {
-      if (user.isConfirmed) {
-        throw new BadRequestException('email:This email already confirmed.');
-      }
-      this.emailManager.sendRefinementEmail(user.email, language);
-      return null;
-    }
-
-    const lastClientName = await this.userQueryRepository.getLastClientName();
-    const newUser = NewUser.createViaThirdPartyServices({ name, email });
-    newUser.userName = getClientName(lastClientName);
+  }: Partial<
+    WithClientMeta<GoogleUserDto>
+  >): Promise<TLoginUserViaThirdPartyServices> {
+    let user = await this.userQueryRepository.getUserByField(id);
 
     const deviceId = randomUUID();
-    const createdUser =
-      await this.userRepository.createUserViaThirdPartyServices({
+    const tokens = await this.factory.getPairTokens(id, deviceId);
+    let isAuth = true;
+    if (!user) {
+      isAuth = false;
+      const userExists = await this.userQueryRepository.getUserByField(email);
+
+      if (userExists) {
+        if (userExists.isConfirmed) {
+          throw new BadRequestException('email:This email already confirmed.');
+        }
+        this.emailManager.sendRefinementEmail(userExists.email, language);
+        throw new BadRequestException('email:You can merge profile..');
+      }
+
+      const lastClientName = await this.userQueryRepository.getLastClientName();
+      const newUser = NewUser.createViaThirdPartyServices({ name, email });
+      newUser.userName = getClientName(lastClientName);
+
+      user = await this.userRepository.createUserViaThirdPartyServices({
+        id,
         user: newUser,
-        photoLink: avatarUrl,
+        photoLink: picture,
         deviceId,
-        ipAddress,
-        title,
+        clientMeta,
       });
 
-    this.emailManager.sendCongratulationWithAuthEmail(createdUser.email);
-    const tokens = await this.factory.getPairTokens(createdUser.id, deviceId);
+      this.emailManager.sendCongratulationWithAuthEmail(user.email);
+    }
 
-    const viewUser = await ViewUser.toView(createdUser);
-    return { user: viewUser, ...tokens };
+    const viewUser = await ViewUserWithInfo.toViewProfile(user);
+    return { user: viewUser, ...tokens, isAuth };
   }
 }

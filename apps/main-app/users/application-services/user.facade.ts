@@ -21,7 +21,6 @@ import { EmailDto } from '../../auth/dto/email.dto';
 import { RegistrationDto } from '../../auth/dto/registration.dto';
 import { NewPasswordDto } from 'apps/main-app/auth/dto/new-password.dto';
 import { RegistrationConfirmationDto } from '../../auth/dto/registration-confirmation.dto';
-import { User } from '@prisma/client';
 import { PairTokenDto } from '../../auth/dto/pair-token.dto';
 import { ViewUser } from '../view-model/user.view-model';
 import { GetViewUserWithInfoCommand } from './queries/get-view-user-with-info.query';
@@ -44,10 +43,13 @@ import { DeletePostDto } from '../dto/delete-post.dto';
 import { DeletePostCommand } from '../../posts/application-services/delete-post/delete-post.command-handler';
 import {
   RegistrationViaThirdPartyServicesDto,
+  TLoginUserViaThirdPartyServices,
   TRegistrationViaThirdPartyServices,
 } from '../../auth/dto/registration-via-third-party-services.dto';
 import { RegistrationViaGitHubCommand } from '../../auth/application-services/registration-via-git-hub.command-handler';
 import { RegistrationViaGoogleCommand } from '../../auth/application-services/registration-via-google.command-handler';
+import { RegistrationConfirmationView } from '../../auth/view-model/registration-confirmation.response';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserFacade {
@@ -138,7 +140,7 @@ export class UserFacade {
 
   private async registrationConfirmation(
     dto: RegistrationConfirmationDto,
-  ): Promise<string> {
+  ): Promise<RegistrationConfirmationView> {
     const command = new RegistrationConfirmationCommand(dto.confirmationCode);
     return await this.commandBus.execute(command);
   }
@@ -159,7 +161,7 @@ export class UserFacade {
 
   private async registrationViaGitHub(
     dto: WithClientMeta<RegistrationViaThirdPartyServicesDto>,
-  ): Promise<TRegistrationViaThirdPartyServices | null> {
+  ): Promise<TLoginUserViaThirdPartyServices> {
     const command = new RegistrationViaGitHubCommand(dto);
     return await this.commandBus.execute(command);
   }
