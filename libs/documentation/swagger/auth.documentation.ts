@@ -323,3 +323,15 @@ export function GetUserFromDatabaseTest() {
     }),
   );
 }
+
+export function ApiDeleteUser() {
+  return applyDecorators(
+    ApiTags('Dev endpoints'),
+    ApiOperation({
+      summary: 'Delete user by id/name/email',
+    }),
+    ApiNoContentResponse({
+      description: 'User deleted',
+    }),
+  );
+}

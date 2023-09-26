@@ -53,7 +53,7 @@ export class RegistrationDto implements TRegistrationDto {
   @IsNotEmpty()
   @IsString()
   @Matches(
-    '^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~])',
+    '^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~])(?!.*\\s)',
   )
   @Transform(({ value }) => value?.trim())
   @Length(userConstants.passwordLength.min, userConstants.passwordLength.max)
