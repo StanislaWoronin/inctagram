@@ -29,7 +29,7 @@ export class SubscribeCommandHandler
       dto,
       customer?.customerId,
     );
-    console.log({ paymentResult });
+    // console.log({ paymentResult });
     if (paymentResult) {
       const result = {
         paymentId: paymentResult.id,
