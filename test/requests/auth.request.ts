@@ -36,6 +36,7 @@ export class AuthRequest {
 
     return {
       accessToken: response.body.accessToken,
+      user: response.body.user,
       refreshToken: response.headers['set-cookie'][0]
         .split(';')[0]
         .split('=')[1],
@@ -56,8 +57,11 @@ export class AuthRequest {
   async confirmRegistration(
     code: string,
   ): Promise<TestResponseType<ErrorResponse>> {
-    const response = await request(this.server)
-      .get(`${authEndpoints.registrationConfirmation(true)}?confirmationCode=${code}`);
+    const response = await request(this.server).get(
+      `${authEndpoints.registrationConfirmation(
+        true,
+      )}?confirmationCode=${code}`,
+    );
 
     return { body: response.body, status: response.status };
   }

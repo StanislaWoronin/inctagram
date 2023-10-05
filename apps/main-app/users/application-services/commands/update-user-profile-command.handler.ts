@@ -1,23 +1,21 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../db.providers/user.repository';
-import { UserQueryRepository } from '../../db.providers/user-query.repository';
+import { UserRepository } from '../../db.providers/users/user.repository';
+import { UserQueryRepository } from '../../db.providers/users/user.query-repository';
 import { BadRequestException } from '@nestjs/common';
 import { UpdateUserProfileDto } from '../../dto/update-user.dto';
+import { UserIdWith } from '../../dto/id-with.dto';
 
 export class UpdateUserProfileCommand {
-  constructor(
-    public readonly dto: UpdateUserProfileDto,
-    public readonly userId: string,
-  ) {}
+  constructor(public readonly dto: UserIdWith<UpdateUserProfileDto>) {}
 }
 
 @CommandHandler(UpdateUserProfileCommand)
 export class UpdateUserProfileCommandHandler
-  implements ICommandHandler<UpdateUserProfileCommand>
+  implements ICommandHandler<UpdateUserProfileCommand, boolean>
 {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async execute({ userId, dto }: UpdateUserProfileCommand): Promise<boolean> {
-    return await this.userRepository.updateUserProfile(userId, dto);
+  async execute({ dto }: UpdateUserProfileCommand): Promise<boolean> {
+    return await this.userRepository.updateUserProfile(dto);
   }
 }

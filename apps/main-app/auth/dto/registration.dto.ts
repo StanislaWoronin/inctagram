@@ -1,11 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { userConstants } from '../../users/user.constants';
-import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  Length,
+  Matches,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
-import { IsEmailExistForRegistration } from '../decorators/email.decorator';
-import { IsUserNameExist } from '../decorators/user-name.decorator';
+import { IsEmailExistForRegistration } from '../../../../libs/decorators/email.decorator';
+import { IsUserNameExist } from '../../../../libs/decorators/user-name-exists.decorator';
 import { TUser } from '../../users/entities/new-user.entity';
-import { IsDifferentPassword } from '../decorators/different-password.decorator';
+import { IsDifferentPassword } from '../../../../libs/decorators/different-password.decorator';
 
 type TRegistrationDto = Pick<
   TUser,
@@ -21,8 +27,7 @@ export class RegistrationDto implements TRegistrationDto {
   @IsString()
   @IsEmail()
   @Transform(({ value }) => value?.trim())
-  // @IsEmailExistForRegistration() You need to return the dto to the client
-  // to confirm registration by existing mail
+  @IsEmailExistForRegistration()
   email: string;
 
   @ApiProperty({
@@ -33,6 +38,7 @@ export class RegistrationDto implements TRegistrationDto {
   })
   @IsNotEmpty()
   @IsString()
+  @Matches('^[0-9A-Za-z_\\-]+$')
   @Transform(({ value }) => value?.trim())
   @Length(userConstants.nameLength.min, userConstants.nameLength.max)
   @IsUserNameExist()
@@ -46,6 +52,9 @@ export class RegistrationDto implements TRegistrationDto {
   })
   @IsNotEmpty()
   @IsString()
+  @Matches(
+    '^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~])(?!.*\\s)',
+  )
   @Transform(({ value }) => value?.trim())
   @Length(userConstants.passwordLength.min, userConstants.passwordLength.max)
   password: string;

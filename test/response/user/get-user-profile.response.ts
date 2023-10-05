@@ -1,9 +1,10 @@
 import { FullUser } from '../../types/full-user.type';
 import { fileStorageConstants } from '../../../apps/file-storage/image-validator/file-storage.constants';
+import { toViewPhotoLink } from '../../../libs/shared/helpers';
 
 export const getUserProfileResponse = (
   fullUser: Partial<FullUser>,
-  avatarLink: string = fileStorageConstants.avatar.defaultLink,
+  avatarLink = `${toViewPhotoLink(fileStorageConstants.avatar.defaultLink)}`,
 ) => {
   const user = new FullUser();
   Object.assign(user, fullUser);
@@ -18,6 +19,6 @@ export const getUserProfileResponse = (
     birthday: user.birthday,
     city: user.city,
     aboutMe: user.aboutMe,
-    linkToMainImage: avatarLink,
+    avatarLink: avatarLink,
   };
 };

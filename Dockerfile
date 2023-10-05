@@ -23,11 +23,12 @@ RUN yarn install --frozen-lockfile --production=false
 # Generate Prisma Client
 COPY --link libs/providers/prisma .
 RUN npx prisma generate
+RUN npx prisma generate
 # Copy application code
 COPY --link . .
 
 # Build application
-RUN yarn run build
+RUN yarn run build:dev
 
 
 # Final stage for app image

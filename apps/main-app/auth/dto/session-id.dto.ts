@@ -1,4 +1,5 @@
 import { Device } from '@prisma/client';
+import { IMetadata } from '../../../../libs/decorators/metadata.decorator';
 
 type TSessionIdDto = Pick<Device, 'userId' | 'deviceId'>;
 
@@ -7,4 +8,5 @@ export class SessionIdDto implements TSessionIdDto {
   deviceId: string;
 }
 
-export type WithClientMeta<T> = T & { ipAddress: string; title: string };
+export type ClientMeta = { ipAddress: string; title: string };
+export type WithClientMeta<T> = T & IMetadata;

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { EmailAdapters } from './email.adapter';
 import { magicLink } from '../../shared/meme';
+import { mainAppConfig } from '../../../apps/main-app/main';
+import { Language } from '../../decorators/metadata.decorator';
 
 @Injectable()
 export class EmailManager {
@@ -9,24 +11,54 @@ export class EmailManager {
   async sendConfirmationEmail(
     email: string,
     confirmationCode: string,
+    language: Language,
   ): Promise<void> {
     const subject = 'Confirm your email';
+    const link = `${mainAppConfig.clientUrl}/${language}/auth/registration/confirmation-code?confirmationCode=${confirmationCode}`;
     const message = `
       <h1>Thank for your registration</h1>
       <p>To finish registration please follow the link below:
-        <a href=\'https://inctagram-api.fly.dev/auth/registration-confirmation?confirmationCode=${confirmationCode}\'>${magicLink()}</a>
+        <a href='${link}'>${magicLink()}</a>
       </p>
     `;
 
     return await this.emailAdapters.sendEmail(email, subject, message);
   }
 
-  async sendPasswordRecoveryEmail(email: string, recoveryCode: string) {
+  async sendCongratulationWithAuthEmail(email: string): Promise<void> {
+    const subject = 'Congratulations!';
+    const message = `
+      <h1>Thank for your registration</h1>
+      <p>Congratulations, you have successfully registered in Instagram!</p>
+    `;
+
+    return this.emailAdapters.sendEmail(email, subject, message);
+  }
+
+  async sendRefinementEmail(email: string, language: string): Promise<void> {
+    const subject = 'Log in to the system.';
+    const link = `${mainAppConfig.clientUrl}/${language}/auth/registration/merge?email:${email}`;
+    const message = `
+      <p>The user with this email is already registered.
+         If it's you, then follow the link:
+         <a href='${link}'>${magicLink()}</a>
+      </p>
+    `;
+
+    return this.emailAdapters.sendEmail(email, subject, message);
+  }
+
+  async sendPasswordRecoveryEmail(
+    email: string,
+    recoveryCode: string,
+    language: Language,
+  ) {
     const subject = 'Password recovery';
+    const link = `${mainAppConfig.clientUrl}/${language}/auth/registration/recovery?recoveryCode=${recoveryCode}`;
     const message = `
       <h1>Password recovery</h1>
       <p>To finish password recovery please follow the link below:
-        <a href='http://localhost:3000/ru?recoveryCode=${recoveryCode}'>${magicLink()}</a>
+        <a href='${link}'>${magicLink()}</a>
       </p>
     `;
 

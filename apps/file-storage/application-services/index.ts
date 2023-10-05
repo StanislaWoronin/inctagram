@@ -1,14 +1,13 @@
 import { Type } from '@nestjs/common';
 import { ICommandHandler, IQueryHandler } from '@nestjs/cqrs';
-import { UpdateMainImageCommandHandler } from './commands/update-main-image.command-handler';
-import { GetMainImageQuery } from './queries/get-main-image.command-handler';
+import { UpdateAvatarCommandHandler } from './commands/update-avatar-handler/update-avatar-command.handler';
+import { UploadPostImagesCommandHandler } from './commands/upload-post-handler/upload-post-image.command-handler';
 
 export * from './file-storage.facade';
 
 export const FILE_STORAGE_COMMANDS_HANDLERS: Type<ICommandHandler>[] = [
-  UpdateMainImageCommandHandler,
+  UpdateAvatarCommandHandler,
+  UploadPostImagesCommandHandler,
 ];
 
-export const FILE_STORAGE_QUERIES_HANDLERS: Type<IQueryHandler>[] = [
-  GetMainImageQuery,
-];
+export const FILE_STORAGE_QUERIES_HANDLERS: Type<IQueryHandler>[] = [];

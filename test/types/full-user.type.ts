@@ -1,7 +1,6 @@
 import { User } from '@prisma/client';
-import {PhotoType} from "../../libs/shared/enums/photo-type.enum";
 
-type TFullUser = Omit<User, 'birthday'> & { birthday: string };
+export type TFullUser = Omit<User, 'birthday'> & { birthday: Date | string };
 
 export class FullUser implements TFullUser {
   id: string;
@@ -11,7 +10,7 @@ export class FullUser implements TFullUser {
   createdAt: string;
   firstName: string;
   lastName: string;
-  birthday: string;
+  birthday: Date | string;
   city: string;
   aboutMe;
   isConfirmed: boolean;
@@ -27,8 +26,7 @@ export class FullUser implements TFullUser {
   PasswordRecovery: {
     passwordRecoveryCode: string;
   };
-  Photos: {
-    photoType: string,
-    photoLink: string
-  }[]
+  Avatar: {
+    photoLink: string;
+  };
 }

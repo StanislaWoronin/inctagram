@@ -4,14 +4,14 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_URI")
+  url      = env("PROD_DB")
 }
 
 model User {
   id                String             @id @default(uuid())
   userName          String
   email             String             @unique
-  passwordHash      String
+  passwordHash      String?
   createdAt         String
   firstName         String?
   lastName          String?
@@ -22,34 +22,77 @@ model User {
   Device            Device[]
   EmailConfirmation EmailConfirmation?
   PasswordRecovery  PasswordRecovery?
-  Photos            Photos[]
+  Avatar            Avatar?
+  Posts             Posts[]
 }
 
 model EmailConfirmation {
   userId           String @id
-  confirmationCode String
   user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  confirmationCode String
 }
 
 model PasswordRecovery {
   userId               String @id
-  passwordRecoveryCode String
   user                 User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  passwordRecoveryCode String
 }
 
 model Device {
-  deviceId  String @id
-  ipAddress String
+  deviceId  String  @id
+  ipAddress String?
   title     String
   createdAt String
   userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Avatar {
+  userId    String @id
   user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photoLink String
+}
+
+model Posts {
+  id           String        @id @default(uuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  description  String
+  createdAt    String
+  isDeleted    Boolean       @default(false)
+  Photos       Photos[]
+  DeletedPosts DeletedPosts?
+}
+
+model DeletedPosts {
+  postId   String  @id
+  posts    Posts   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  deleteAt String
+  deleteBy Role
+  reason   String? @db.VarChar(200)
+}
+
+enum Role {
+  ADMIN
+  USER
 }
 
 model Photos {
   id        String @id @default(uuid())
-  userId    String
-  photoType String
   photoLink String
-  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId    String
+  posts     Posts  @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Payments {
+  id               String  @id @default(uuid())
+  customerId       String
+  email            String
+  paymentMethod    String
+  subscriptionType String
+  autoRenewal      Boolean
+  amount           Int
+  subStreak        Int
+  subscribeAt      String
+  streakAt         String
 }

@@ -3,24 +3,102 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
+  ApiCreatedResponse,
   ApiNoContentResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
-  ApiOperation, ApiParam,
+  ApiOperation,
+  ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { UpdateUserProfileDto } from '../../../apps/main-app/users/dto/update-user.dto';
 import { ErrorResponse } from '../../shared/errors.response';
 import { ViewUserWithInfo } from '../../../apps/main-app/users/view-model/user-with-info.view-model';
+import { CreatedPostView } from '../../../apps/main-app/users/view-model/created-post.view-model';
+import { PostDto } from '../../../apps/main-app/users/dto/post.dto';
+import { MyPostsView } from '../../../apps/main-app/users/view-model/my-posts.view-model';
+import { DeletePostDto } from '../../../apps/main-app/users/dto/delete-post.dto';
+import { CreatePostDto } from '../../../apps/main-app/users/dto/create-post.dto';
+
+export function ApiCreatePost() {
+  return applyDecorators(
+    ApiTags('User'),
+    ApiOperation({ summary: 'Create new post by current users.' }),
+    ApiBearerAuth(),
+    ApiConsumes('multipart/form-data'),
+    ApiBody({
+      schema: {
+        type: 'object',
+        properties: {
+          description: { type: 'string' },
+          posts: {
+            type: 'array',
+            items: {
+              type: 'string',
+              format: 'binary',
+            },
+          },
+        },
+      },
+    }),
+    // ApiBody({ type: CreatePostDto }),
+    ApiCreatedResponse({
+      description: 'Return created post.',
+      type: CreatedPostView,
+    }),
+    ApiBadRequestResponse({
+      description: 'If the inputModel has incorrect values',
+      type: ErrorResponse,
+    }),
+    ApiUnauthorizedResponse({
+      description: 'If the JWT access token is missing, expired or incorrect',
+    }),
+  );
+}
+
+export function ApiDeletePost() {
+  return applyDecorators(
+    ApiTags('User'),
+    ApiOperation({ summary: "Delete users's post." }),
+    ApiBearerAuth(),
+    ApiBody({
+      type: DeletePostDto,
+    }),
+    ApiNoContentResponse(),
+    ApiUnauthorizedResponse({
+      description: 'If the JWT access token is missing, expired or incorrect',
+    }),
+    ApiNotFoundResponse({ description: 'Post for specific ID not found' }),
+  );
+}
 
 export function ApiGetUser() {
   return applyDecorators(
     ApiTags('User'),
-    ApiOperation({ summary: 'Return user profile' }),
+    ApiOperation({ summary: 'Return users profile' }),
     ApiBearerAuth(),
     ApiOkResponse({
-      description: 'Returns user.',
+      description: 'Return users.',
       type: ViewUserWithInfo,
+    }),
+    ApiUnauthorizedResponse({
+      description: 'If the JWT access token is missing, expired or incorrect',
+    }),
+  );
+}
+
+export function ApiMyPosts() {
+  return applyDecorators(
+    ApiTags('User'),
+    ApiOperation({
+      summary: 'Return current users posts.',
+    }),
+    ApiBearerAuth(),
+    ApiOkResponse({
+      description: 'Return current users posts.',
+      type: MyPostsView,
     }),
     ApiUnauthorizedResponse({
       description: 'If the JWT access token is missing, expired or incorrect',
@@ -32,7 +110,7 @@ export function ApiUpdateProfile() {
   return applyDecorators(
     ApiTags('User'),
     ApiOperation({
-      summary: 'Update info about user.',
+      summary: 'Update users profile. Set additional info about users.',
     }),
     ApiBearerAuth(),
     ApiBody({
@@ -43,7 +121,7 @@ export function ApiUpdateProfile() {
     }),
     ApiBadRequestResponse({
       description:
-        'If the inputModel has incorrect values (in particular if the user with' +
+        'If the inputModel has incorrect values (in particular if the users with' +
         ' the given email or password already exists)',
       type: ErrorResponse,
     }),
@@ -53,14 +131,52 @@ export function ApiUpdateProfile() {
   );
 }
 
-export function ApiUpdateUser() {
+export function ApiUpdatePost() {
+  return applyDecorators(
+    ApiTags('User'),
+    ApiOperation({ summary: "Update users's post." }),
+    ApiBearerAuth(),
+    ApiBody({ type: PostDto }),
+    ApiParam({
+      name: 'postId',
+      type: 'string',
+    }),
+    ApiNoContentResponse({
+      description: 'Update is success.',
+    }),
+    ApiBadRequestResponse({
+      description: 'If the inputModel has incorrect values',
+      type: ErrorResponse,
+    }),
+    ApiUnauthorizedResponse({
+      description: 'If the JWT access token is missing, expired or incorrect',
+    }),
+  );
+}
+
+export function ApiUploadAvatar() {
   return applyDecorators(
     ApiTags('User'),
     ApiOperation({
       summary:
-        'Update data about user,upload main image for user (.png or .jpg (.jpeg) file (max size is 1mb)',
+        'Upload users avatar .png or .jpg (.jpeg) file (max size is 1mb)',
     }),
     ApiBearerAuth(),
+    ApiConsumes('multipart/form-data'),
+    ApiBody({
+      schema: {
+        type: 'object',
+        properties: {
+          avatar: {
+            type: 'Express.Multer.File',
+            items: {
+              type: 'string',
+              format: 'binary',
+            },
+          },
+        },
+      },
+    }),
     ApiNoContentResponse({
       description: 'If data is valid and data is accepted',
     }),

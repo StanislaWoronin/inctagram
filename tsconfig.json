@@ -18,6 +18,6 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {},
-    "esModuleInterop": true
+    "esModuleInterop": true,
   }
 }
